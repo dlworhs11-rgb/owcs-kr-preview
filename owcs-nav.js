@@ -35,14 +35,14 @@
     '[data-owcs-hw] .son .hkn{left:14px}',
     '[data-owcs-hw] .my{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;font-size:13px;font-weight:700;white-space:nowrap}',
     '[data-owcs-hw] .my:empty{display:none}',
-    // the menu: the page you are on in ink, the others muted (like the chosen language: darker, no colour)
+    // the menu: the page you are on is a filled ink pill (white in dark mode), the others muted
     // (html body + the doubled attribute: beats the phone menu's own chip colours, light and dark)
     'html body a[data-owcs-nv][data-owcs-nv]{color:var(--mute,#6B6B72) !important}',
-    'html body a[data-owcs-nv].cur,html body a[data-owcs-nv]:hover{color:var(--ink,#0B0B0F) !important}',
+    'html body a[data-owcs-nv]:hover{color:var(--ink,#0B0B0F) !important}',
     'html[data-owcs-dark] body a[data-owcs-nv][data-owcs-nv]{color:#A3A3AD !important}',
-    'html[data-owcs-dark] body a[data-owcs-nv].cur,html[data-owcs-dark] body a[data-owcs-nv]:hover{color:#F2F2F5 !important}',
-    // 일정 / 방송 mark their own page with a grey pill; the menu shows the page by colour only, as on the home page
-    'header a[data-owcs-nv].on:not(:hover){background:transparent !important}',
+    'html[data-owcs-dark] body a[data-owcs-nv]:hover{color:#F2F2F5 !important}',
+    'html body a[data-owcs-nv][data-owcs-nv].cur{background:#0B0B0F !important;color:#fff !important}',
+    'html[data-owcs-dark] body a[data-owcs-nv][data-owcs-nv].cur{background:#F2F2F5 !important;color:#0B0B0F !important}',
     'html[data-owcs-dark] [data-owcs-hw]{color:#F2F2F5}',
     'html[data-owcs-dark] [data-owcs-hw] .lb,html[data-owcs-dark] [data-owcs-hw] .dd{background:#16161C;border-color:#2E2E37}',
     'html[data-owcs-dark] [data-owcs-hw] .it{color:#A3A3AD}',
