@@ -158,7 +158,7 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <sc-for list="{{ cases }}" as="c" hint-placeholder-count="8">
 <div style="display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:16px;align-items:center;min-height:72px;border-bottom:1px solid #ECECE7;padding:10px 4px">
 <span style="display:flex;align-items:center;gap:10px"><span style="width:5px;height:32px;border-radius:3px;background:{{ c.c }}"></span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px">{{ c.r }}</span></span>
-<span><span style="display:block;font-size:17px;font-weight:700">{{ c.n }} <span style="font-weight:500;color:#6B6B72;font-size:14px">{{ c.wl }}</span></span><span style="display:block;font-size:14px;color:#55555C;margin-top:3px;line-height:1.5">{{ c.note }}</span></span>
+<span><span style="display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700"><span style="flex:none;width:28px;height:28px;background:{{ c.logo }}"></span>{{ c.n }} <span style="font-weight:500;color:#6B6B72;font-size:14px">{{ c.wl }}</span></span><span style="display:block;font-size:14px;color:#55555C;margin-top:3px;line-height:1.5">{{ c.note }}</span></span>
 <sc-if value="{{ c.sure }}"><span style="font-size:13px;font-weight:700;background:#C6FF33;padding:5px 10px;border-radius:8px">{{ c.tag }}</span></sc-if>
 <sc-if value="{{ c.maybe }}"><span style="font-size:13px;font-weight:700;color:#5B22C2;border:1px solid #7D39EB;padding:4px 10px;border-radius:8px">{{ c.tag }}</span></sc-if>
 <sc-if value="{{ c.out }}"><span style="font-size:13px;font-weight:700;color:#55555C;background:#ECECE8;padding:5px 10px;border-radius:8px">{{ c.tag }}</span></sc-if>
@@ -275,7 +275,7 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <sc-for list="{{ cases }}" as="c" hint-placeholder-count="8">
 <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:10px;padding:14px 0;border-bottom:1px solid #ECECE7">
 <span style="display:flex;align-items:flex-start;gap:6px"><span style="width:4px;height:26px;border-radius:2px;background:{{ c.c }}"></span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:24px;line-height:1">{{ c.r }}</span></span>
-<div><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:15px;font-weight:700">{{ c.n }}</span>
+<div><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="display:flex;align-items:center;gap:8px;min-width:0;font-size:15px;font-weight:700"><span style="flex:none;width:24px;height:24px;background:{{ c.logo }}"></span>{{ c.n }}</span>
 <sc-if value="{{ c.sure }}"><span style="font-size:11px;font-weight:700;background:#C6FF33;padding:3px 8px;border-radius:6px">{{ c.tag }}</span></sc-if>
 <sc-if value="{{ c.maybe }}"><span style="font-size:11px;font-weight:700;color:#5B22C2;border:1px solid #7D39EB;padding:2px 8px;border-radius:6px">{{ c.tag }}</span></sc-if>
 <sc-if value="{{ c.out }}"><span style="font-size:11px;font-weight:700;color:#55555C;background:#ECECE8;padding:3px 8px;border-radius:6px">{{ c.tag }}</span></sc-if>
@@ -353,17 +353,19 @@ const PAST = (no) => {
 const CASES = (() => {
   const base = Object.fromEntries(D.standings.map((s) => [s.a, s.w]));
   const teams = Object.keys(base), n = LEFT.length, out = {};
-  teams.forEach((a) => { out[a] = { best: 99, worst: 0, needPO: null, needLCQ: null, byWins: {} }; });
+  teams.forEach((a) => { out[a] = { best: 99, worst: 0, needPO: null, needLCQ: null, byWins: {}, bestIfLose: {} }; });
   if (n > 22) return out; // too many to enumerate; leave unknown
+  const own = Object.fromEntries(teams.map((a) => [a, LEFT.map((m, i) => (m.a === a || m.b === a ? i : -1)).filter((i) => i >= 0)]));
   for (let mask = 0; mask < (1 << n); mask++) {
-    const w = { ...base }, extra = {};
-    for (let i = 0; i < n; i++) { const win = (mask >> i) & 1 ? LEFT[i].a : LEFT[i].b; w[win]++; extra[win] = (extra[win] || 0) + 1; }
+    const w = { ...base }, extra = {}, won = [];
+    for (let i = 0; i < n; i++) { const win = (mask >> i) & 1 ? LEFT[i].a : LEFT[i].b; won[i] = win; w[win]++; extra[win] = (extra[win] || 0) + 1; }
     for (const a of teams) {
       let above = 0, tied = 0;
       for (const b of teams) if (b !== a) { if (w[b] > w[a]) above++; else if (w[b] === w[a]) tied++; }
       const o = out[a], best = above + 1, worst = above + tied + 1, k = extra[a] || 0;
       o.best = Math.min(o.best, best); o.worst = Math.max(o.worst, worst);
       o.byWins[k] = Math.max(o.byWins[k] || 0, worst);
+      for (const i of own[a]) if (won[i] !== a) o.bestIfLose[i] = Math.min(o.bestIfLose[i] || 99, best);
     }
   }
   for (const a of teams) {
@@ -374,8 +376,24 @@ const CASES = (() => {
   }
   return out;
 })();
+// 단두대 매치: both teams are still fighting for the same cut, and whoever loses can no longer make it.
+// returns that cut (D.lcq first: losing = out of the season) or null
+const axeOf = (i) => {
+  const m = LEFT[i], A = CASES[m.a] || {}, B = CASES[m.b] || {};
+  if (!A.bestIfLose || !B.bestIfLose) return null;
+  for (const cut of [D.lcq, D.playoffs]) {
+    const open = (c) => c.best <= cut && c.worst > cut;
+    if (open(A) && open(B) && (A.bestIfLose[i] || 99) > cut && (B.bestIfLose[i] || 99) > cut) return cut;
+  }
+  return null;
+};
+const axeNote = (a) => LEFT.map((m, i) => [m, axeOf(i)]).filter(([m, cut]) => cut && (m.a === a || m.b === a))
+  .map(([m, cut]) => ' ' + NAME(m.a === a ? m.b : m.a) + '전은 서로 단두대 매치, 지는 팀은 ' + (cut === D.lcq ? '바로 탈락이에요.' : '플레이오프 직행이 사라져요.')).join('');
 const caseOf = (a) => {
   const c = CASES[a] || {}, left = LEFT.filter((m) => m.a === a || m.b === a).length;
+  const k = caseKind(a, c, left); return { ...k, note: k.note + (k.kind === 'maybe' ? axeNote(a) : '') };
+};
+const caseKind = (a, c, left) => {
   if (c.worst && c.worst <= D.playoffs) return { tag: '플레이오프 확정', kind: 'sure', note: '남은 경기 결과와 관계없이 1–' + D.playoffs + '위 안이에요.' };
   if (c.best > D.lcq) return { tag: '탈락', kind: 'out', note: '남은 경기를 모두 이겨도 ' + D.lcq + '위 안에 들 수 없어요.' };
   if (c.best <= D.playoffs) {
@@ -491,12 +509,13 @@ class Component extends DCLogic {
               return { n: a === 'TBD' ? '미정' : NAME(a), logo: a === 'TBD' ? 'transparent' : logo(a), lo: played && !SP && sc !== top ? .45 : 1, c: a === 'TBD' ? '#E1E1DB' : col(a), s: shown ? sc : '–', w: st.w, t: a === 'TBD' ? '#9A9AA0' : st.t }; }) };
         }),
       })),
-      cases: D.standings.map((s, i) => { const c = caseOf(s.a); return { r: i + 1, n: NAME(s.a), c: col(s.a), wl: SP ? '–' : s.w + '-' + s.l, note: c.note, tag: c.tag, sure: c.kind === 'sure', maybe: c.kind === 'maybe', out: c.kind === 'out' }; }),
+      cases: D.standings.map((s, i) => { const c = caseOf(s.a); return { r: i + 1, n: NAME(s.a), logo: logo(s.a), c: col(s.a), wl: SP ? '–' : s.w + '-' + s.l, note: c.note, tag: c.tag, sure: c.kind === 'sure', maybe: c.kind === 'maybe', out: c.kind === 'out' }; }),
       remaining: LEFT.slice(0, 6).map((m) => {
         const ka = caseOf(m.a), kb = caseOf(m.b);
         const hot = [ka, kb].some((k) => k.kind === 'maybe');
+        const axe = axeOf(LEFT.indexOf(m));
         return { when: mdw(m.date) + ' ' + m.time, a: m.a, b: m.b, ca: logo(m.a), cb: logo(m.b), oa: 1, ob: 1,
-          stake: m.live ? 'LIVE' : hot ? [m.a, m.b].filter((a, i) => [ka, kb][i].kind === 'maybe').join('·') + ' ' + ([ka, kb].find((k) => k.kind === 'maybe').tag) : '순위 싸움' };
+          stake: m.live ? 'LIVE' : axe ? (axe === D.lcq ? '단두대 매치 · 지면 탈락' : '단두대 매치 · 지면 직행 실패') : hot ? [m.a, m.b].filter((a, i) => [ka, kb][i].kind === 'maybe').join('·') + ' ' + ([ka, kb].find((k) => k.kind === 'maybe').tag) : '순위 싸움' };
       }),
       tiebreak: D.tiebreak,
       footNote: '비공식 팬 사이트입니다. Blizzard Entertainment 및 OWCS 공식 운영과 관련이 없습니다. ' + (D.sources || ''),
