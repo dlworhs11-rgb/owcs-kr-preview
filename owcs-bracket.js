@@ -76,11 +76,15 @@
 .say small{display:block;font-size:12.5px;font-weight:500;color:var(--b-mute);margin-top:2px}
 .out{display:flex;flex-wrap:wrap;gap:6px;margin:0 2px}
 .out span{display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;font-size:12.5px;font-weight:800;background:var(--b-card);border:1px solid var(--b-line)}
-.out span.go{background:var(--b-ac2);border-color:var(--b-ac2);color:#0B0B0F}
+/* 'goes through': a dark chip with lime text (like the score chips), not a lime fill: easier on the eyes */
+.out span.go{background:#0B0B0F;border-color:#0B0B0F;color:var(--b-ac2)}
+.w.dark .out span.go{border-color:#3A3A44}
 .out span.ko{color:var(--b-mute)}
 .st{font-size:11.5px;font-weight:800;color:var(--b-mute);margin:2px 2px -4px}
-.sd div.bye{background:var(--b-ac2);color:#0B0B0F}
-.sd div.bye b,.sd div.bye u{color:#0B0B0F}
+/* seeds 1-2 (straight to the semi-finals): a white card, the rank on a dark chip in lime */
+.sd div.bye{background:var(--b-card);box-shadow:inset 0 0 0 1px var(--b-line)}
+.sd div.bye u{min-width:26px;padding:3px 7px 2px;border-radius:999px;background:#0B0B0F;color:var(--b-ac2);text-align:center}
+.w.dark .sd div.bye u{box-shadow:inset 0 0 0 1px #3A3A44}
 .cw{position:relative;margin-bottom:14px;border-radius:18px;overflow:hidden;background:#0B0B0F;color:#fff}
 .cw img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
 .cw.nop img{display:none}
