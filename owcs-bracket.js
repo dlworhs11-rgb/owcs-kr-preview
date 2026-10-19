@@ -76,8 +76,10 @@
 .sd .sr b small{margin-left:6px;font-size:11.5px;font-weight:600;color:var(--b-mute)}
 .sd .sr span{font-family:var(--disp,'Barlow Condensed'),sans-serif;font-size:19px;font-weight:700}
 .sd .sr span+span{font-size:16px;color:var(--b-mute)}
-.sd .cut{position:relative;height:0;border-top:2px solid var(--b-ac2);margin:0}
-.sd .cut span{position:absolute;right:0;top:-1px;transform:translateY(-50%);padding:0 0 0 8px;background:var(--b-soft);font-size:11px;font-weight:800;line-height:16px;color:var(--b-ink)}
+/* the 4강 직행 line: the same green line and tag as the home standings' 플레이오프 진출선 */
+.sd .cut{display:flex;align-items:center;gap:10px;margin:-1px 0}
+.sd .cut::before{content:'';flex:1;height:3px;background:#8DCB3E}
+.sd .cut span{font-size:12px;font-weight:700;line-height:1.2;background:#8DCB3E;color:#0B0B0F;padding:3px 8px;border-radius:6px}
 .sd .pend{margin:6px 0 0;font-size:11.5px;color:var(--b-mute)}
 .lane{display:flex;flex-direction:column;gap:12px}
 .lh{display:flex;align-items:center;gap:10px;margin:0 2px}
