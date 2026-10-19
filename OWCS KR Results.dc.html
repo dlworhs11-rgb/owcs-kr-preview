@@ -15,18 +15,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1020030617"></script>
-<script src="./owcs-phase.js?v=1020030617"></script>
-<script src="./owcs-i18n.js?v=1020030617"></script>
-<script src="./owcs-stats.js?v=1020030617"></script>
-<script src="./owcs-nav.js?v=1020030617"></script>
-<script src="./owcs-dark.js?v=1020030617"></script>
-<script src="./owcs-test.js?v=1020030617"></script>
-<script src="./owcs-maps.js?v=1020030617"></script>
-<script src="./owcs-bracket.js?v=1020030617"></script>
-<script src="./support.js?v=1020030617"></script>
-<script src="./owcs-theme.js?v=1020030617"></script>
-<script src="./owcs-theme-wise.js?v=1020030617"></script>
+<script src="./owcs-data.js?v=1020030747"></script>
+<script src="./owcs-phase.js?v=1020030747"></script>
+<script src="./owcs-i18n.js?v=1020030747"></script>
+<script src="./owcs-stats.js?v=1020030747"></script>
+<script src="./owcs-nav.js?v=1020030747"></script>
+<script src="./owcs-dark.js?v=1020030747"></script>
+<script src="./owcs-test.js?v=1020030747"></script>
+<script src="./owcs-maps.js?v=1020030747"></script>
+<script src="./owcs-bracket.js?v=1020030747"></script>
+<script src="./support.js?v=1020030747"></script>
+<script src="./owcs-theme.js?v=1020030747"></script>
+<script src="./owcs-theme-wise.js?v=1020030747"></script>
 </head>
 <body>
 <x-dc>
@@ -158,9 +158,11 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <sc-for list="{{ cases }}" as="c" hint-placeholder-count="8">
 <div style="display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:16px;align-items:center;min-height:72px;border-bottom:1px solid #ECECE7;padding:10px 4px">
 <span style="display:flex;align-items:center;gap:10px"><span style="width:5px;height:32px;border-radius:3px;background:{{ c.c }}"></span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px">{{ c.r }}</span></span>
-<span><span style="display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700"><span style="flex:none;width:28px;height:28px;background:{{ c.logo }}"></span>{{ c.n }} <span style="font-weight:500;color:#6B6B72;font-size:14px">{{ c.wl }}</span></span><span style="display:block;font-size:14px;color:#55555C;margin-top:3px;line-height:1.5">{{ c.note }}</span></span>
+<span><span style="display:flex;align-items:center;gap:10px;font-size:17px;font-weight:700"><span style="flex:none;width:28px;height:28px;background:{{ c.logo }}"></span>{{ c.n }} <span style="font-weight:500;color:#6B6B72;font-size:14px">{{ c.wl }}</span></span><span style="display:block;font-size:14px;color:#55555C;margin-top:3px;line-height:1.5">{{ c.note }}</span><sc-if value="{{ c.axe }}"><span style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:13px;font-weight:700;color:#C62F35"><span style="flex:none;font-weight:800;color:#fff;background:#E5484D;padding:2px 8px;border-radius:6px">단두대 매치</span>{{ c.axe }}</span></sc-if></span>
 <sc-if value="{{ c.sure }}"><span style="font-size:13px;font-weight:700;background:#C6FF33;padding:5px 10px;border-radius:8px">{{ c.tag }}</span></sc-if>
 <sc-if value="{{ c.maybe }}"><span style="font-size:13px;font-weight:700;color:#5B22C2;border:1px solid #7D39EB;padding:4px 10px;border-radius:8px">{{ c.tag }}</span></sc-if>
+<sc-if value="{{ c.lsure }}"><span style="font-size:13px;font-weight:700;color:#7A3300;background:#FFD7B5;padding:5px 10px;border-radius:8px">{{ c.tag }}</span></sc-if>
+<sc-if value="{{ c.lmaybe }}"><span style="font-size:13px;font-weight:700;color:#A84A0C;border:1px solid #F08A3C;padding:4px 10px;border-radius:8px">{{ c.tag }}</span></sc-if>
 <sc-if value="{{ c.out }}"><span style="font-size:13px;font-weight:700;color:#55555C;background:#ECECE8;padding:5px 10px;border-radius:8px">{{ c.tag }}</span></sc-if>
 </div>
 </sc-for>
@@ -170,7 +172,8 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <sc-for list="{{ remaining }}" as="m" hint-placeholder-count="4">
 <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border:1px solid #E6E6E1;border-radius:16px">
 <div><div style="font-size:13px;color:#6B6B72">{{ m.when }}</div><div style="display:flex;align-items:center;gap:8px;margin-top:4px"><span style="width:24px;height:24px;background:{{ m.ca }};opacity:{{ m.oa }}"></span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px">{{ m.a }}</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;color:#6B6B72">vs</span><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:26px">{{ m.b }}</span><span style="width:24px;height:24px;background:{{ m.cb }};opacity:{{ m.ob }}"></span></div></div>
-<span style="font-size:13px;color:#55555C;text-align:right;max-width:150px;line-height:1.4">{{ m.stake }}</span>
+<sc-if value="{{ m.noAxe }}"><span style="font-size:13px;color:#55555C;text-align:right;max-width:150px;line-height:1.4">{{ m.stake }}</span></sc-if>
+<sc-if value="{{ m.isAxe }}"><span style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span style="font-size:14px;font-weight:800;color:#fff;background:#E5484D;padding:4px 10px;border-radius:8px">단두대 매치</span><span style="font-size:12px;font-weight:700;color:#C62F35">{{ m.axeSub }}</span></span></sc-if>
 </div>
 </sc-for>
 <div style="padding:18px;border-radius:16px;background:#F6F6F3;font-size:14px;color:#55555C;line-height:1.6">{{ tiebreak }}</div>
@@ -277,8 +280,10 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <div><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="display:flex;align-items:center;gap:8px;min-width:0;font-size:15px;font-weight:700"><span style="flex:none;width:24px;height:24px;background:{{ c.logo }}"></span>{{ c.n }}</span>
 <sc-if value="{{ c.sure }}"><span style="font-size:11px;font-weight:700;background:#C6FF33;padding:3px 8px;border-radius:6px">{{ c.tag }}</span></sc-if>
 <sc-if value="{{ c.maybe }}"><span style="font-size:11px;font-weight:700;color:#5B22C2;border:1px solid #7D39EB;padding:2px 8px;border-radius:6px">{{ c.tag }}</span></sc-if>
+<sc-if value="{{ c.lsure }}"><span style="font-size:11px;font-weight:700;color:#7A3300;background:#FFD7B5;padding:3px 8px;border-radius:6px">{{ c.tag }}</span></sc-if>
+<sc-if value="{{ c.lmaybe }}"><span style="font-size:11px;font-weight:700;color:#A84A0C;border:1px solid #F08A3C;padding:2px 8px;border-radius:6px">{{ c.tag }}</span></sc-if>
 <sc-if value="{{ c.out }}"><span style="font-size:11px;font-weight:700;color:#55555C;background:#ECECE8;padding:3px 8px;border-radius:6px">{{ c.tag }}</span></sc-if>
-</div><div style="font-size:13px;color:#55555C;margin-top:4px;line-height:1.5">{{ c.note }}</div></div>
+</div><div style="font-size:13px;color:#55555C;margin-top:4px;line-height:1.5">{{ c.note }}</div><sc-if value="{{ c.axe }}"><div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:6px;font-size:12px;font-weight:700;color:#C62F35"><span style="flex:none;font-weight:800;color:#fff;background:#E5484D;padding:2px 7px;border-radius:6px">단두대 매치</span>{{ c.axe }}</div></sc-if></div>
 </div>
 </sc-for>
 </sc-if>
@@ -387,10 +392,11 @@ const axeOf = (i) => {
   return null;
 };
 const axeNote = (a) => LEFT.map((m, i) => [m, axeOf(i)]).filter(([m, cut]) => cut && (m.a === a || m.b === a))
-  .map(([m, cut]) => ' ' + NAME(m.a === a ? m.b : m.a) + '전은 서로 단두대 매치, 지는 팀은 ' + (cut === D.lcq ? '바로 탈락이에요.' : '플레이오프 직행이 사라져요.')).join('');
+  .map(([m, cut]) => NAME(m.a === a ? m.b : m.a) + '전, 지면 ' + (cut === D.lcq ? '바로 탈락' : '플레이오프 직행 실패')).join(' · ');
+const racing = (k) => k.kind === 'maybe' || k.kind === 'lmaybe';
 const caseOf = (a) => {
   const c = CASES[a] || {}, left = LEFT.filter((m) => m.a === a || m.b === a).length;
-  const k = caseKind(a, c, left); return { ...k, note: k.note + (k.kind === 'maybe' ? axeNote(a) : '') };
+  const k = caseKind(a, c, left); return { ...k, axe: racing(k) ? axeNote(a) : '' };
 };
 const caseKind = (a, c, left) => {
   if (c.worst && c.worst <= D.playoffs) return { tag: '플레이오프 확정', kind: 'sure', note: '남은 경기 결과와 관계없이 1–' + D.playoffs + '위 안이에요.' };
@@ -400,8 +406,8 @@ const caseKind = (a, c, left) => {
     const need = c.needPO != null ? '남은 ' + left + '경기 중 ' + c.needPO + '승 하면 플레이오프 확정.' : '다른 팀 결과와 세트 득실에 따라 플레이오프가 갈려요.';
     return { tag: '플레이오프 경쟁', kind: 'maybe', note: need + lcq };
   }
-  if (c.worst <= D.lcq) return { tag: 'LCQ 확정', kind: 'sure', note: '플레이오프 직행은 어렵지만 라스트 찬스 예선은 확정이에요.' };
-  return { tag: 'LCQ 경쟁', kind: 'maybe', note: c.needLCQ != null ? '남은 ' + left + '경기 중 ' + c.needLCQ + '승 하면 ' + D.lcq + '위 안 확정.' : '다른 팀 결과에 따라 ' + D.lcq + '위 안에 들 수 있어요.' };
+  if (c.worst <= D.lcq) return { tag: 'LCQ 확정', kind: 'lsure', note: '플레이오프 직행은 어렵지만 라스트 찬스 예선은 확정이에요.' };
+  return { tag: 'LCQ 경쟁', kind: 'lmaybe', note: c.needLCQ != null ? '남은 ' + left + '경기 중 ' + c.needLCQ + '승 하면 ' + D.lcq + '위 안 확정.' : '다른 팀 결과에 따라 ' + D.lcq + '위 안에 들 수 있어요.' };
 };
 
 const norm = (s) => s.toLowerCase().replace(/\s+/g, '');
@@ -508,13 +514,14 @@ class Component extends DCLogic {
               return { n: a === 'TBD' ? '미정' : NAME(a), logo: a === 'TBD' ? 'transparent' : logo(a), lo: played && !SP && sc !== top ? .45 : 1, c: a === 'TBD' ? '#E1E1DB' : col(a), s: shown ? sc : '–', w: st.w, t: a === 'TBD' ? '#9A9AA0' : st.t }; }) };
         }),
       })),
-      cases: D.standings.map((s, i) => { const c = caseOf(s.a); return { r: i + 1, n: NAME(s.a), logo: logo(s.a), c: col(s.a), wl: SP ? '–' : s.w + '-' + s.l, note: c.note, tag: c.tag, sure: c.kind === 'sure', maybe: c.kind === 'maybe', out: c.kind === 'out' }; }),
+      cases: D.standings.map((s, i) => { const c = caseOf(s.a); return { r: i + 1, n: NAME(s.a), logo: logo(s.a), c: col(s.a), wl: SP ? '–' : s.w + '-' + s.l, note: c.note, axe: c.axe, tag: c.tag, sure: c.kind === 'sure', maybe: c.kind === 'maybe', lsure: c.kind === 'lsure', lmaybe: c.kind === 'lmaybe', out: c.kind === 'out' }; }),
       remaining: LEFT.slice(0, 6).map((m) => {
         const ka = caseOf(m.a), kb = caseOf(m.b);
-        const hot = [ka, kb].some((k) => k.kind === 'maybe');
+        const hot = [ka, kb].some(racing);
         const axe = axeOf(LEFT.indexOf(m));
         return { when: mdw(m.date) + ' ' + m.time, a: m.a, b: m.b, ca: logo(m.a), cb: logo(m.b), oa: 1, ob: 1,
-          stake: m.live ? 'LIVE' : axe ? (axe === D.lcq ? '단두대 매치 · 지면 탈락' : '단두대 매치 · 지면 직행 실패') : hot ? [m.a, m.b].filter((a, i) => [ka, kb][i].kind === 'maybe').join('·') + ' ' + ([ka, kb].find((k) => k.kind === 'maybe').tag) : '순위 싸움' };
+          isAxe: !m.live && !!axe, noAxe: m.live || !axe, axeSub: axe === D.lcq ? '지면 탈락' : '지면 직행 실패',
+          stake: m.live ? 'LIVE' : hot ? [m.a, m.b].filter((a, i) => racing([ka, kb][i])).join('·') + ' ' + [ka, kb].find(racing).tag : '순위 싸움' };
       }),
       tiebreak: D.tiebreak,
       footNote: '비공식 팬 사이트입니다. Blizzard Entertainment 및 OWCS 공식 운영과 관련이 없습니다. ' + (D.sources || ''),

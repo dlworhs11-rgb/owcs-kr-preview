@@ -35,14 +35,16 @@
     '[data-owcs-hw] .son .hkn{left:14px}',
     '[data-owcs-hw] .my{display:flex;align-items:center;gap:8px;height:36px;padding:0 12px;font-size:13px;font-weight:700;white-space:nowrap}',
     '[data-owcs-hw] .my:empty{display:none}',
-    // the menu: the page you are on is a filled ink pill (white in dark mode), the others muted
+    // the menu: the page you are on in ink with a short lime bar under it (the site's accent), the others muted
     // (html body + the doubled attribute: beats the phone menu's own chip colours, light and dark)
     'html body a[data-owcs-nv][data-owcs-nv]{color:var(--mute,#6B6B72) !important}',
     'html body a[data-owcs-nv]:hover{color:var(--ink,#0B0B0F) !important}',
     'html[data-owcs-dark] body a[data-owcs-nv][data-owcs-nv]{color:#A3A3AD !important}',
     'html[data-owcs-dark] body a[data-owcs-nv]:hover{color:#F2F2F5 !important}',
-    'html body a[data-owcs-nv][data-owcs-nv].cur{background:#0B0B0F !important;color:#fff !important}',
-    'html[data-owcs-dark] body a[data-owcs-nv][data-owcs-nv].cur{background:#F2F2F5 !important;color:#0B0B0F !important}',
+    // light: a lime highlighter stroke under the lower half of the word; dark: a thin lime line under it
+    'html body a[data-owcs-nv][data-owcs-nv].cur{color:var(--ink,#0B0B0F) !important;background-image:linear-gradient(var(--ac2,#C6FF33),var(--ac2,#C6FF33)) !important;' +
+      'background-size:calc(100% - 26px) 8px !important;background-position:center bottom 12px !important;background-repeat:no-repeat !important}',
+    'html[data-owcs-dark] body a[data-owcs-nv][data-owcs-nv].cur{color:#F2F2F5 !important;background-size:calc(100% - 26px) 2px !important;background-position:center bottom 7px !important}',
     'html[data-owcs-dark] [data-owcs-hw]{color:#F2F2F5}',
     'html[data-owcs-dark] [data-owcs-hw] .lb,html[data-owcs-dark] [data-owcs-hw] .dd{background:#16161C;border-color:#2E2E37}',
     'html[data-owcs-dark] [data-owcs-hw] .it{color:#A3A3AD}',
