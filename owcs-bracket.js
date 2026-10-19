@@ -63,28 +63,33 @@
 .grid{display:grid;gap:12px;margin-top:12px}
 .pick+.grid{margin-top:0}
 .rr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 6px}
-.sd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:10px}
-.sd div{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;border-radius:10px;background:var(--b-soft);font-size:11px;color:var(--b-mute);min-width:0}
-.sd div b{font-size:13px;color:var(--b-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.sd div u{text-decoration:none;font-family:var(--disp,'Barlow Condensed'),sans-serif;font-size:18px;font-weight:800;color:var(--b-ink);line-height:1}
-.sd i{width:22px;height:22px}
+.sd{margin:0 2px 6px}
+.sd .sh,.sd .sr{display:grid;grid-template-columns:4px 26px 24px minmax(0,1fr) 64px 56px;align-items:center;gap:10px}
+.sd .sh{height:26px;font-size:11.5px;font-weight:700;color:var(--b-mute);border-bottom:1.5px solid var(--b-ink)}
+.sd .sh span:nth-child(1){grid-column:1/4}
+.sd .sr{height:46px;border-top:1px solid var(--b-line)}
+.sd .sh+.sr,.sd .cut+.sr{border-top:0}
+.sd .sr em{display:block;width:4px;height:24px;border-radius:2px}
+.sd .sr u{text-decoration:none;font-family:var(--disp,'Barlow Condensed'),sans-serif;font-size:26px;font-weight:800;line-height:1}
+.sd .sr i{width:24px;height:24px}
+.sd .sr b{min-width:0;font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sd .sr b small{margin-left:6px;font-size:11.5px;font-weight:600;color:var(--b-mute)}
+.sd .sr span{font-family:var(--disp,'Barlow Condensed'),sans-serif;font-size:19px;font-weight:700}
+.sd .sr span+span{font-size:16px;color:var(--b-mute)}
+.sd .cut{position:relative;height:0;border-top:2px solid var(--b-ac2);margin:0}
+.sd .cut span{position:absolute;right:0;top:-1px;transform:translateY(-50%);padding:0 0 0 8px;background:var(--b-soft);font-size:11px;font-weight:800;line-height:16px;color:var(--b-ink)}
+.sd .pend{margin:6px 0 0;font-size:11.5px;color:var(--b-mute)}
 .lane{display:flex;flex-direction:column;gap:12px}
 .lh{display:flex;align-items:center;gap:10px;margin:0 2px}
 .lh u{flex:none;text-decoration:none;height:30px;line-height:30px;padding:0 11px;border-radius:999px;background:var(--b-ink);color:var(--b-card);font-family:var(--disp,'Barlow Condensed'),sans-serif;font-size:17px;font-weight:800}
 .lh b{font-size:16px;font-weight:800}
 .say{font-size:15px;font-weight:700;line-height:1.45;margin:0 2px;word-break:keep-all}
 .say small{display:block;font-size:12.5px;font-weight:500;color:var(--b-mute);margin-top:2px}
-.out{display:flex;flex-wrap:wrap;gap:6px;margin:0 2px}
-.out span{display:inline-flex;align-items:center;height:28px;padding:0 11px;border-radius:999px;font-size:12.5px;font-weight:800;background:var(--b-card);border:1px solid var(--b-line)}
-/* 'goes through': a dark chip with lime text (like the score chips), not a lime fill: easier on the eyes */
-.out span.go{background:#0B0B0F;border-color:#0B0B0F;color:var(--b-ac2)}
-.w.dark .out span.go{border-color:#3A3A44}
+/* what the lane decides, said in one plain line (no chips: the cut line in the table carries the 1·2위 mark) */
+.out{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin:0 2px;font-size:13px;font-weight:800}
+.out i{font-style:normal;color:var(--b-wire)}
 .out span.ko{color:var(--b-mute)}
 .st{font-size:11.5px;font-weight:800;color:var(--b-mute);margin:2px 2px -4px}
-/* seeds 1-2 (straight to the semi-finals): a white card, the rank on a dark chip in lime */
-.sd div.bye{background:var(--b-card);box-shadow:inset 0 0 0 1px var(--b-line)}
-.sd div.bye u{min-width:26px;padding:3px 7px 2px;border-radius:999px;background:#0B0B0F;color:var(--b-ac2);text-align:center}
-.w.dark .sd div.bye u{box-shadow:inset 0 0 0 1px #3A3A44}
 .cw{position:relative;margin-bottom:14px;border-radius:18px;overflow:hidden;background:#0B0B0F;color:#fff}
 .cw img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
 .cw.nop img{display:none}
@@ -192,12 +197,12 @@
       // the two ways into the playoffs, said in plain words: who plays, what winning gets, then the matches
       const lane = (rank, title, say, small, outs) => '<div class="lh"><u>' + rank + '</u><b>' + title + '</b></div>'
         + '<div class="say">' + say + '<small>' + small + '</small></div>'
-        + '<div class="out">' + outs.map((o) => '<span class="' + o[0] + '">' + o[1] + '</span>').join('') + '</div>';
+        + '<div class="out">' + outs.map((o) => '<span class="' + o[0] + '">' + o[1] + '</span>').join('<i>·</i>') + '</div>';
       let lcqHtml = '';
       if (lcq) {
         const up = lcq.matches.find((x) => /승자조 결승/.test(x.round)), semi = lcq.matches.find((x) => /패자조 준결승/.test(x.round)),
           fin = lcq.matches.find((x) => /패자조 결승/.test(x.round));
-        lcqHtml = '<div class="box pre lane">' + lane('5–8위', '라스트 찬스', '4팀 중 2팀만 플레이오프에 올라가요', '5·6위는 두 번, 7·8위는 한 번 지면 탈락 · 올라가면 8강', [['go', '2팀 → 8강'], ['ko', '2팀 탈락']])
+        lcqHtml = '<div class="box pre lane">' + lane('5–8위', '라스트 찬스', '4팀 중 2팀만 플레이오프에 올라가요', '5·6위는 두 번, 7·8위는 한 번 지면 탈락 · 올라가면 8강', [['', '2팀 8강 진출'], ['ko', '2팀 탈락']])
           + (up && semi && fin
             ? tree([{ title: '첫 경기', ms: [up, semi], opts: [{ round: true, short: true, title: '이기면 바로 진출', ph: ['5위', '6위'] }, { round: true, short: true, title: '지면 탈락', ph: ['7위', '8위'] }] },
                     { title: '마지막 한 자리', ms: [fin], opts: [{ round: true, short: true, title: '이기면 진출', ph: ['5·6위전 패자', '7·8위전 승자'] }] }])
@@ -206,8 +211,17 @@
       }
       let seedHtml = '';
       if (seed) {
-        const sd = !SP && S.seeding && S.seeding.length ? '<div class="sd">' + S.seeding.map((t, i) => '<div class="' + (i < 2 ? 'bye' : '') + '"><u>' + (i + 1) + '</u><i ' + logo(t.a) + '></i><b>' + esc(t.a) + '</b>' + esc(t.sw + '승 ' + t.sl + '패') + '</div>').join('') + '</div>' : '';
-        seedHtml = '<div class="box pre lane">' + lane('1–4위', '시드 결정전', '4팀 모두 플레이오프 진출 확정 · 자리만 정해요', '서로 한 번씩 더 붙고, 정규 리그 승패도 합쳐서 순위 계산', [['go', '1·2위 → 4강 직행'], ['', '3·4위 → 8강부터']])
+        // the four teams as rows, like the home standings: team colour bar, rank, logo, name, decider record, total;
+        // a line under 2위 marks 4강 직행. Before the deciders it shows the regular-season order (this stage only)
+        const DD = window.OWCS || {};
+        const pre = !(S.seeding && S.seeding.length) && S === all[0] && (DD.standings || []).length >= 4;
+        const sTeams = S.seeding && S.seeding.length ? S.seeding : pre ? DD.standings.slice(0, 4).map((t) => ({ a: t.a, w: t.w, l: t.l })) : [];
+        const sd = !SP && sTeams.length ? '<div class="sd"><div class="sh"><span>순위</span><span>팀</span><span>결정전</span><span>합산</span></div>'
+          + sTeams.map((t, i) => { const tm = team(t.a) || {};
+            return '<div class="sr"><em style="background:' + esc(tm.color || 'var(--b-wire)') + '"></em><u>' + (i + 1) + '</u><i ' + logo(t.a) + '></i><b>' + esc(t.a) + (tm.n && tm.n !== t.a ? '<small>' + esc(tm.n) + '</small>' : '') + '</b>'
+              + '<span>' + (t.sw != null ? esc(t.sw + '-' + t.sl) : '–') + '</span><span>' + esc(t.w + '-' + t.l) + '</span></div>' + (i === 1 ? '<div class="cut"><span>4강 직행</span></div>' : ''); }).join('')
+          + (pre ? '<div class="pend">결정전 전 · 지금 정규 리그 순위</div>' : '') + '</div>' : '';
+        seedHtml = '<div class="box pre lane">' + lane('1–4위', '시드 결정전', '4팀 모두 플레이오프 진출 확정 · 자리만 정해요', '서로 한 번씩 더 붙고, 정규 리그 승패도 합쳐서 순위 계산', [['', '1·2위 4강 직행'], ['', '3·4위 8강부터']])
           + sd + '<div class="st">경기</div><div class="rr">' + seed.matches.map((x) => chip(x, { short: true })).join('') + '</div></div>';
       }
       const poHtml = poCols.length ? '<div class="box main"><div class="h"><b>플레이오프 본선</b><span>' + esc(poCols.map((c) => c.title).join(' → ')) + '</span></div>' + tree(poCols)
