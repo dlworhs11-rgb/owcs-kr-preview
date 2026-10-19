@@ -1,0 +1,48 @@
+<!doctype html><html lang="ko"><head><meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1"><meta charset="utf-8"><title>OWCS 미리보기</title>
+<style>
+body{margin:0;background:#1b1b20;color:#eee;font:14px system-ui,sans-serif}
+header{position:sticky;top:0;z-index:2;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 14px;background:#0b0b0f;border-bottom:1px solid #2e2e37}
+button,select{height:32px;padding:0 12px;border-radius:8px;border:1px solid #2e2e37;background:#15151b;color:#eee;font:inherit;cursor:pointer}
+button.on{background:#C6FF33;color:#0b0b0f;border-color:#C6FF33;font-weight:700}
+.note{margin-left:auto;color:#8a8a93;font-size:12px}
+main{display:flex;gap:18px;align-items:flex-start;padding:16px;overflow-x:auto}
+.dev h2{margin:0 0 6px;font-size:13px;color:#b5b5bd;font-weight:600}
+.box{overflow:hidden;border:1px solid #2e2e37;border-radius:10px;background:#fff}
+iframe{border:0;transform-origin:0 0;display:block}
+</style></head><body>
+<header><span id="pages"></span>
+<select id="lang"><option value="">언어: 그대로</option><option value="ko">한국어</option><option value="ja">日本語</option><option value="en">English</option><option value="zh">中文</option></select>
+<button id="reload">새로고침</button><span class="note">미리보기 사이트 · 10-20 02:39 올림 · 진짜 사이트에 아직 안 올라간 수정 포함</span></header>
+<main id="devs"></main>
+<script>
+const PAGES = [["홈", "OWCS KR Home v6.dc.html"], ["결과", "OWCS KR Results.dc.html"], ["선수", "OWCS KR Player.dc.html"], ["방송", "OWCS KR 방송.html"], ["직관", "OWCS KR 직관.html"]], SIZES = [["PC", 1440, 900], ["태블릿", 768, 1024], ["모바일", 375, 812]];
+let page = localStorage.getItem('pv-page') || PAGES[0][1];
+const pagesEl = document.getElementById('pages'), devs = document.getElementById('devs'), lang = document.getElementById('lang');
+lang.value = localStorage.getItem('pv-lang') || '';
+function draw() {
+  pagesEl.innerHTML = '';
+  PAGES.forEach(([n, f]) => { const b = document.createElement('button'); b.textContent = n; if (f === page) b.className = 'on';
+    b.onclick = () => { page = f; localStorage.setItem('pv-page', f); draw(); }; pagesEl.appendChild(b); });
+  const avail = window.innerHeight - 110, v = Date.now();
+  // each screen fits the window height; then all three shrink together to fit the window width
+  const sc = SIZES.map(([n, w, h]) => Math.min(1, avail / h, n === 'PC' ? 0.62 : 1));
+  const total = SIZES.reduce((a, [, w], i) => a + w * sc[i], 0), k = Math.min(1, (window.innerWidth - 32 - 18 * (SIZES.length - 1)) / total);
+  devs.innerHTML = '';
+  SIZES.forEach(([n, w, h], i) => {
+    const s = sc[i] * k;
+    const d = document.createElement('div'); d.className = 'dev';
+    d.innerHTML = `<h2>${n} · ${w}px</h2><div class="box" style="width:${Math.round(w * s)}px;height:${Math.round(h * s)}px"><iframe style="width:${w}px;height:${h}px;transform:scale(${s})"></iframe></div>`;
+    d.querySelector('iframe').src = encodeURIComponent(page) + '?v=' + v + (lang.value ? '&lang=' + lang.value : '');
+    devs.appendChild(d);
+  });
+  // a phone sees the page itself full screen, not three tiny frames
+  if (window.innerWidth < 700) {
+    devs.innerHTML = '<div style="display:flex;flex-direction:column;gap:10px;width:100%">' + PAGES.map(([n, f]) =>
+      `<a href="${encodeURIComponent(f)}?v=${v}${lang.value ? '&lang=' + lang.value : ''}" style="display:block;padding:16px;border-radius:12px;background:#15151b;border:1px solid #2e2e37;color:#fff;text-decoration:none;font-size:17px;font-weight:700">${n} →</a>`).join('') + '</div>';
+  }
+}
+lang.onchange = () => { localStorage.setItem('pv-lang', lang.value); draw(); };
+document.getElementById('reload').onclick = draw;
+window.onresize = () => { clearTimeout(window.t); window.t = setTimeout(draw, 300); };
+draw();
+</script></body></html>
