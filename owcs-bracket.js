@@ -2,6 +2,8 @@
 // the current stage first with the earlier stages one tap away. Used on the home page (every width) and on the
 // results page (phones and tablets). Data: owcs-data.js -> OWCS.bracket (this stage) + OWCS.pastStages (newest first).
 // It draws itself in a shadow root, so the page's re-renders never touch it; spoiler="1" hides scores.
+// part="po" draws only the playoffs (champion, rounds), part="road" only the seeding deciders and LCQ, one under the
+// other (the schedule page's tabs); without it, everything.
 (function () {
   if (!window.customElements || customElements.get('owcs-bracket')) return;
   const KEY = 'owcs-bracket-stage';
@@ -59,6 +61,7 @@
 .extra{margin-top:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 .extra .t{font-size:11.5px;font-weight:800;color:var(--b-mute);margin:0 2px 4px}
 .grid{display:grid;gap:12px;margin-top:12px}
+.pick+.grid{margin-top:0}
 .rr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 6px}
 .sd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:10px}
 .sd div{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 2px;border-radius:10px;background:var(--b-soft);font-size:11px;color:var(--b-mute);min-width:0}
@@ -93,13 +96,13 @@
 @container (min-width:640px){.r{height:32px;grid-template-columns:20px minmax(0,1fr) auto;gap:7px;padding:0 10px}.r i{width:20px;height:20px}.r b{font-size:14.5px}.r s{font-size:20px}.mh{font-size:11.5px;padding:4px 10px}.tree{gap:0 26px}.link .m::after{right:-14px;width:13px}.into .m::before{left:-14px;width:13px}.merge .cm::after{right:-14px}}
 @container (min-width:900px){.cw img{position:static;height:auto;aspect-ratio:16/9;max-height:560px}.cw:not(.nop) .cb{position:absolute;left:0;right:0;bottom:0;min-height:0;padding:90px 30px 28px;background:linear-gradient(transparent,rgba(0,0,0,.82))}}
 @container (min-width:640px){.ttl{font-size:46px}.top{padding:20px 22px 20px 26px}}
-@container (min-width:900px){.grid{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}.box{padding:18px 18px 20px}.tree{grid-auto-columns:minmax(0,250px);gap:0 44px}.link .m::after{right:-23px;width:22px}.into .m::before{left:-23px;width:22px}.merge .cm::after{right:-23px}.extra{grid-template-columns:repeat(auto-fill,minmax(0,250px))}}
+@container (min-width:900px){.grid:not(.one){grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}.box{padding:18px 18px 20px}.tree{grid-auto-columns:minmax(0,250px);gap:0 44px}.link .m::after{right:-23px;width:22px}.into .m::before{left:-23px;width:22px}.merge .cm::after{right:-23px}.extra{grid-template-columns:repeat(auto-fill,minmax(0,250px))}}
 `;
 
   const team = (a) => ((window.OWCS || {}).teams || []).find((t) => t.a === a);
 
   class OwcsBracket extends HTMLElement {
-    static get observedAttributes() { return ['spoiler']; }
+    static get observedAttributes() { return ['spoiler', 'part']; }
     connectedCallback() {
       if (!this.shadowRoot) this.attachShadow({ mode: 'open' });
       this.render();
@@ -125,7 +128,7 @@
     sig() {
       const byId = Object.fromEntries(((window.OWCS || {}).matches || []).map((m) => [m.id, m]));
       const s = this.stages()[0];
-      return this.dark() + '|' + this.getAttribute('spoiler') + '|' + this.selKey() + '|' + (s ? s.columns.map((c) => c.matches.map((x) => { const m = byId[x.id]; return m ? m.a + m.sa + m.b + m.sb + m.live : ''; }).join()).join() : '');
+      return this.dark() + '|' + this.getAttribute('spoiler') + '|' + this.getAttribute('part') + '|' + this.selKey() + '|' + (s ? s.columns.map((c) => c.matches.map((x) => { const m = byId[x.id]; return m ? m.a + m.sa + m.b + m.sb + m.live : ''; }).join()).join() : '');
     }
     selKey() {
       const all = this.stages();
@@ -230,9 +233,12 @@
         + '<div class="ttl">' + esc(S.label) + '</div><div class="sub">플레이오프' + (dates ? ' · ' + esc(dates) : '') + '</div></div>' + '</div>';
       const note = isCur ? '대진은 정규 리그가 끝나면 채워져요' : '';
 
+      const part = this.getAttribute('part');
+      const road = seedHtml || lcqHtml ? '<div class="grid' + (part === 'road' ? ' one' : '') + '">' + seedHtml + lcqHtml + '</div>' : '';
       this.shadowRoot.innerHTML = '<style>' + CSS + '</style><div class="w' + (dark ? ' dark' : '') + '">' + pick
-        + card + (note ? '<div class="note">' + note + '</div>' : '')
-        + poHtml + (seedHtml || lcqHtml ? '<div class="pre-l">플레이오프 가는 길</div><div class="grid">' + seedHtml + lcqHtml + '</div>' : '') + '</div>';
+        + (part === 'road' ? road
+          : card + (note ? '<div class="note">' + note + '</div>' : '')
+            + poHtml + (part !== 'po' && road ? '<div class="pre-l">플레이오프 가는 길</div>' + road : '')) + '</div>';
       this.shadowRoot.querySelectorAll('.pick button').forEach((b) => b.addEventListener('click', () => {
         this.sel = b.getAttribute('data-k');
         try { sessionStorage.setItem(KEY, this.sel); } catch (e) {}
