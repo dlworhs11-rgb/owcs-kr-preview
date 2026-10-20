@@ -20,7 +20,8 @@
   if (/^Asia\/Seoul$/.test(TZ)) TZ = 'Asia/Seoul';
   var ZONE = TZ === 'Asia/Seoul' ? 'KST' : lang === 'ja' ? 'JST' : lang === 'zh' ? '北京时间' : (function () {
     var z = function (o) { try { var p = new Intl.DateTimeFormat('en-US', Object.assign({ timeZone: TZ }, o)).formatToParts(new Date()); for (var i = 0; i < p.length; i++) if (p[i].type === 'timeZoneName') return p[i].value; } catch (e) {} return ''; };
-    return z({ timeZoneName: 'shortGeneric' }) || z({ timeZoneName: 'short' }) || TZ;   // "PT", "ET", "GMT+1"
+    var g = z({ timeZoneName: 'shortGeneric' });   // "PT", "ET"; long names ("United Kingdom Time") -> "GMT+1"
+    return g && g.length <= 4 ? g : z({ timeZoneName: 'short' }) || TZ;
   })();
   var ZONE_LONG = lang === 'ja' ? '日本時間 (JST)' : lang === 'zh' ? '北京时间 (UTC+8)' : ZONE;
   var hmFmt = null, dayFmt = null;
@@ -57,6 +58,7 @@
     ['오늘로', '今日へ', 'Today', '回到今天'], ['이날 결과', 'この日の結果', 'Results of the day', '当日结果'], ['이번 스테이지', '今ステージ', 'This stage', '本阶段'], ['전체 팀', '全チーム', 'All teams', '全部战队'],
     ['지난 경기', '前回の試合', 'Last match day', '上一比赛日'], ['직관 안내 ·', '観戦案内 ·', 'Tickets ·', '现场观赛 ·'], ['팀 고르기 ▾', 'チームを選ぶ ▾', 'Pick a team ▾', '选择战队 ▾'],
     ['팀별 경우의 수', 'チーム別プレーオフ条件', 'Scenarios by team', '各队晋级形势'],
+    ['정규 리그 경기가 모두 끝났어요.', 'レギュラーシーズンの試合はすべて終了しました。', 'The regular season is over.', '常规赛已全部结束。'], ['시즌 결과 보기', 'シーズン結果を見る', 'See season results', '查看赛季结果'],
     // navigation / common
     ['일정', '日程', 'Schedule', '赛程'], ['결과', '結果', 'Results', '结果'], ['순위', '順位', 'Standings', '排名'], ['직관', '観戦', 'Tickets', '现场观赛'], ['선수', '選手', 'Players', '选手'], ['방송', '配信', 'Live', '直播'],
     ['홈', 'ホーム', 'Home', '首页'], ['팀', 'チーム', 'Team', '战队'], ['한국어', '한국어', '한국어', '한국어'],
@@ -208,6 +210,7 @@
     [/시간 미정 경기는 Liquipedia에 시간이 올라오면 바뀌어요\./g, P('時間未定の試合は、Liquipediaに時間が載ると更新されます。', 'TBD times update once Liquipedia posts them.', '时间待定的比赛会在 Liquipedia 公布时间后更新。')],
     [/직관 정보는$/, P('観戦情報は', 'Ticket info is copied from the', '观赛信息转载自')],
     [/^ ?공식 예매 안내를 옮긴 것이라, 바뀐 내용은 티켓링크 공지를 확인해 주세요\./, P('の公式販売案内を転載したものです。変更はTicketlinkのお知らせをご確認ください。', ' official sales notice; check Ticketlink for any changes.', ' 官方售票公告，如有变动请以 Ticketlink 公告为准。')],
+    [/ \(서울 시간\)/g, P(' (ソウル時間)', ' (Seoul time)', ' (首尔时间)')],
     [/경기 (\d+)개/g, P('$1試合', '$1 matches', '$1场比赛')],
     [/LCQ 경쟁/g, P('LCQ争い', 'LCQ race', 'LCQ 争夺')], [/플레이오프 경쟁/g, P('プレーオフ争い', 'playoff race', '季后赛争夺')],
     [/ \(지난 시즌\)/g, P(' (前シーズン)', ' (last season)', ' (上赛季)')],
@@ -310,10 +313,10 @@
   function doNode(n) {
     var cur = n.data;
     if (lang === 'ko') { if (ORIG.has(n) && ORIG.get(n).t === cur) n.data = ORIG.get(n).o; return; }
-    var kst = ZONE !== 'KST' && /KST/.test(cur);
+    var kst = ZONE !== 'KST' && /KST/.test(cur);
     if (!HANGUL.test(cur) && !kst) return;
     var t = HANGUL.test(cur) ? tr(cur) : cur;
-    if (kst) t = t.replace(/KST/g, ZONE);
+    if (kst) t = t.replace(/KST/g, ZONE);
     if (t !== cur) { ORIG.set(n, { o: cur, t: t }); n.data = t; }
   }
   var ATTRS = ['placeholder', 'title', 'alt', 'aria-label'];

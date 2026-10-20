@@ -15,18 +15,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1020201056"></script>
-<script src="./owcs-phase.js?v=1020201056"></script>
-<script src="./owcs-i18n.js?v=1020201056"></script>
-<script src="./owcs-stats.js?v=1020201056"></script>
-<script src="./owcs-nav.js?v=1020201056"></script>
-<script src="./owcs-dark.js?v=1020201056"></script>
-<script src="./owcs-test.js?v=1020201056"></script>
-<script src="./owcs-maps.js?v=1020201056"></script>
-<script src="./owcs-bracket.js?v=1020201056"></script>
-<script src="./support.js?v=1020201056"></script>
-<script src="./owcs-theme.js?v=1020201056"></script>
-<script src="./owcs-theme-wise.js?v=1020201056"></script>
+<script src="./owcs-data.js?v=1020202557"></script>
+<script src="./owcs-phase.js?v=1020202557"></script>
+<script src="./owcs-i18n.js?v=1020202557"></script>
+<script src="./owcs-stats.js?v=1020202557"></script>
+<script src="./owcs-nav.js?v=1020202557"></script>
+<script src="./owcs-dark.js?v=1020202557"></script>
+<script src="./owcs-test.js?v=1020202557"></script>
+<script src="./owcs-maps.js?v=1020202557"></script>
+<script src="./owcs-bracket.js?v=1020202557"></script>
+<script src="./support.js?v=1020202557"></script>
+<script src="./owcs-theme.js?v=1020202557"></script>
+<script src="./owcs-theme-wise.js?v=1020202557"></script>
 </head>
 <body>
 <x-dc>
@@ -486,7 +486,7 @@ class Component extends DCLogic {
       stToggleM: () => this.setState((s) => ({ stOpen: s.stOpen === 'm' ? null : 'm', tabM: 'results' })),
       stOpts: STAGE_NOS.slice().reverse().map((no) => { const on = this.state.st === no; return { label: (D.year || '') + ' 스테이지 ' + no, bg: on ? '#7D39EB' : 'transparent', fg: on ? '#fff' : '#0B0B0F', go: () => this.setState({ st: no, stOpen: null }) }; }),
       stTabs: STAGE_NOS.map((no) => { const on = this.state.st === no; return { label: '스테이지 ' + no, bg: on ? '#7D39EB' : 'transparent', fg: on ? '#fff' : '#0B0B0F', bd: on ? '#7D39EB' : '#B9B9B3', go: () => this.setState({ st: no }) }; }),
-      pastNote: CUR ? '' : '지난 스테이지는 경기 점수만 있어요 · 맵 상세는 스테이지 ' + (D.stageNo || '') + '부터',
+      pastNote: CUR ? '' : '지난 스테이지 맵 상세는 Liquipedia 기록이에요 · 첫 조합은 없어요',
       tabsD: this.tabs('tabD'), tabsM: this.tabs('tabM'),
       d: this.flags('tabD'), m: this.flags('tabM'),
       weeks,
