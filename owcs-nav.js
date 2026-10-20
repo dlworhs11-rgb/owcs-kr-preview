@@ -1,5 +1,5 @@
 // The top of every page laid out like the home page (the reference, measured from it): one 76px header row with
-// the logo (30px mark + 28px wordmark) on the content column's left edge, the menu (일정 · 결과 · 순위 · 직관 · 선수 · 방송)
+// the logo (30px mark + 28px wordmark) on the content column's left edge, the menu (홈 · 일정 · 결과 · 순위 · 직관 · 선수 · 방송)
 // in the middle, and on the right the language picker (🌐 KOR ⌄: KOR · ENG · JPN · CHN with flags) and a ⋮ menu that holds
 // 스포일러 방지 · 다크 모드. Phones / tablets: the picker sits next to the ☰ button, whose menu holds the two switches.
 // The page's own switches (the home page's tool bar, the results page's spoiler switch, owcs-dark.js's floating button)
@@ -176,12 +176,12 @@
     return /^(ko|ja|en|zh)$/.test(l || '') ? l : /^ja/.test(n) ? 'ja' : /^ko/.test(n) ? 'ko' : /^zh/.test(n) ? 'zh' : 'en';
   })();
   var T = {   // the home page's own labels (Home v6 I18N)
-    ko: { nav: ['일정', '결과', '순위', '직관', '선수', '방송'], spoiler: '스포일러 방지', dark: '다크 모드', lang: '언어', more: '설정' },
-    ja: { nav: ['日程', '結果', '順位', '観戦', '選手', '配信'], spoiler: 'ネタバレ防止', dark: 'ダークモード', lang: '言語', more: '設定' },
-    en: { nav: ['Schedule', 'Results', 'Standings', 'Tickets', 'Players', 'Live'], spoiler: 'No spoilers', dark: 'Dark mode', lang: 'Language', more: 'Settings' },
-    zh: { nav: ['赛程', '结果', '排名', '现场观赛', '选手', '直播'], spoiler: '防剧透', dark: '深色模式', lang: '语言', more: '设置' }
+    ko: { nav: ['홈', '일정', '결과', '순위', '직관', '선수', '방송'], spoiler: '스포일러 방지', dark: '다크 모드', lang: '언어', more: '설정' },
+    ja: { nav: ['ホーム', '日程', '結果', '順位', '観戦', '選手', '配信'], spoiler: 'ネタバレ防止', dark: 'ダークモード', lang: '言語', more: '設定' },
+    en: { nav: ['Home', 'Schedule', 'Results', 'Standings', 'Tickets', 'Players', 'Live'], spoiler: 'No spoilers', dark: 'Dark mode', lang: 'Language', more: 'Settings' },
+    zh: { nav: ['首页', '赛程', '结果', '排名', '现场观赛', '选手', '直播'], spoiler: '防剧透', dark: '深色模式', lang: '语言', more: '设置' }
   }[LANG];
-  var HREFS = ['OWCS KR 일정.html', 'OWCS KR Results.dc.html', 'OWCS KR Home v6.dc.html?view=standings',
+  var HREFS = ['OWCS KR Home v6.dc.html', 'OWCS KR 일정.html', 'OWCS KR Results.dc.html', 'OWCS KR Home v6.dc.html?view=standings',
                'OWCS KR 직관.html', 'OWCS KR Home v6.dc.html?view=teams', 'OWCS KR 방송.html'];
   // which menu item is this page: the file name, and for the home page its ?view= (a player's page counts as 선수)
   function navKey(href) {
