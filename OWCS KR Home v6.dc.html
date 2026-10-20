@@ -15,17 +15,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1020203118"></script>
-<script src="./owcs-phase.js?v=1020203118"></script>
-<script src="./owcs-i18n.js?v=1020203118"></script>
-<script src="./owcs-stats.js?v=1020203118"></script>
-<script src="./owcs-nav.js?v=1020203118"></script>
-<script src="./owcs-test.js?v=1020203118"></script>
-<script src="./owcs-maps.js?v=1020203118"></script>
-<script src="./owcs-bracket.js?v=1020203118"></script>
-<script src="./support.js?v=1020203118"></script>
-<script src="./owcs-theme.js?v=1020203118"></script>
-<script src="./owcs-theme-wise.js?v=1020203118"></script>
+<script src="./owcs-data.js?v=1020203158"></script>
+<script src="./owcs-phase.js?v=1020203158"></script>
+<script src="./owcs-i18n.js?v=1020203158"></script>
+<script src="./owcs-stats.js?v=1020203158"></script>
+<script src="./owcs-nav.js?v=1020203158"></script>
+<script src="./owcs-test.js?v=1020203158"></script>
+<script src="./owcs-maps.js?v=1020203158"></script>
+<script src="./owcs-bracket.js?v=1020203158"></script>
+<script src="./support.js?v=1020203158"></script>
+<script src="./owcs-theme.js?v=1020203158"></script>
+<script src="./owcs-theme-wise.js?v=1020203158"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1078,7 +1078,7 @@ const LOADED = Date.now();
 const nowMs = () => params.get('date') ? new Date(params.get('date') + 'T' + (params.get('time') || '12:00') + ':00+09:00').getTime() : window.__owcsNow ? window.__owcsNow + (Date.now() - LOADED) : Date.now();
 // Liquipedia has no start time yet (tbd): the time shown is a guess, so say so
 // shown time: KST in Korean, the reader's zone in ja / en / zh (owcs-i18n.js); m.time itself stays KST for the maths
-const hmOf = (m) => window.OWCSi18n ? OWCSi18n.hm(m.date, m.time) : m.time;
+const hmOf = (m) => window.OWCSi18n && OWCSi18n.hm ? OWCSi18n.hm(m.date, m.time) : m.time;
 const tmOf = (m) => m.tbd ? '시간 미정' : hmOf(m);
 // zone tag next to a bare time, outside Korean only (owcs-i18n.js turns 'KST' into JST / 北京时间 / PT ...)
 const zOf = () => window.OWCSi18n && OWCSi18n.zone !== 'KST' ? ' KST' : '';

@@ -15,18 +15,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1020203118"></script>
-<script src="./owcs-phase.js?v=1020203118"></script>
-<script src="./owcs-i18n.js?v=1020203118"></script>
-<script src="./owcs-stats.js?v=1020203118"></script>
-<script src="./owcs-nav.js?v=1020203118"></script>
-<script src="./owcs-dark.js?v=1020203118"></script>
-<script src="./owcs-test.js?v=1020203118"></script>
-<script src="./owcs-maps.js?v=1020203118"></script>
-<script src="./owcs-bracket.js?v=1020203118"></script>
-<script src="./support.js?v=1020203118"></script>
-<script src="./owcs-theme.js?v=1020203118"></script>
-<script src="./owcs-theme-wise.js?v=1020203118"></script>
+<script src="./owcs-data.js?v=1020203158"></script>
+<script src="./owcs-phase.js?v=1020203158"></script>
+<script src="./owcs-i18n.js?v=1020203158"></script>
+<script src="./owcs-stats.js?v=1020203158"></script>
+<script src="./owcs-nav.js?v=1020203158"></script>
+<script src="./owcs-dark.js?v=1020203158"></script>
+<script src="./owcs-test.js?v=1020203158"></script>
+<script src="./owcs-maps.js?v=1020203158"></script>
+<script src="./owcs-bracket.js?v=1020203158"></script>
+<script src="./support.js?v=1020203158"></script>
+<script src="./owcs-theme.js?v=1020203158"></script>
+<script src="./owcs-theme-wise.js?v=1020203158"></script>
 </head>
 <body>
 <x-dc>
@@ -520,7 +520,7 @@ class Component extends DCLogic {
         const ka = caseOf(m.a), kb = caseOf(m.b);
         const hot = [ka, kb].some(racing);
         const axe = axeOf(LEFT.indexOf(m));
-        return { when: mdw(m.date) + ' ' + (window.OWCSi18n ? OWCSi18n.hm(m.date, m.time) : m.time), a: m.a, b: m.b, ca: logo(m.a), cb: logo(m.b), oa: 1, ob: 1,
+        return { when: mdw(m.date) + ' ' + (window.OWCSi18n && OWCSi18n.hm ? OWCSi18n.hm(m.date, m.time) : m.time), a: m.a, b: m.b, ca: logo(m.a), cb: logo(m.b), oa: 1, ob: 1,
           isAxe: !m.live && !!axe, noAxe: m.live || !axe, axeSub: axe === D.lcq ? '지면 탈락' : '지면 직행 실패',
           stake: m.live ? 'LIVE' : hot ? [m.a, m.b].filter((a, i) => racing([ka, kb][i])).join('·') + ' ' + [ka, kb].find(racing).tag : '순위 싸움' };
       }),
