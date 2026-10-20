@@ -58,8 +58,8 @@
   ].join('\n');
   var hst = document.createElement('style');
   // wordmark: italic caps, OW in lime (darker lime on the light header so it stays readable)
-  var owt = '.owt{font-style:italic;letter-spacing:.02em;padding-right:.06em}.owt b{font-weight:inherit;color:#6E8F14}' +
-    'footer .owt b,html[data-owcs-dark] .owt b{color:#C6FF33}';
+  var owt = '.owt{font-style:italic;letter-spacing:.02em;padding-right:.06em}.owt b{font-weight:inherit;color:var(--owt,#6E8F14)}' +
+    'html[data-owcs-dark] .owt b{color:#C6FF33}';
   hst.textContent = centre + '\n' + hw + '\n' + owt;
   (document.head || document.documentElement).appendChild(hst);
   var css = HOME ? '' : [
