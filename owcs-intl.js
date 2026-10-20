@@ -42,7 +42,7 @@ h4 small{font-weight:700;color:var(--i-mute);margin-left:6px}
 .days button.on{background:var(--i-ink);color:var(--i-card);border-color:var(--i-ink)}
 .days button.today::after{content:' · 오늘';color:var(--i-ac)}
 .days button.on.today::after{color:var(--i-ac2)}
-.ms{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.ms{display:flex;flex-direction:column;gap:8px;margin-top:10px;max-width:920px}
 .m{border-radius:16px;background:var(--i-card);border:1px solid var(--i-line);overflow:hidden}
 .m.kr{border-left:5px solid var(--i-ac)}
 .m.live{border-color:#D92D20;border-width:2px}
@@ -61,13 +61,16 @@ h4 small{font-weight:700;color:var(--i-mute);margin-left:6px}
 .sc small{display:block;font-family:inherit;font-size:11px;font-weight:700;color:var(--i-mute)}
 .det{border-top:1px solid var(--i-line);padding:6px 14px 12px;display:none}
 .m.open .det{display:block}
-.mp{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--i-line);font-size:13.5px}
-.mp:last-child{border-bottom:0}
-.mp .no{font-weight:800;color:var(--i-mute)}
+.mp{display:grid;grid-template-columns:28px minmax(0,1fr) auto auto;gap:4px 10px;align-items:center;margin-top:8px;padding:10px 12px;border-radius:12px;color:#fff;font-size:13.5px}
+.mp .no{font-family:var(--disp,'Barlow Condensed'),sans-serif;font-weight:800;font-size:16px;opacity:.7}
 .mp .nmp b{font-weight:800}
-.mp .nmp small{color:var(--i-mute);margin-left:6px}
-.mp .bans{display:block;font-size:12px;color:var(--i-mute);margin-top:2px}
-.mp .ms2{font-weight:800;white-space:nowrap}
+.mp .nmp small{opacity:.7;margin-left:6px}
+.mp .wn{display:flex;align-items:center;gap:6px;font-weight:800}
+.mp .wn i{width:20px;height:20px}
+.mp .ms2{font-family:var(--disp,'Barlow Condensed'),sans-serif;font-weight:800;font-size:18px;white-space:nowrap;color:var(--i-ac2)}
+.mp .bans{grid-column:2 / -1;display:flex;flex-wrap:wrap;gap:6px}
+.ban{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 9px 0 3px;border-radius:999px;background:rgba(0,0,0,.45);font-size:12px;font-weight:700}
+.ban i{width:20px;height:20px;border-radius:50%}
 .empty{color:var(--i-mute);font-size:14px;padding:14px 2px}
 .sec{margin-top:6px}
 .secn{font-size:13px;font-weight:800;color:var(--i-mute);margin:16px 2px 8px}
@@ -202,10 +205,15 @@ h4 small{font-weight:700;color:var(--i-mute);margin-left:6px}
       const num = (s) => '<span class="' + (shown && done && s === top ? 'win' : shown && done ? 'lo' : '') + '">' + s + '</span>';
       const sc = shown ? num(m.sa) + ' : ' + num(m.sb) : 'vs';
       const kr = this.kr(m.a) || this.kr(m.b), open = this.open.has(m.id);
+      // map rows like the home page / results page: map art, winner, score, then each team's ban with the hero portrait
+      const MP = window.OWCSMaps || {}, pts = (v) => (v == null ? '' : Number.isInteger(+v) ? String(v) : (+v).toFixed(1) + 'm');
       const det = m.maps.length ? m.maps.map((x) => {
-        const bans = (x.bans || []).map((b) => (b.t === 'a' ? m.a : m.b) + ' ' + b.h).join(' · ');
-        const ms = SP || x.sa == null ? '' : x.sa + ' : ' + x.sb;
-        return '<div class="mp"><span class="no">' + x.no + '</span><span class="nmp"><b>' + esc(x.map) + '</b><small>' + esc(x.mode) + '</small>' + (bans ? '<span class="bans">밴 ' + esc(bans) + '</span>' : '') + '</span><span class="ms2">' + esc(ms) + '</span></div>';
+        const w = x.winner ? m[x.winner] : null;
+        const sc2 = SP || x.sa == null || !w ? '' : (x.winner === 'b' ? pts(x.sb) + ' : ' + pts(x.sa) : pts(x.sa) + ' : ' + pts(x.sb));
+        const bans = (x.bans || []).map((b) => '<span class="ban"><i style="background:' + (MP.heroBg ? MP.heroBg(b.h) : '#24242B') + '"></i>' + esc(b.t === 'a' ? m.a : m.b) + ' · ' + esc(MP.heroName ? MP.heroName(b.h).split(' · ')[0] : b.h) + '</span>').join('');
+        return '<div class="mp" style="background:' + (MP.mapBg ? MP.mapBg(x.map, true) : '#15151B') + '"><span class="no">' + String(x.no).padStart(2, '0') + '</span><span class="nmp"><b>' + esc(x.map) + '</b><small>' + esc(x.mode) + '</small></span>'
+          + '<span class="wn">' + (SP || !w ? '' : '<i class="lg" ' + this.logo(w, true) + '></i>' + esc(w)) + '</span><span class="ms2">' + esc(sc2) + '</span>'
+          + (bans ? '<span class="bans">' + bans + '</span>' : '') + '</div>';
       }).join('') : '<div class="empty">세트 정보가 아직 없어요.</div>';
       return '<div class="m' + (kr ? ' kr' : '') + (m.live ? ' live' : '') + (open ? ' open' : '') + '"><button class="mrow" data-open="' + m.id + '">'
         + '<span class="mt">' + (m.live ? '<em>LIVE</em>' : '<b>' + esc(m.time) + '</b>') + esc(m.round) + '</span>'
