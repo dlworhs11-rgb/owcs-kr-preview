@@ -13,8 +13,8 @@
 
   const CSS = `
 :host{display:block;container-type:inline-size;font-family:inherit}
-.w{--i-ink:#0B0B0F;--i-mute:#6B6B72;--i-card:#FFFFFF;--i-line:#E3E3DE;--i-soft:#F3F3EF;--i-ac:var(--ac,#7D39EB);--i-ac2:var(--ac2,#C6FF33);color:var(--i-ink)}
-.w.dark{--i-ink:#F2F2F5;--i-mute:#9A9AA3;--i-card:#1C1C22;--i-line:#2E2E36;--i-soft:#16161B}
+.w{--i-ink:#0B0B0F;--i-mute:#6B6B72;--i-card:#FFFFFF;--i-line:#E3E3DE;--i-soft:#F3F3EF;--i-ac:var(--ac,#7D39EB);--i-ac2:var(--ac2,#C6FF33);--i-wire:#BDBDB6;color:var(--i-ink)}
+.w.dark{--i-ink:#F2F2F5;--i-mute:#9A9AA3;--i-card:#1C1C22;--i-line:#2E2E36;--i-soft:#16161B;--i-wire:#4A4A55}
 .hero{position:relative;overflow:hidden;border-radius:22px;background:#0B0B0F;color:#fff;padding:22px 20px 20px}
 .hero::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--i-ac2)}
 .kick{display:inline-block;height:24px;line-height:24px;padding:0 10px;border-radius:999px;background:var(--i-ac2);color:#0B0B0F;font-size:12px;font-weight:800}
@@ -56,7 +56,7 @@ h4 small{font-weight:700;color:var(--i-mute);margin-left:6px}
 .side span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .side.lose{opacity:.45}
 .sc{font-family:var(--disp,'Barlow Condensed'),sans-serif;font-weight:800;font-size:26px;white-space:nowrap;text-align:center;min-width:64px}
-.sc .win{color:var(--i-ink);background:var(--i-ac2);border-radius:6px;padding:0 5px;color:#0B0B0F}
+.sc .win{color:var(--i-ink)}
 .sc .lo{color:var(--i-mute)}
 .sc small{display:block;font-family:inherit;font-size:11px;font-weight:700;color:var(--i-mute)}
 .det{border-top:1px solid var(--i-line);padding:6px 14px 12px;display:none}
@@ -72,26 +72,36 @@ h4 small{font-weight:700;color:var(--i-mute);margin-left:6px}
 .ban{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 9px 0 3px;border-radius:999px;background:rgba(0,0,0,.45);font-size:12px;font-weight:700}
 .ban i{width:20px;height:20px;border-radius:50%}
 .empty{color:var(--i-mute);font-size:14px;padding:14px 2px}
-.sec{margin-top:6px}
-.secn{font-size:13px;font-weight:800;color:var(--i-mute);margin:16px 2px 8px}
-.tree{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(200px,1fr);gap:0 14px;overflow-x:auto;padding-bottom:6px}
+.pick{display:flex;gap:6px;overflow-x:auto;padding:2px 0 4px;margin-bottom:12px;scrollbar-width:none}
+.pick::-webkit-scrollbar{display:none}
+.pick button{flex:none;height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--i-line);background:var(--i-card);color:var(--i-ink);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.pick button.on{background:var(--i-ink);color:var(--i-card);border-color:var(--i-ink)}
+.box{background:var(--i-card);border:1px solid var(--i-line);border-radius:18px;padding:14px 12px 16px;margin-bottom:12px}
+.bxh{font-size:15px;font-weight:800;margin:0 2px 10px}
+.tree{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:0 16px}
 .col{display:flex;flex-direction:column;min-width:0}
-.ct{font-size:12px;font-weight:800;color:var(--i-mute);text-align:center;margin-bottom:6px}
-.cm{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:8px}
-.bx{border-radius:12px;background:var(--i-card);border:1px solid var(--i-line);overflow:hidden}
-.bx.kr{border-left:4px solid var(--i-ac)}
-.bx.live{border-color:#D92D20}
-.bh{display:flex;justify-content:space-between;padding:3px 9px;font-size:11px;color:var(--i-mute);border-bottom:1px solid var(--i-line)}
-.bh em{font-style:normal;font-weight:800;color:#D92D20}
-.br{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:7px;align-items:center;height:30px;padding:0 9px;font-size:13.5px;font-weight:800}
-.br i{width:20px;height:20px}
-.br span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.br.lose span,.br.lose s{color:var(--i-mute);font-weight:500}
-.br.lose i{opacity:.45}
-.br.tbdr{color:var(--i-mute);font-weight:600}
-.br s{text-decoration:none;font-family:var(--disp,'Barlow Condensed'),sans-serif;font-size:18px}
+.ct{font-size:11.5px;font-weight:800;color:var(--i-mute);text-align:center;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:10px;position:relative}
+.bm{position:relative;background:var(--i-card);border:1px solid var(--i-line);border-radius:10px;min-width:0}
+.bm.kr{box-shadow:inset 3px 0 0 var(--i-ac)}
+.bm.live{border:2px solid #D92D20}
+.mh{display:flex;justify-content:space-between;gap:4px;padding:3px 7px;font-size:11px;color:var(--i-mute);border-bottom:1px solid var(--i-line);white-space:nowrap;overflow:hidden}
+.mh em{font-style:normal;font-weight:800;color:#D92D20}
+.r{display:grid;grid-template-columns:16px minmax(0,1fr) auto;align-items:center;gap:5px;height:27px;padding:0 7px}
+.r+.r{border-top:1px solid var(--i-line)}
+.r i{display:block;width:16px;height:16px;border-radius:3px;background:center/contain no-repeat}
+.r b{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r s{text-decoration:none;font-family:var(--disp,'Barlow Condensed'),sans-serif;font-size:17px;font-weight:800;min-width:10px;text-align:right}
+.r.lose b,.r.lose s{color:var(--i-mute);font-weight:500}
+.r.lose i{opacity:.45}
+.r.tbd b{color:var(--i-mute);font-weight:500}
+.link .bm::after{content:'';position:absolute;top:50%;right:-9px;width:8px;border-top:1.5px solid var(--i-wire)}
+.into .bm::before{content:'';position:absolute;top:50%;left:-9px;width:8px;border-top:1.5px solid var(--i-wire)}
+.merge .cm::after{content:'';position:absolute;right:-9px;top:25%;bottom:25%;border-right:1.5px solid var(--i-wire)}
+.extra{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 @container (min-width:640px){.hero{padding:28px 30px 26px}.nm{font-size:60px}.meta{font-size:17px}.cd b{font-size:38px}.mrow{grid-template-columns:64px minmax(0,1fr) auto minmax(0,1fr);padding:14px 18px}.side{font-size:17px}.side i{width:34px;height:34px}.sc{font-size:30px}}
-@container (min-width:900px){.nm{font-size:72px}.tree{grid-auto-columns:minmax(220px,260px)}}
+@container (min-width:640px){.r{height:32px;grid-template-columns:20px minmax(0,1fr) auto;gap:7px;padding:0 10px}.r i{width:20px;height:20px}.r b{font-size:14.5px}.r s{font-size:20px}.mh{font-size:11.5px;padding:4px 10px}.tree{gap:0 26px}.link .bm::after{right:-14px;width:13px}.into .bm::before{left:-14px;width:13px}.merge .cm::after{right:-14px}}
+@container (min-width:900px){.nm{font-size:72px}.box{padding:18px 18px 20px}.tree{grid-auto-columns:minmax(0,250px);gap:0 44px}.link .bm::after{right:-23px;width:22px}.into .bm::before{left:-23px;width:22px}.merge .cm::after{right:-23px}}
 `;
 
   class OwcsIntl extends HTMLElement {
@@ -125,7 +135,7 @@ h4 small{font-weight:700;color:var(--i-mute);margin-left:6px}
     }
     sig() {
       const e = this.ev();
-      return this.dark() + '|' + this.spoil() + '|' + this.day + '|' + [...this.open].join() + '|' + (e ? e.matches.map((m) => m.a + m.sa + m.b + m.sb + m.live + m.maps.length).join() + e.teams.length : '');
+      return this.dark() + '|' + this.spoil() + '|' + this.day + '|' + this.sec + '|' + [...this.open].join() + '|' + (e ? e.matches.map((m) => m.a + m.sa + m.b + m.sb + m.live + m.maps.length).join() + e.teams.length : '');
     }
     team(a) { const e = this.ev(); return (e && e.teams.find((t) => t.a === a)) || null; }
     logo(a, dark) {
@@ -181,21 +191,21 @@ h4 small{font-weight:700;color:var(--i-mute);margin-left:6px}
         dayH = '<h4>경기</h4>' + tabs + '<div class="ms">' + (list.length ? list.map((m) => this.matchCard(m, SP, DK)).join('') : '<div class="empty">이날은 경기가 없어요.</div>') + '</div>';
       }
 
-      // bracket: one block per section (Group A, Group B, 플레이오프), a column per round in page order
+      // bracket like the home page's (owcs-bracket.js): one section at a time (A조 · B조 · 플레이오프), each lane a tree
       const secs = [];
-      ms.slice().sort((x, y) => (x.part === y.part ? 0 : x.part === 'group' ? -1 : 1)).forEach((m) => {
-        let s = secs.find((x) => x.n === m.section); if (!s) secs.push(s = { n: m.section, cols: [] });
-        let c = s.cols.find((x) => x.r === m.round); if (!c) s.cols.push(c = { r: m.round, ms: [] });
-        c.ms.push(m);
-      });
-      // groups in name order (A조, B조), playoffs last; inside a round the page order (bracket position), not the time
-      const idx = (m) => +String(m.id).replace(/^.*-[gp]/, '');
+      ms.forEach((m) => { let x = secs.find((y) => y.n === m.section); if (!x) secs.push(x = { n: m.section, ms: [] }); x.ms.push(m); });
       secs.sort((x, y) => (x.n === '플레이오프') - (y.n === '플레이오프') || x.n.localeCompare(y.n));
-      secs.forEach((s) => s.cols.forEach((c) => c.ms.sort((x, y) => idx(x) - idx(y))));
-      const bracket = secs.length ? '<h4>대진표</h4>' + secs.map((s) => '<div class="sec"><div class="secn">' + esc(s.n === 'Group A' ? 'A조' : s.n === 'Group B' ? 'B조' : s.n) + '</div><div class="tree">'
-        + s.cols.map((c) => '<div class="col"><div class="ct">' + esc(c.r) + '</div><div class="cm">' + c.ms.map((m) => this.box(m, SP, DK)).join('') + '</div></div>').join('') + '</div></div>').join('') : '';
+      const label = (n) => ({ 'Group A': 'A조', 'Group B': 'B조', 'Group C': 'C조', 'Group D': 'D조' })[n] || n || '대진표';
+      if (this.sec == null || !secs.some((x) => x.n === this.sec)) {
+        const po = secs.find((x) => x.n === '플레이오프'), poOn = po && po.ms.some((m) => now >= new Date(m.date).getTime() - 86400e3);
+        const krSec = secs.find((x) => x.ms.some((m) => m.day === this.day && (this.kr(m.a) || this.kr(m.b))));
+        this.sec = (poOn ? po : krSec || secs[0] || {}).n;
+      }
+      const cur = secs.find((x) => x.n === this.sec);
+      const bracket = cur ? '<h4>대진표</h4>' + (secs.length > 1 ? '<div class="pick">' + secs.map((x) => '<button data-sec="' + esc(x.n) + '" class="' + (x.n === this.sec ? 'on' : '') + '">' + esc(label(x.n)) + '</button>').join('') + '</div>' : '') + this.lanes(cur.ms, SP, DK) : '';
 
       this.shadowRoot.innerHTML = '<style>' + CSS + '</style><div class="w' + (DK ? ' dark' : '') + '">' + hero + teamsH + dayH + bracket + '</div>';
+      this.shadowRoot.querySelectorAll('[data-sec]').forEach((b) => b.addEventListener('click', () => { this.sec = b.dataset.sec; this.render(); }));
       this.shadowRoot.querySelectorAll('[data-day]').forEach((b) => b.addEventListener('click', () => { this.day = b.dataset.day; this.render(); }));
       this.shadowRoot.querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => {
         const k = b.dataset.open; this.open.has(k) ? this.open.delete(k) : this.open.add(k); this.render();
@@ -224,12 +234,35 @@ h4 small{font-weight:700;color:var(--i-mute);margin-left:6px}
         + side(m.a, m.sa, 'a') + '<span class="sc">' + sc + '<small>BO' + m.bo + '</small></span>' + side(m.b, m.sb, 'b') + '</button><div class="det">' + det + '</div></div>';
     }
 
-    box(m, SP, DK) {
+    // a section split into lanes: 승자조 (GSL 개막전 · 승자전), 패자조 (패자전 · 최종전); 결승 · 3위 결정전 as cards under them.
+    // Single elimination (8강 → 4강 → 결승) is one tree.
+    lanes(list, SP, DK) {
+      const idx = (m) => +String(m.id).replace(/^.*-[gp]/, '');
+      const cols = [];
+      list.slice().sort((x, y) => idx(x) - idx(y)).forEach((m) => { let c = cols.find((x) => x.r === m.round); if (!c) cols.push(c = { r: m.round, ms: [] }); c.ms.push(m); });
+      const lane = (re) => cols.filter((c) => re.test(c.r));
+      const low = lane(/^(패자조|패자전|최종전)/), fin = lane(/^(결승|3위)/);
+      const up = cols.filter((c) => !low.includes(c) && !fin.includes(c));
+      const tree = (cs) => '<div class="tree">' + cs.map((c, i) => {
+        const nx = cs[i + 1], cls = ['col', nx ? 'link' : '', i ? 'into' : '', nx && nx.ms.length < c.ms.length ? 'merge' : ''].join(' ');
+        return '<div class="' + cls + '"><div class="ct">' + esc(c.r) + '</div><div class="cm">' + c.ms.map((m) => this.box(m, SP, DK, cs.length > 2)).join('') + '</div></div>';
+      }).join('') + '</div>';
+      const block = (t, cs) => cs.length ? '<div class="box">' + (t ? '<div class="bxh">' + t + '</div>' : '') + tree(cs) + '</div>' : '';
+      const cards = (cs) => cs.length ? '<div class="extra">' + cs.map((c) => c.ms.map((m) => '<div><div class="ct" style="text-align:left">' + esc(c.r) + '</div>' + this.box(m, SP, DK, false) + '</div>').join('')).join('') + '</div>' : '';
+      if (!low.length) {
+        const gf = fin.filter((c) => /^결승/.test(c.r));
+        return block('', up.concat(gf)) + cards(fin.filter((c) => !gf.includes(c)));
+      }
+      return block('승자조', up) + block('패자조', low) + cards(fin);
+    }
+
+    box(m, SP, DK, short) {
       const shown = !SP && (m.played || m.live) && m.a !== 'TBD';
       const top = Math.max(m.sa || 0, m.sb || 0), done = m.played && !m.live;
-      const row = (a, s) => '<div class="br' + (a === 'TBD' ? ' tbdr' : '') + (shown && done ? (s < top ? ' lose' : ' won') : '') + '"><i class="lg" ' + this.logo(a, DK) + '></i><span>' + esc(a === 'TBD' ? '미정' : a) + '</span><s>' + (shown ? s : '') + '</s></div>';
+      const row = (a, s) => '<div class="r' + (a === 'TBD' ? ' tbd' : shown && done && s < top ? ' lose' : '') + '"><i ' + this.logo(a, DK) + '></i><b>' + esc(a === 'TBD' ? '미정' : a) + '</b><s>' + (shown ? s : '') + '</s></div>';
       const kr = this.kr(m.a) || this.kr(m.b);
-      return '<div class="bx' + (kr ? ' kr' : '') + (m.live ? ' live' : '') + '"><div class="bh"><span>' + md(m.day) + ' ' + esc(m.time) + '</span>' + (m.live ? '<em>LIVE</em>' : '<span>BO' + m.bo + '</span>') + '</div>' + row(m.a, m.sa) + row(m.b, m.sb) + '</div>';
+      const when = short ? md(m.day) : md(m.day) + ' ' + m.time;
+      return '<div class="bm' + (kr ? ' kr' : '') + (m.live ? ' live' : '') + '"><div class="mh">' + (m.live ? '<em>LIVE</em>' : '<span>' + esc(when) + '</span>') + '<span>BO' + m.bo + '</span></div>' + row(m.a, m.sa) + row(m.b, m.sb) + '</div>';
     }
   }
   customElements.define('owcs-intl', OwcsIntl);
