@@ -73,7 +73,7 @@
     F + ' .ft-k{width:100%;font-size:13px;color:var(--fm)}',
     F + ' .ft-ch a{display:inline-flex;align-items:center;gap:8px;height:40px;color:var(--fi);text-decoration:none;font-size:14px;font-weight:600}',
     F + ' .ft-ch img{width:28px;height:28px;border-radius:8px}',
-    F + ' .ft-mail{display:block;font-size:15px;color:var(--fi);margin-top:8px}',
+    F + ' .ft-mail{display:block;font-size:15px;color:var(--fi);margin-top:8px;text-decoration:underline}',
     F + ' .ft-note{font-size:13px;color:var(--fm)}',
     '@media (max-width:1180px){' + F + ' .ft-g{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}}',
     '@media (max-width:899.98px){' + F + ',#dc-root ' + F + '{padding:32px 20px 40px}' + F + ' .wrap{padding:0}' +
