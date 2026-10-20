@@ -188,6 +188,10 @@ h4 small{font-weight:700;color:var(--i-mute);margin-left:6px}
         let c = s.cols.find((x) => x.r === m.round); if (!c) s.cols.push(c = { r: m.round, ms: [] });
         c.ms.push(m);
       });
+      // groups in name order (A조, B조), playoffs last; inside a round the page order (bracket position), not the time
+      const idx = (m) => +String(m.id).replace(/^.*-[gp]/, '');
+      secs.sort((x, y) => (x.n === '플레이오프') - (y.n === '플레이오프') || x.n.localeCompare(y.n));
+      secs.forEach((s) => s.cols.forEach((c) => c.ms.sort((x, y) => idx(x) - idx(y))));
       const bracket = secs.length ? '<h4>대진표</h4>' + secs.map((s) => '<div class="sec"><div class="secn">' + esc(s.n === 'Group A' ? 'A조' : s.n === 'Group B' ? 'B조' : s.n) + '</div><div class="tree">'
         + s.cols.map((c) => '<div class="col"><div class="ct">' + esc(c.r) + '</div><div class="cm">' + c.ms.map((m) => this.box(m, SP, DK)).join('') + '</div></div>').join('') + '</div></div>').join('') : '';
 
