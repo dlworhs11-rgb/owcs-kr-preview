@@ -15,18 +15,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1020190853"></script>
-<script src="./owcs-phase.js?v=1020190853"></script>
-<script src="./owcs-i18n.js?v=1020190853"></script>
-<script src="./owcs-stats.js?v=1020190853"></script>
-<script src="./owcs-nav.js?v=1020190853"></script>
-<script src="./owcs-dark.js?v=1020190853"></script>
-<script src="./owcs-test.js?v=1020190853"></script>
-<script src="./owcs-maps.js?v=1020190853"></script>
-<script src="./owcs-bracket.js?v=1020190853"></script>
-<script src="./support.js?v=1020190853"></script>
-<script src="./owcs-theme.js?v=1020190853"></script>
-<script src="./owcs-theme-wise.js?v=1020190853"></script>
+<script src="./owcs-data.js?v=1020201056"></script>
+<script src="./owcs-phase.js?v=1020201056"></script>
+<script src="./owcs-i18n.js?v=1020201056"></script>
+<script src="./owcs-stats.js?v=1020201056"></script>
+<script src="./owcs-nav.js?v=1020201056"></script>
+<script src="./owcs-dark.js?v=1020201056"></script>
+<script src="./owcs-test.js?v=1020201056"></script>
+<script src="./owcs-maps.js?v=1020201056"></script>
+<script src="./owcs-bracket.js?v=1020201056"></script>
+<script src="./support.js?v=1020201056"></script>
+<script src="./owcs-theme.js?v=1020201056"></script>
+<script src="./owcs-theme-wise.js?v=1020201056"></script>
 </head>
 <body>
 <x-dc>
@@ -340,7 +340,7 @@ const mine = (a, b, base) => MY && (a === MY || b === MY) ? 'color-mix(in srgb, 
 const PLAYED = D.matches.filter((m) => m.played && !m.live && new Date(m.date).getTime() <= NOW);
 // 경우의 수 = regular season only (the playoff slots are not part of the table)
 const LEFT = D.matches.filter((m) => (!m.phase || m.phase === 'rs') && (!m.played || m.live || new Date(m.date).getTime() > NOW));
-// results tab stage picker: earlier stages of the year come from D.history (date + score only, no map detail);
+// results tab stage picker: earlier stages of the year come from D.history (score + Liquipedia maps, no first heroes);
 // playoff games take their round (시드 결정전 / LCQ / 8강 ...) from that stage's bracket in D.pastStages
 const STAGE_NOS = Array.from({ length: D.stageNo || 1 }, (_, i) => i + 1);
 const PAST = (no) => {
@@ -349,7 +349,7 @@ const PAST = (no) => {
   const list = D.history.filter((x) => x.stage === '스테이지 ' + no || x.stage === '스테이지 ' + no + ' 플레이오프').slice().reverse();
   // history weeks count calendar weeks from the stage start; a break week would leave a gap (1, 3, 4 ...), so number the match weeks
   const wks = [...new Set(list.filter((x) => !x.stage.endsWith('플레이오프')).map((x) => x.week))].sort((a, b) => a - b);
-  return list.map((x, i) => ({ id: 's' + no + '-' + i, date: x.date, a: x.a, b: x.b, sa: x.sa, sb: x.sb, vod: x.vod, played: true, past: true,
+  return list.map((x, i) => ({ id: 's' + no + '-' + i, date: x.date, a: x.a, b: x.b, sa: x.sa, sb: x.sb, vod: x.vod, maps: x.maps || [], played: true, past: true,
     group: x.stage.endsWith('플레이오프') ? round(x) : (wks.indexOf(x.week) + 1) + '주차' }));
 };
 
@@ -444,9 +444,9 @@ class Component extends DCLogic {
           if (SP) { sa = '–'; sb = '–'; }
           return { date: mdw(m.date), dshort: md(m.date), a: m.a, b: m.b, na: NAME(m.a), nb: NAME(m.b), sa, sb, ca: logo(m.a), cb: logo(m.b), oa: !SP && m.played && m.sa < m.sb ? .4 : 1, ob: !SP && m.played && m.sb < m.sa ? .4 : 1, wa: A.w, ta: A.t, wb: B.w, tb: B.t,
             href: 'OWCS KR Home v6.dc.html?date=' + m.day + '#today', vod: m.vod || 'https://www.sooplive.com/station/owesports/vod/review', mine: mine(m.a, m.b),
-            hasMaps: !m.past, open: !m.past && !!this.state.openRows[m.id], detailLabel: this.state.openRows[m.id] ? '맵 상세 ▴' : '맵 상세 ▾',
+            hasMaps: !!(m.maps && m.maps.length), open: !!(m.maps && m.maps.length) && !!this.state.openRows[m.id], detailLabel: this.state.openRows[m.id] ? '맵 상세 ▴' : '맵 상세 ▾',
             toggle: () => this.setState((s) => ({ openRows: { ...s.openRows, [m.id]: !s.openRows[m.id] } })),
-            maps: m.past ? [] : window.OWCSMaps.build({ ...m, st: m.live ? 'live' : 'done' }, { spoiler: SP, isOpen: (k) => this.state.openMaps[k],
+            maps: window.OWCSMaps.build({ ...m, st: m.live ? 'live' : 'done' }, { spoiler: SP, noComps: m.past, isOpen: (k) => this.state.openMaps[k],
               toggle: (k) => this.setState((s) => ({ openMaps: { ...s.openMaps, [k]: !s.openMaps[k] } })) }) };
         }),
       };
@@ -520,7 +520,7 @@ class Component extends DCLogic {
         const ka = caseOf(m.a), kb = caseOf(m.b);
         const hot = [ka, kb].some(racing);
         const axe = axeOf(LEFT.indexOf(m));
-        return { when: mdw(m.date) + ' ' + m.time, a: m.a, b: m.b, ca: logo(m.a), cb: logo(m.b), oa: 1, ob: 1,
+        return { when: mdw(m.date) + ' ' + (window.OWCSi18n ? OWCSi18n.hm(m.date, m.time) : m.time), a: m.a, b: m.b, ca: logo(m.a), cb: logo(m.b), oa: 1, ob: 1,
           isAxe: !m.live && !!axe, noAxe: m.live || !axe, axeSub: axe === D.lcq ? '지면 탈락' : '지면 직행 실패',
           stake: m.live ? 'LIVE' : hot ? [m.a, m.b].filter((a, i) => racing([ka, kb][i])).join('·') + ' ' + [ka, kb].find(racing).tag : '순위 싸움' };
       }),
