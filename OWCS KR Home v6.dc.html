@@ -15,17 +15,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1020223838"></script>
-<script src="./owcs-phase.js?v=1020223838"></script>
-<script src="./owcs-i18n.js?v=1020223838"></script>
-<script src="./owcs-stats.js?v=1020223838"></script>
-<script src="./owcs-nav.js?v=1020223838"></script>
-<script src="./owcs-test.js?v=1020223838"></script>
-<script src="./owcs-maps.js?v=1020223838"></script>
-<script src="./owcs-bracket.js?v=1020223838"></script>
-<script src="./support.js?v=1020223838"></script>
-<script src="./owcs-theme.js?v=1020223838"></script>
-<script src="./owcs-theme-wise.js?v=1020223838"></script>
+<script src="./owcs-data.js?v=1020224730"></script>
+<script src="./owcs-phase.js?v=1020224730"></script>
+<script src="./owcs-i18n.js?v=1020224730"></script>
+<script src="./owcs-stats.js?v=1020224730"></script>
+<script src="./owcs-nav.js?v=1020224730"></script>
+<script src="./owcs-test.js?v=1020224730"></script>
+<script src="./owcs-maps.js?v=1020224730"></script>
+<script src="./owcs-bracket.js?v=1020224730"></script>
+<script src="./support.js?v=1020224730"></script>
+<script src="./owcs-theme.js?v=1020224730"></script>
+<script src="./owcs-theme-wise.js?v=1020224730"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1286,10 +1286,10 @@ const HOLIDAYS_KR = new Set([
   '2027-10-09', '2027-10-11', '2027-12-25', '2027-12-27',
 ]);
 const I18N = {
-  ko: { nav: ['홈', '일정', '결과', '순위', '직관', '선수', '방송'], sched: '경기 일정', stand: '팀별 순위', teams: '팀 & 선수 라인업', recent: '최근 · 다가오는 경기', next: '다음 일정', share: '일정 공유', spoiler: '스포일러 방지', dark: '다크 모드', none: '오늘은 경기가 없어요', my: '내 팀', setMy: '☆ 내 팀으로 설정', isMy: '★ 내 팀', todayP: '오늘의 경기' },
-  ja: { nav: ['ホーム', '日程', '結果', '順位', '観戦', '選手', '配信'], sched: '試合日程', stand: 'チーム順位', teams: 'チーム & 選手', recent: '最近 · 今後の試合', next: '次の日程', share: '日程を共有', spoiler: 'ネタバレ防止', dark: 'ダークモード', none: '今日は試合がありません', my: 'マイチーム', setMy: '☆ マイチームに設定', isMy: '★ マイチーム', todayP: '今日の試合' },
-  en: { nav: ['Home', 'Schedule', 'Results', 'Standings', 'Tickets', 'Players', 'Live'], sched: 'Schedule', stand: 'Standings', teams: 'Teams & Rosters', recent: 'Recent · Upcoming', next: 'Up next', share: 'Share schedule', spoiler: 'No spoilers', dark: 'Dark mode', none: 'No match today', my: 'My team', setMy: '☆ Set as my team', isMy: '★ My team', todayP: "Today's match" },
-  zh: { nav: ['首页', '赛程', '结果', '排名', '现场观赛', '选手', '直播'], sched: '比赛赛程', stand: '战队排名', teams: '战队 & 选手阵容', recent: '最近 · 即将进行', next: '接下来', share: '分享赛程', spoiler: '防剧透', dark: '深色模式', none: '今天没有比赛', my: '我的战队', setMy: '☆ 设为我的战队', isMy: '★ 我的战队', todayP: '今日比赛' },
+  ko: { nav: ['홈', '일정', '결과', '순위', '선수', '방송', '직관'], sched: '경기 일정', stand: '팀별 순위', teams: '팀 & 선수 라인업', recent: '최근 · 다가오는 경기', next: '다음 일정', share: '일정 공유', spoiler: '스포일러 방지', dark: '다크 모드', none: '오늘은 경기가 없어요', my: '내 팀', setMy: '☆ 내 팀으로 설정', isMy: '★ 내 팀', todayP: '오늘의 경기' },
+  ja: { nav: ['ホーム', '日程', '結果', '順位', '選手', '配信', '観戦'], sched: '試合日程', stand: 'チーム順位', teams: 'チーム & 選手', recent: '最近 · 今後の試合', next: '次の日程', share: '日程を共有', spoiler: 'ネタバレ防止', dark: 'ダークモード', none: '今日は試合がありません', my: 'マイチーム', setMy: '☆ マイチームに設定', isMy: '★ マイチーム', todayP: '今日の試合' },
+  en: { nav: ['Home', 'Schedule', 'Results', 'Standings', 'Players', 'Live', 'Tickets'], sched: 'Schedule', stand: 'Standings', teams: 'Teams & Rosters', recent: 'Recent · Upcoming', next: 'Up next', share: 'Share schedule', spoiler: 'No spoilers', dark: 'Dark mode', none: 'No match today', my: 'My team', setMy: '☆ Set as my team', isMy: '★ My team', todayP: "Today's match" },
+  zh: { nav: ['首页', '赛程', '结果', '排名', '选手', '直播', '现场观赛'], sched: '比赛赛程', stand: '战队排名', teams: '战队 & 选手阵容', recent: '最近 · 即将进行', next: '接下来', share: '分享赛程', spoiler: '防剧透', dark: '深色模式', none: '今天没有比赛', my: '我的战队', setMy: '☆ 设为我的战队', isMy: '★ 我的战队', todayP: '今日比赛' },
 };
 class Component extends DCLogic {
   state = { copied: null, now: nowMs(), mapsShown: null, q: '', sel: (() => { try { const my = localStorage.getItem('owcs-myteam'); if (my && D.teams.some((t) => t.a === my)) return my; const v = sessionStorage.getItem('owcs-sel'); if (v && D.teams.some((t) => t.a === v)) return v; } catch (e) {} return (D.standings[0] || {}).a || 'CR'; })(), ms: false, share: false, shareMsg: '', spoiler: (() => { try { return localStorage.getItem('owcs-spoiler') === '1'; } catch (e) { return false; } })(), dark: params.get('dark') ? params.get('dark') === '1' : (() => { const sys = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); try { const v = localStorage.getItem('owcs-dark'); return v === null ? sys : v === '1'; } catch (e) { return sys; } })(), lang: (window.OWCSi18n || {}).lang || 'ko', sub: false, subMode: 'all', subTeams: [], myTeam: (() => { try { const v = localStorage.getItem('owcs-myteam'); return D.teams.some((t) => t.a === v) ? v : null; } catch (e) { return null; } })(), tab: 0, myPick: false, month: null, calDay: null, rev: 0, openMaps: {}, vday: null, staffOpen: false };
@@ -1489,7 +1489,7 @@ class Component extends DCLogic {
     const rankOf = (a) => { if (SP || !st[a]) return ''; const s = st[a]; return hero && hero.phase !== 'rs' ? '정규 리그 ' + s.rank + '위' : s.rank + '위 · ' + s.w + '승 ' + s.l + '패'; };
     return {
       rootVars, todayMode: params.get('bg') === 'old' ? (this.state.dark ? 'gray dark' : 'gray') : 'light',   // B background: today's block sits on the page, only its screens/cards are dark   // today's block: one rounded charcoal box on the page paper (light or dark)
-      nav: ['OWCS KR Home v6.dc.html', 'OWCS KR 일정.html', 'OWCS KR Results.dc.html', 'OWCS KR Home v6.dc.html?view=standings', 'OWCS KR 직관.html', 'OWCS KR Home v6.dc.html?view=teams', 'OWCS KR 방송.html'].map((href, k) => ({ label: L.nav[k], href })),
+      nav: ['OWCS KR Home v6.dc.html', 'OWCS KR 일정.html', 'OWCS KR Results.dc.html', 'OWCS KR Home v6.dc.html?view=standings', 'OWCS KR Home v6.dc.html?view=teams', 'OWCS KR 방송.html', 'OWCS KR 직관.html'].map((href, k) => ({ label: L.nav[k], href })),
       weekdays: DOWS, cells, week,
       calTitle: Y + '. ' + pad(Mo + 1), calPrev: () => shiftMonth(-1), calNext: () => shiftMonth(1),
       matches: listM.map(card),

@@ -15,18 +15,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1020223838"></script>
-<script src="./owcs-phase.js?v=1020223838"></script>
-<script src="./owcs-i18n.js?v=1020223838"></script>
-<script src="./owcs-stats.js?v=1020223838"></script>
-<script src="./owcs-nav.js?v=1020223838"></script>
-<script src="./owcs-dark.js?v=1020223838"></script>
-<script src="./owcs-test.js?v=1020223838"></script>
-<script src="./owcs-maps.js?v=1020223838"></script>
-<script src="./owcs-bracket.js?v=1020223838"></script>
-<script src="./support.js?v=1020223838"></script>
-<script src="./owcs-theme.js?v=1020223838"></script>
-<script src="./owcs-theme-wise.js?v=1020223838"></script>
+<script src="./owcs-data.js?v=1020224730"></script>
+<script src="./owcs-phase.js?v=1020224730"></script>
+<script src="./owcs-i18n.js?v=1020224730"></script>
+<script src="./owcs-stats.js?v=1020224730"></script>
+<script src="./owcs-nav.js?v=1020224730"></script>
+<script src="./owcs-dark.js?v=1020224730"></script>
+<script src="./owcs-test.js?v=1020224730"></script>
+<script src="./owcs-maps.js?v=1020224730"></script>
+<script src="./owcs-bracket.js?v=1020224730"></script>
+<script src="./support.js?v=1020224730"></script>
+<script src="./owcs-theme.js?v=1020224730"></script>
+<script src="./owcs-theme-wise.js?v=1020224730"></script>
 </head>
 <body>
 <x-dc>
@@ -472,8 +472,8 @@ class Component extends DCLogic {
       toggleSpoiler: () => this.setState((s) => { try { localStorage.setItem('owcs-spoiler', s.sp ? '0' : '1'); } catch (e) {} return { sp: !s.sp }; }), spoilAttr: SP ? '1' : '0', spoilTrack: SP ? '#7D39EB' : '#B9B9B3', spoilKnob: SP ? '14px' : '2px', blur: 'none',
       nav: [
         { label: '홈', href: 'OWCS KR Home v6.dc.html' }, { label: '일정', href: 'OWCS KR 일정.html' }, { label: '결과', href: 'OWCS KR Results.dc.html' },
-        { label: '순위', href: 'OWCS KR Home v6.dc.html?view=standings' }, { label: '직관', href: 'OWCS KR 직관.html' },
-        { label: '선수', href: 'OWCS KR Home v6.dc.html?view=teams' }, { label: '방송', href: 'OWCS KR 방송.html' },
+        { label: '순위', href: 'OWCS KR Home v6.dc.html?view=standings' },
+        { label: '선수', href: 'OWCS KR Home v6.dc.html?view=teams' }, { label: '방송', href: 'OWCS KR 방송.html' }, { label: '직관', href: 'OWCS KR 직관.html' },
       ],
       seasonLabel: anyBracket ? ls.label : (D.year || '') + ' ' + (CUR ? STAGE : '스테이지 ' + this.state.st),
       // the season button picks the stage on the results tab (other tabs show their own label)
