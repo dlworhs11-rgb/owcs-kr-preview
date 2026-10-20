@@ -15,17 +15,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1021005330"></script>
-<script src="./owcs-phase.js?v=1021005330"></script>
-<script src="./owcs-i18n.js?v=1021005330"></script>
-<script src="./owcs-stats.js?v=1021005330"></script>
-<script src="./owcs-nav.js?v=1021005330"></script>
-<script src="./owcs-test.js?v=1021005330"></script>
-<script src="./owcs-maps.js?v=1021005330"></script>
-<script src="./owcs-bracket.js?v=1021005330"></script>
-<script src="./support.js?v=1021005330"></script>
-<script src="./owcs-theme.js?v=1021005330"></script>
-<script src="./owcs-theme-wise.js?v=1021005330"></script>
+<script src="./owcs-data.js?v=1021010047"></script>
+<script src="./owcs-phase.js?v=1021010047"></script>
+<script src="./owcs-i18n.js?v=1021010047"></script>
+<script src="./owcs-stats.js?v=1021010047"></script>
+<script src="./owcs-nav.js?v=1021010047"></script>
+<script src="./owcs-test.js?v=1021010047"></script>
+<script src="./owcs-maps.js?v=1021010047"></script>
+<script src="./owcs-bracket.js?v=1021010047"></script>
+<script src="./support.js?v=1021010047"></script>
+<script src="./owcs-theme.js?v=1021010047"></script>
+<script src="./owcs-theme-wise.js?v=1021010047"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -313,6 +313,13 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <div><div style="font-size:15px;font-weight:700;color:var(--mute,#55555C)">{{ L.teams }}</div><h2 style="font-family:var(--disp,'Barlow Condensed'),sans-serif;font-weight:800;font-size:calc(var(--ts,1) * 96px);line-height:.86;margin:14px 0 0"><span style="display:var(--en,inline)">TEAMS</span><span style="display:var(--ko,none)">팀 &amp; 선수</span></h2></div>
 <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mute,#55555C)"><span style="width:8px;height:8px;border-radius:50%;background:#D92D20"></span>{{ liveCountLabel }}</div>
 </div>
+<div style="position:relative;z-index:5;margin-bottom:16px;max-width:560px">
+<div style="display:flex;align-items:center;gap:10px;height:52px;padding:0 8px 0 16px;border-radius:14px;border:1px solid var(--line,#E6E6E1);background:var(--paper,#fff)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" style="flex:none;color:var(--mute,#6B6B72)"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input type="search" value="{{ ps.q }}" onChange="{{ ps.onQ }}" onKeyDown="{{ ps.onKey }}" placeholder="선수 검색 · Profit, 프로핏, 박준영" aria-label="선수 검색" autocomplete="off" enterkeyhint="go" style="flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:var(--ink,#0B0B0F);font:inherit;font-size:16px"><sc-if value="{{ ps.has }}"><button onClick="{{ ps.clear }}" aria-label="지우기" style="flex:none;width:36px;height:36px;border-radius:50%;border:0;background:var(--paper2,#F6F6F3);color:var(--mute,#6B6B72);font:inherit;font-size:14px;cursor:pointer">✕</button></sc-if></div>
+<sc-if value="{{ ps.open }}"><div style="position:absolute;left:0;right:0;top:58px;max-height:420px;overflow:auto;padding:6px;border-radius:14px;border:1px solid var(--line,#E6E6E1);background:var(--paper,#fff);box-shadow:0 12px 32px rgba(0,0,0,.14)">
+<sc-for list="{{ ps.hits }}" as="h" hint-placeholder-count="3"><a href="{{ h.href }}" style="display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:10px;color:var(--ink,#0B0B0F);text-decoration:none;min-width:0" style-hover="background:var(--paper2,#F6F6F3)"><span style="flex:none;width:44px;height:44px;border-radius:50%;background:{{ h.bg }};color:#5B22C2;display:grid;place-items:center;font-size:12px;font-weight:700">{{ h.ini }}</span><span style="flex:1;min-width:0"><span style="display:block;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.id }}</span><span style="display:block;font-size:13px;color:var(--mute,#6B6B72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.sub }}</span></span><span title="{{ h.tn }}" style="flex:none;width:30px;height:30px;background:{{ h.logo }}"></span></a></sc-for>
+<sc-if value="{{ ps.none }}"><div style="padding:14px 12px;font-size:14px;color:var(--mute,#6B6B72)">검색 결과가 없어요</div></sc-if>
+</div></sc-if>
+</div>
 <div style="display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:12px;margin-bottom:20px">
 <sc-for list="{{ teams }}" as="t" hint-placeholder-count="9"><button onClick="{{ t.select }}" style="opacity:{{ t.op }};position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 8px 16px;border-radius:18px;border:{{ t.border }};background:var(--paper,#fff);cursor:pointer;font:inherit;color:var(--ink,#0B0B0F);transition:transform .15s" style-hover="transform:translateY(-3px)"><span style="position:absolute;left:0;right:0;top:0;height:4px;background:{{ t.c }}"></span><span style="width:76px;height:76px;background:{{ t.logo }}"></span><span style="font-size:14px;font-weight:700;text-align:center;line-height:1.2">{{ t.n }}</span></button></sc-for>
 </div>
@@ -561,6 +568,13 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <div><div style="font-size:15px;font-weight:700;color:var(--mute,#55555C)">{{ L.teams }}</div><h2 style="font-family:var(--disp,'Barlow Condensed'),sans-serif;font-weight:800;font-size:calc(var(--ts,1) * 72px);line-height:.86;margin:14px 0 0"><span style="display:var(--en,inline)">TEAMS</span><span style="display:var(--ko,none)">팀 &amp; 선수</span></h2></div>
 <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mute,#55555C)"><span style="width:8px;height:8px;border-radius:50%;background:#D92D20"></span>{{ liveCountLabel }}</div>
 </div>
+<div style="position:relative;z-index:5;margin-bottom:16px;max-width:560px">
+<div style="display:flex;align-items:center;gap:10px;height:52px;padding:0 8px 0 16px;border-radius:14px;border:1px solid var(--line,#E6E6E1);background:var(--paper,#fff)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" style="flex:none;color:var(--mute,#6B6B72)"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input type="search" value="{{ ps.q }}" onChange="{{ ps.onQ }}" onKeyDown="{{ ps.onKey }}" placeholder="선수 검색 · Profit, 프로핏, 박준영" aria-label="선수 검색" autocomplete="off" enterkeyhint="go" style="flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:var(--ink,#0B0B0F);font:inherit;font-size:16px"><sc-if value="{{ ps.has }}"><button onClick="{{ ps.clear }}" aria-label="지우기" style="flex:none;width:36px;height:36px;border-radius:50%;border:0;background:var(--paper2,#F6F6F3);color:var(--mute,#6B6B72);font:inherit;font-size:14px;cursor:pointer">✕</button></sc-if></div>
+<sc-if value="{{ ps.open }}"><div style="position:absolute;left:0;right:0;top:58px;max-height:420px;overflow:auto;padding:6px;border-radius:14px;border:1px solid var(--line,#E6E6E1);background:var(--paper,#fff);box-shadow:0 12px 32px rgba(0,0,0,.14)">
+<sc-for list="{{ ps.hits }}" as="h" hint-placeholder-count="3"><a href="{{ h.href }}" style="display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:10px;color:var(--ink,#0B0B0F);text-decoration:none;min-width:0" style-hover="background:var(--paper2,#F6F6F3)"><span style="flex:none;width:44px;height:44px;border-radius:50%;background:{{ h.bg }};color:#5B22C2;display:grid;place-items:center;font-size:12px;font-weight:700">{{ h.ini }}</span><span style="flex:1;min-width:0"><span style="display:block;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.id }}</span><span style="display:block;font-size:13px;color:var(--mute,#6B6B72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.sub }}</span></span><span title="{{ h.tn }}" style="flex:none;width:30px;height:30px;background:{{ h.logo }}"></span></a></sc-for>
+<sc-if value="{{ ps.none }}"><div style="padding:14px 12px;font-size:14px;color:var(--mute,#6B6B72)">검색 결과가 없어요</div></sc-if>
+</div></sc-if>
+</div>
 <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:20px">
 <sc-for list="{{ teams }}" as="t" hint-placeholder-count="9"><button onClick="{{ t.select }}" style="opacity:{{ t.op }};position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 8px 16px;border-radius:18px;border:{{ t.border }};background:var(--paper,#fff);cursor:pointer;font:inherit;color:var(--ink,#0B0B0F);transition:transform .15s" style-hover="transform:translateY(-3px)"><span style="position:absolute;left:0;right:0;top:0;height:4px;background:{{ t.c }}"></span><span style="width:76px;height:76px;background:{{ t.logo }}"></span><span style="font-size:14px;font-weight:700;text-align:center;line-height:1.2">{{ t.n }}</span></button></sc-for>
 </div>
@@ -754,6 +768,13 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <section style="padding:36px 20px 40px;background:var(--paper2,#F6F6F3)">
 <div style="font-size:14px;font-weight:700;color:var(--mute,#55555C)">{{ L.teams }}</div>
 <h2 style="font-family:var(--disp,'Barlow Condensed'),sans-serif;font-weight:800;font-size:calc(var(--ts,1) * 60px);line-height:.86;margin:10px 0 20px"><span style="display:var(--en,inline)">TEAMS</span><span style="display:var(--ko,none)">팀 &amp; 선수</span></h2>
+<div style="position:relative;z-index:5;margin-bottom:16px;max-width:560px">
+<div style="display:flex;align-items:center;gap:10px;height:52px;padding:0 8px 0 16px;border-radius:14px;border:1px solid var(--line,#E6E6E1);background:var(--paper,#fff)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" style="flex:none;color:var(--mute,#6B6B72)"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input type="search" value="{{ ps.q }}" onChange="{{ ps.onQ }}" onKeyDown="{{ ps.onKey }}" placeholder="선수 검색 · Profit, 프로핏, 박준영" aria-label="선수 검색" autocomplete="off" enterkeyhint="go" style="flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:var(--ink,#0B0B0F);font:inherit;font-size:16px"><sc-if value="{{ ps.has }}"><button onClick="{{ ps.clear }}" aria-label="지우기" style="flex:none;width:36px;height:36px;border-radius:50%;border:0;background:var(--paper2,#F6F6F3);color:var(--mute,#6B6B72);font:inherit;font-size:14px;cursor:pointer">✕</button></sc-if></div>
+<sc-if value="{{ ps.open }}"><div style="position:absolute;left:0;right:0;top:58px;max-height:420px;overflow:auto;padding:6px;border-radius:14px;border:1px solid var(--line,#E6E6E1);background:var(--paper,#fff);box-shadow:0 12px 32px rgba(0,0,0,.14)">
+<sc-for list="{{ ps.hits }}" as="h" hint-placeholder-count="3"><a href="{{ h.href }}" style="display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:10px;color:var(--ink,#0B0B0F);text-decoration:none;min-width:0" style-hover="background:var(--paper2,#F6F6F3)"><span style="flex:none;width:44px;height:44px;border-radius:50%;background:{{ h.bg }};color:#5B22C2;display:grid;place-items:center;font-size:12px;font-weight:700">{{ h.ini }}</span><span style="flex:1;min-width:0"><span style="display:block;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.id }}</span><span style="display:block;font-size:13px;color:var(--mute,#6B6B72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.sub }}</span></span><span title="{{ h.tn }}" style="flex:none;width:30px;height:30px;background:{{ h.logo }}"></span></a></sc-for>
+<sc-if value="{{ ps.none }}"><div style="padding:14px 12px;font-size:14px;color:var(--mute,#6B6B72)">검색 결과가 없어요</div></sc-if>
+</div></sc-if>
+</div>
 <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:16px">
 <sc-for list="{{ teams }}" as="t" hint-placeholder-count="9"><button onClick="{{ t.select }}" style="opacity:{{ t.op }};position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 2px 9px;border-radius:14px;border:{{ t.border }};background:var(--paper,#fff);cursor:pointer;font:inherit;color:var(--ink,#0B0B0F);min-width:0"><span style="position:absolute;left:0;right:0;top:0;height:3px;background:{{ t.c }}"></span><span style="width:38px;height:38px;background:{{ t.logo }}"></span><span style="max-width:100%;font-size:11px;font-weight:800;text-align:center;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.a }}</span></button></sc-for>
 </div>
@@ -940,6 +961,13 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <section style="padding:36px 20px 40px;background:var(--paper2,#F6F6F3)">
 <div style="font-size:14px;font-weight:700;color:var(--mute,#55555C)">{{ L.teams }}</div>
 <h2 style="font-family:var(--disp,'Barlow Condensed'),sans-serif;font-weight:800;font-size:calc(var(--ts,1) * 60px);line-height:.86;margin:10px 0 20px"><span style="display:var(--en,inline)">TEAMS</span><span style="display:var(--ko,none)">팀 &amp; 선수</span></h2>
+<div style="position:relative;z-index:5;margin-bottom:16px;max-width:560px">
+<div style="display:flex;align-items:center;gap:10px;height:52px;padding:0 8px 0 16px;border-radius:14px;border:1px solid var(--line,#E6E6E1);background:var(--paper,#fff)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true" style="flex:none;color:var(--mute,#6B6B72)"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input type="search" value="{{ ps.q }}" onChange="{{ ps.onQ }}" onKeyDown="{{ ps.onKey }}" placeholder="선수 검색 · Profit, 프로핏, 박준영" aria-label="선수 검색" autocomplete="off" enterkeyhint="go" style="flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:var(--ink,#0B0B0F);font:inherit;font-size:16px"><sc-if value="{{ ps.has }}"><button onClick="{{ ps.clear }}" aria-label="지우기" style="flex:none;width:36px;height:36px;border-radius:50%;border:0;background:var(--paper2,#F6F6F3);color:var(--mute,#6B6B72);font:inherit;font-size:14px;cursor:pointer">✕</button></sc-if></div>
+<sc-if value="{{ ps.open }}"><div style="position:absolute;left:0;right:0;top:58px;max-height:420px;overflow:auto;padding:6px;border-radius:14px;border:1px solid var(--line,#E6E6E1);background:var(--paper,#fff);box-shadow:0 12px 32px rgba(0,0,0,.14)">
+<sc-for list="{{ ps.hits }}" as="h" hint-placeholder-count="3"><a href="{{ h.href }}" style="display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:10px;color:var(--ink,#0B0B0F);text-decoration:none;min-width:0" style-hover="background:var(--paper2,#F6F6F3)"><span style="flex:none;width:44px;height:44px;border-radius:50%;background:{{ h.bg }};color:#5B22C2;display:grid;place-items:center;font-size:12px;font-weight:700">{{ h.ini }}</span><span style="flex:1;min-width:0"><span style="display:block;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.id }}</span><span style="display:block;font-size:13px;color:var(--mute,#6B6B72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ h.sub }}</span></span><span title="{{ h.tn }}" style="flex:none;width:30px;height:30px;background:{{ h.logo }}"></span></a></sc-for>
+<sc-if value="{{ ps.none }}"><div style="padding:14px 12px;font-size:14px;color:var(--mute,#6B6B72)">검색 결과가 없어요</div></sc-if>
+</div></sc-if>
+</div>
 <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:16px">
 <sc-for list="{{ teams }}" as="t" hint-placeholder-count="9"><button onClick="{{ t.select }}" style="opacity:{{ t.op }};position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 2px 9px;border-radius:14px;border:{{ t.border }};background:var(--paper,#fff);cursor:pointer;font:inherit;color:var(--ink,#0B0B0F);min-width:0"><span style="position:absolute;left:0;right:0;top:0;height:3px;background:{{ t.c }}"></span><span style="width:38px;height:38px;background:{{ t.logo }}"></span><span style="max-width:100%;font-size:11px;font-weight:800;text-align:center;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.a }}</span></button></sc-for>
 </div>
@@ -1669,6 +1697,32 @@ class Component extends DCLogic {
       standBg: '#0B0B0F',
       standHref: showBracket ? 'OWCS KR Results.dc.html?tab=bracket' + (params.get('date') ? '&date=' + params.get('date') : '') : casesOn ? 'OWCS KR Results.dc.html?tab=cases' : 'OWCS KR Results.dc.html',
       casesNote: allOver ? '이번 스테이지 일정이 모두 끝났어요 · 다음 스테이지 일정이 나오면 자동으로 바뀌어요' : rsOver ? '정규 리그가 끝났어요 · 1–' + D.playoffs + '위는 시드 결정전, ' + (D.playoffs + 1) + '–' + D.lcq + '위는 라스트 찬스 예선으로 플레이오프가 이어져요' : casesOn ? '경우의 수 공개 중 · 정규 리그 종료까지 ' + weeksLeft + '주' : '경우의 수는 정규 리그 ' + (timing === '종료 1주 전부터' ? '종료 1주 전' : '종료 2주 전') + '부터 공개돼요 · 현재 ' + weeksLeft + '주 남음',
+      ps: (() => {
+        // player search (선수 section): handle, 한글 닉, real name (박준영), romanized name; coaching staff too.
+        // Case, spaces and hyphens ignored; K4NE is found by 'kane' (digit letters), 프로핏 by its 초성 'ㅍㄹㅍ'.
+        const CHO = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+        const norm = (x) => String(x || '').toLowerCase().replace(/[\s\-_.']/g, '');
+        const leet = (x) => x.replace(/[013457]/g, (d) => ({ 0: 'o', 1: 'i', 3: 'e', 4: 'a', 5: 's', 7: 't' })[d]);
+        const cho = (x) => [...x].map((c) => { const k = c.charCodeAt(0) - 0xAC00; return k >= 0 && k < 11172 ? CHO[Math.floor(k / 588)] : c; }).join('');
+        const raw = this.state.pq || '', q = norm(raw), onlyCho = /^[ㄱ-ㅎ]+$/.test(q);
+        const pool = D.players.map((p) => ({ p, keys: [p.id, p.ko, p.real, p.name], staff: '' }))
+          .concat(Object.entries(D.staff || {}).flatMap(([a, xs]) => xs.map((x) => ({ p: { ...x, team: a }, keys: [x.id, x.ko], staff: x.role }))));
+        const score = (keys) => {
+          let best = 0;
+          for (const k of keys.map(norm).filter(Boolean)) {
+            const ks = onlyCho ? [cho(k)] : [k, leet(k)], qs = onlyCho ? [q] : [q, leet(q)];
+            for (const a of ks) for (const b of qs) best = Math.max(best, a === b ? 3 : a.startsWith(b) ? 2 : a.includes(b) ? 1 : 0);
+          }
+          return best;
+        };
+        const hits = !q ? [] : pool.map((x) => ({ ...x, s: score(x.keys) })).filter((x) => x.s).sort((x, y) => y.s - x.s || !!x.staff - !!y.staff || x.p.id.localeCompare(y.p.id)).slice(0, 8)
+          .map(({ p, staff }) => ({ id: p.id, href: 'OWCS KR Player.dc.html?p=' + encodeURIComponent(p.id),
+            sub: [p.ko, p.real, staff || p.roleFull].filter(Boolean).join(' · '), ini: p.photo ? '' : p.id.slice(0, 2).toUpperCase(),
+            bg: p.photo ? "center 18%/cover no-repeat url('" + p.photo + "'), #EFE9FC" : '#EFE9FC', logo: logoBg(p.team, DM), tn: team(p.team).n }));
+        return { q: raw, has: !!raw, open: !!q, hits, none: !!q && !hits.length,
+          onQ: (e) => this.setState({ pq: e.target.value }), clear: () => this.setState({ pq: '' }),
+          onKey: (e) => { if (e.key === 'Enter' && hits[0]) location.href = hits[0].href; else if (e.key === 'Escape') this.setState({ pq: '' }); } };
+      })(),
       liveCountLabel: liveCount ? '지금 방송 중인 선수 ' + liveCount + '명' : '지금 방송 중인 선수 없음',
       teams: D.standings.map((s) => {
         const t = team(s.a);
