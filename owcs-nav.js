@@ -301,7 +301,7 @@
     var m = document.createElement('div');
     m.setAttribute('data-owcs-mtop', '');
     var dark = isDark();
-    m.innerHTML = '<div class="hd"><div class="row"><a class="brand" href="OWCS KR Home v6.dc.html"><span class="mk"><i></i></span><span class="wm">OWCS KR</span></a>' +
+    m.innerHTML = '<div class="hd"><div class="row"><a class="brand" href="OWCS KR Home v6.dc.html"><span class="mk"><i></i></span><span class="wm">OWticker</span></a>' +
       '<span class="ic"><button class="hm" aria-label="메뉴"><span></span><span></span></button></span></div>' +
       '<nav>' + T.nav.map(function (l, k) { return '<a href="' + HREFS[k] + '">' + l + '</a>'; }).join('') + '</nav></div>' +
       '<div class="tb">' +
@@ -363,7 +363,7 @@
     if (!HOME) {
       // the wordmark's letter spacing as on the home page (.02em)
       Array.prototype.forEach.call(h.querySelectorAll('span,div'), function (x) {
-        if (!x.children.length && x.textContent.trim() === 'OWCS KR' && x.style.letterSpacing !== '0.56px') x.style.letterSpacing = '0.56px';
+        if (!x.children.length && x.textContent.trim() === 'OWticker' && x.style.letterSpacing !== '0.56px') x.style.letterSpacing = '0.56px';
       });
       placeTicket(h);
       var own = spoilerBtn();
