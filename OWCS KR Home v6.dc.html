@@ -15,17 +15,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1020203158"></script>
-<script src="./owcs-phase.js?v=1020203158"></script>
-<script src="./owcs-i18n.js?v=1020203158"></script>
-<script src="./owcs-stats.js?v=1020203158"></script>
-<script src="./owcs-nav.js?v=1020203158"></script>
-<script src="./owcs-test.js?v=1020203158"></script>
-<script src="./owcs-maps.js?v=1020203158"></script>
-<script src="./owcs-bracket.js?v=1020203158"></script>
-<script src="./support.js?v=1020203158"></script>
-<script src="./owcs-theme.js?v=1020203158"></script>
-<script src="./owcs-theme-wise.js?v=1020203158"></script>
+<script src="./owcs-data.js?v=1020203435"></script>
+<script src="./owcs-phase.js?v=1020203435"></script>
+<script src="./owcs-i18n.js?v=1020203435"></script>
+<script src="./owcs-stats.js?v=1020203435"></script>
+<script src="./owcs-nav.js?v=1020203435"></script>
+<script src="./owcs-test.js?v=1020203435"></script>
+<script src="./owcs-maps.js?v=1020203435"></script>
+<script src="./owcs-bracket.js?v=1020203435"></script>
+<script src="./support.js?v=1020203435"></script>
+<script src="./owcs-theme.js?v=1020203435"></script>
+<script src="./owcs-theme-wise.js?v=1020203435"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1296,27 +1296,36 @@ class Component extends DCLogic {
   componentDidMount() {
     this.t = setInterval(() => this.setState({ now: nowMs() }), 1000);
     // pick up a rebuilt owcs-data.js (live scores from the PC, the cloud refresh): every 10 s while a match of
-    // today is on or about to start, otherwise every minute
+    // today is on or about to start, otherwise every minute. The live scores (small files) still every 5 s on match day:
+    // owcs-data.js is ~45 KB and a site build takes over a minute anyway, so every 30 s is enough for it
+    // (GitHub Pages: ~100 GB a month; 5 s polling of the data was ~32 MB an hour per open page)
+    let lastData = nowMs();
     const poll = () => {
-      const s = document.createElement('script');
-      s.src = 'owcs-data.js?v=' + Date.now();
-      // swapped in place, no reload: a reload reuses the browser's cached owcs-data.js (10 min), so it looked stale
-      // and the page reloaded again and again
-      s.onload = () => { s.remove(); if (window.OWCS && window.OWCS.generated > D.generated) { Object.assign(D, window.OWCS); applyLive(dayOf(nowMs())); this.setState((st) => ({ rev: st.rev + 1 })); } };
-      s.onerror = () => s.remove();
-      document.head.appendChild(s);
       const now = nowMs(), today = dayOf(now);
       const on = D.matches.some((m) => m.day === today && ((!m.played && now >= new Date(m.date).getTime() - 30 * 60e3) || (m.played && !m.potm)));   // also until the last POTM is in
-      this.r = setTimeout(poll, on ? 5000 : 60000);   // match day: new live data within ~5 s
+      this.r = setTimeout(poll, on ? 5000 : 60000);   // match day: new live scores within ~5 s
+      if (document.hidden) return;   // tab not shown: nothing fetched; back on screen polls at once (below)
+      if (!on || now - lastData >= 30000) {
+        lastData = now;
+        const s = document.createElement('script');
+        s.src = 'owcs-data.js?v=' + now;
+        // swapped in place, no reload: a reload reuses the browser's cached owcs-data.js (10 min), so it looked stale
+        // and the page reloaded again and again
+        s.onload = () => { s.remove(); if (window.OWCS && window.OWCS.generated > D.generated) { Object.assign(D, window.OWCS); applyLive(dayOf(nowMs())); this.setState((st) => ({ rev: st.rev + 1 })); } };
+        s.onerror = () => s.remove();
+        document.head.appendChild(s);
+      }
       if (on) try { liveScores(today, () => this.setState((st) => ({ rev: st.rev + 1 }))); } catch (e) {}
     };
     this.r = setTimeout(poll, 10000);
+    this.onVis = () => { if (!document.hidden) { clearTimeout(this.r); lastData = 0; poll(); } };
+    document.addEventListener('visibilitychange', this.onVis);
     try { this.es = liveRelay(() => this.setState((st) => ({ rev: st.rev + 1 }))); } catch (e) {}
     // my team set on another page/tab (results, live) shows up here too
     this.onStore = (e) => { if (e.key !== 'owcs-myteam') return; const v = D.teams.some((t) => t.a === e.newValue) ? e.newValue : null; this.setState(v ? { myTeam: v, sel: v } : { myTeam: v }); };
     window.addEventListener('storage', this.onStore);
   }
-  componentWillUnmount() { clearInterval(this.t); clearTimeout(this.r); clearTimeout(this.ct); window.removeEventListener('storage', this.onStore); }
+  componentWillUnmount() { clearInterval(this.t); clearTimeout(this.r); clearTimeout(this.ct); window.removeEventListener('storage', this.onStore); document.removeEventListener('visibilitychange', this.onVis); }
   copy(key, text) {
     try { navigator.clipboard && navigator.clipboard.writeText(text).catch(() => {}); } catch (e) {}
     this.setState({ copied: key }); clearTimeout(this.ct);
