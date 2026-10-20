@@ -15,18 +15,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1020034915"></script>
-<script src="./owcs-phase.js?v=1020034915"></script>
-<script src="./owcs-i18n.js?v=1020034915"></script>
-<script src="./owcs-stats.js?v=1020034915"></script>
-<script src="./owcs-nav.js?v=1020034915"></script>
-<script src="./owcs-dark.js?v=1020034915"></script>
-<script src="./owcs-test.js?v=1020034915"></script>
-<script src="./owcs-maps.js?v=1020034915"></script>
-<script src="./owcs-bracket.js?v=1020034915"></script>
-<script src="./support.js?v=1020034915"></script>
-<script src="./owcs-theme.js?v=1020034915"></script>
-<script src="./owcs-theme-wise.js?v=1020034915"></script>
+<script src="./owcs-data.js?v=1020155648"></script>
+<script src="./owcs-phase.js?v=1020155648"></script>
+<script src="./owcs-i18n.js?v=1020155648"></script>
+<script src="./owcs-stats.js?v=1020155648"></script>
+<script src="./owcs-nav.js?v=1020155648"></script>
+<script src="./owcs-dark.js?v=1020155648"></script>
+<script src="./owcs-test.js?v=1020155648"></script>
+<script src="./owcs-maps.js?v=1020155648"></script>
+<script src="./owcs-bracket.js?v=1020155648"></script>
+<script src="./support.js?v=1020155648"></script>
+<script src="./owcs-theme.js?v=1020155648"></script>
+<script src="./owcs-theme-wise.js?v=1020155648"></script>
 </head>
 <body>
 <x-dc>
@@ -524,7 +524,7 @@ class Component extends DCLogic {
           stake: m.live ? 'LIVE' : hot ? [m.a, m.b].filter((a, i) => racing([ka, kb][i])).join('·') + ' ' + [ka, kb].find(racing).tag : '순위 싸움' };
       }),
       tiebreak: D.tiebreak,
-      footNote: '비공식 팬 사이트입니다. Blizzard Entertainment 및 OWCS 공식 운영과 관련이 없습니다. ' + (D.sources || ''),
+      footNote: '비공식 팬 사이트입니다. Blizzard Entertainment 및 WDG와 관련이 없습니다. ' + (D.sources || ''),
     };
   }
 }

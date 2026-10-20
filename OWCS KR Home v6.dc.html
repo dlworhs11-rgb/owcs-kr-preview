@@ -15,17 +15,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1020034915"></script>
-<script src="./owcs-phase.js?v=1020034915"></script>
-<script src="./owcs-i18n.js?v=1020034915"></script>
-<script src="./owcs-stats.js?v=1020034915"></script>
-<script src="./owcs-nav.js?v=1020034915"></script>
-<script src="./owcs-test.js?v=1020034915"></script>
-<script src="./owcs-maps.js?v=1020034915"></script>
-<script src="./owcs-bracket.js?v=1020034915"></script>
-<script src="./support.js?v=1020034915"></script>
-<script src="./owcs-theme.js?v=1020034915"></script>
-<script src="./owcs-theme-wise.js?v=1020034915"></script>
+<script src="./owcs-data.js?v=1020155648"></script>
+<script src="./owcs-phase.js?v=1020155648"></script>
+<script src="./owcs-i18n.js?v=1020155648"></script>
+<script src="./owcs-stats.js?v=1020155648"></script>
+<script src="./owcs-nav.js?v=1020155648"></script>
+<script src="./owcs-test.js?v=1020155648"></script>
+<script src="./owcs-maps.js?v=1020155648"></script>
+<script src="./owcs-bracket.js?v=1020155648"></script>
+<script src="./support.js?v=1020155648"></script>
+<script src="./owcs-theme.js?v=1020155648"></script>
+<script src="./owcs-theme-wise.js?v=1020155648"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1661,7 +1661,7 @@ class Component extends DCLogic {
       results: found.map((m) => { const o = orient(m.a, m.sa, m.b, m.sb); return {
         stage: STAGE_SHORT, wk: m.phase === 'rs' || !m.phase ? m.week + '주차' : m.label, date: md(m.date), a: o[0], sa: SP ? '–' : o[1], b: o[2], sb: SP ? '–' : o[3],
         ca: col(o[0]), cb: col(o[2]), ta: o[1] > o[3] ? '#0B0B0F' : '#6B6B72', tb: o[3] > o[1] ? '#0B0B0F' : '#6B6B72' }; }),
-      footNote: '비공식 팬 사이트입니다. Blizzard Entertainment 및 OWCS 공식 운영과 관련이 없습니다. ' + D.sources,
+      footNote: '비공식 팬 사이트입니다. Blizzard Entertainment 및 WDG와 관련이 없습니다. ' + D.sources,
     };
   }
 }
