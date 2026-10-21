@@ -115,6 +115,31 @@
       F + ' .ft-g{display:flex;flex-direction:column;gap:14px}' + F + ' .ft-logo{font-size:26px}' + F + ' .ft-desc{font-size:14px;margin-top:0}' +
       F + ' .ft-ch{margin-top:2px}' + F + ' .ft-mail{margin-top:4px;font-size:14px}' + F + ' .ft-note{font-size:12px}}'
   ].join('\n');
+  // the wordmark stays hidden until Barlow Condensed 800 italic is in: on an iPhone it was drawn in the wider fallback
+  // font first and shrank a moment later (the results / player / home pages load this script before the font's stylesheet).
+  // Shown anyway after 3s so a font that never arrives can't hide the logo.
+  owt += 'html:not([data-owt-font]) .owt{visibility:hidden}';
+  (function () {
+    var de = document.documentElement, fs = document.fonts;
+    function show() { de.setAttribute('data-owt-font', ''); }
+    function face() {
+      var hit = false;
+      fs.forEach(function (f) { if (/Barlow Condensed/.test(f.family) && f.style === 'italic' && String(f.weight) === '800') hit = true; });
+      return hit;
+    }
+    function test() {
+      if (de.hasAttribute('data-owt-font')) return;
+      // check() is also true while the font's stylesheet hasn't declared the face yet, so the face must exist first
+      if (face() && fs.check("italic 800 24px 'Barlow Condensed'")) show();
+      else if (face()) fs.load("italic 800 24px 'Barlow Condensed'").then(test, show);
+    }
+    if (!fs || !fs.check) { show(); return; }
+    setTimeout(show, 3000);
+    test();
+    fs.addEventListener && fs.addEventListener('loadingdone', test);
+    document.addEventListener('DOMContentLoaded', test);
+    window.addEventListener('load', show);
+  })();
   hst.textContent = centre + '\n' + hw + '\n' + owt + '\n' + ft;
   (document.head || document.documentElement).appendChild(hst);
   var css = HOME ? '' : [
@@ -506,6 +531,8 @@
   var acss = [
     // the top bar's 앱 설치 button: lime, next to the language picker
     '[data-owcs-hw] .ab{display:inline-flex;align-items:center;gap:5px;height:40px;padding:0 12px 0 10px;border:0;border-radius:12px;background:#C6FF33;color:#0B0B0F;font-family:inherit;font-size:15px;font-weight:800;line-height:1;white-space:nowrap;cursor:pointer}',
+    // results / player pages in dark mode: owcs-dark.js gives their buttons the light page text (white on lime); keep it ink
+    'html body #dc-root [data-owcs-hw] button.ab{color:#0B0B0F}',
     '[data-owcs-hw] .ab[hidden]{display:none}',
     '[data-owcs-hw] .ab .s{display:none}',
     // phones: 앱 (the long label meets the logo on a 390px iPhone), the icon alone under 375px
