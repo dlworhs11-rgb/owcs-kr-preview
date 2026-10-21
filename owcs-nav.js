@@ -50,10 +50,13 @@
     // iPhone Safari draw the home page's current-page underline thin (순위 · 선수), unlike every other page's
     'header nav a{text-decoration:none}',
     // An underline, not a background: it follows the text, so it sits the same on every page whatever the button's size
-    'html body a[data-owcs-nv][data-owcs-nv].cur{color:var(--ink,#0B0B0F) !important;text-decoration-line:underline !important;text-decoration-style:solid !important;text-decoration-color:currentColor !important;text-decoration-thickness:5px !important;text-underline-offset:-1px !important;text-decoration-skip-ink:none !important}',
-    // current page: an ink underline on the light page (the neon lime was too loud on the beige), a thin lime one in dark mode
-    'html[data-owcs-dark] body a[data-owcs-nv][data-owcs-nv].cur{color:#F2F2F5 !important;text-decoration-color:#C6FF33 !important;text-decoration-thickness:2px !important;text-underline-offset:3px !important}',
-    '[style*="--owt: #C6FF33"] a[data-owcs-nv][data-owcs-nv].cur,[style*="--owt:#C6FF33"] a[data-owcs-nv][data-owcs-nv].cur{text-decoration-color:#C6FF33 !important;text-decoration-thickness:2px !important;text-underline-offset:3px !important}',
+    // current page: a soft olive stroke under the word on the light page (the neon lime was too loud on the beige), a thin lime
+    // line in dark mode. Drawn on the label span too: on the home page's views (순위 · 선수) the text sits in a block span inside the
+    // flex link, and iPhone Safari drew the link's own underline there thin
+    'html body a[data-owcs-nv][data-owcs-nv].cur{color:var(--ink,#0B0B0F) !important}',
+    'html body a[data-owcs-nv][data-owcs-nv].cur,html body a[data-owcs-nv][data-owcs-nv].cur > span{text-decoration-line:underline !important;text-decoration-style:solid !important;text-decoration-color:var(--nvu,#A9C95A) !important;text-decoration-thickness:var(--nvt,5px) !important;text-underline-offset:var(--nvo,-1px) !important;text-decoration-skip-ink:none !important}',
+    'html[data-owcs-dark] body a[data-owcs-nv][data-owcs-nv].cur{color:#F2F2F5 !important;--nvu:#C6FF33;--nvt:2px;--nvo:3px}',
+    '[style*="--owt: #C6FF33"] a[data-owcs-nv][data-owcs-nv].cur,[style*="--owt:#C6FF33"] a[data-owcs-nv][data-owcs-nv].cur{--nvu:#C6FF33;--nvt:2px;--nvo:3px}',
     'html[data-owcs-dark] [data-owcs-hw]{color:#F2F2F5}',
     'html[data-owcs-dark] [data-owcs-hw] .lb,html[data-owcs-dark] [data-owcs-hw] .dd{background:#16161C;border-color:#2E2E37}',
     'html[data-owcs-dark] [data-owcs-hw] .it{color:#A3A3AD}',
@@ -434,16 +437,28 @@
   // page to the real browser. Temporary icons (the header's mark) in assets/app until the logo: replace the PNGs there.
   var AT = {
     ko: { add: '앱 설치', addS: '앱', bn: '홈 화면에 OWticker 추가', bs: '앱처럼 바로 열려요. 경기 결과를 한 번에 확인하세요', go: '추가', no: '닫기', ok: '알겠어요',
-      tip: '화살표 버튼부터 이 순서로 눌러 주세요', more: '더보기', share: '공유', home: '홈 화면에 추가', menu: '메뉴', end: '마지막에 <b>추가</b>를 누르면 끝!',
+      tip: '홈 화면에 추가하는 법', more: '더보기', share: '공유', home: '홈 화면에 추가', menu: '메뉴', fin: '추가',
+      hMore: '화면 오른쪽 아래, 화살표가 가리키는 버튼', hShareM: '열린 메뉴의 맨 위', hShareB: '화면 아래 가운데, 화살표가 가리키는 버튼', hShareT: '주소창 오른쪽 버튼',
+      hHome: '목록을 아래로 조금 내리면 있어요', hFin: '오른쪽 위. 누르면 끝!', hMenu: '화면 오른쪽 위 ⋮ 버튼', hHomeA: '<b>앱 설치</b>라고 되어 있을 수도 있어요',
+      keep: '이 안내는 위에 그대로 있어요. 보면서 하나씩 따라 하세요',
       inT: '브라우저에서 열어 주세요', inapp: '이 앱 안의 화면에서는 설치가 안 돼요. 메뉴에서 <b>다른 브라우저로 열기</b>를 누른 뒤 다시 해 주세요.', ext: '브라우저로 열기' },
     en: { add: 'Get app', addS: 'App', bn: 'Add OWticker to your home screen', bs: 'Opens like an app, results in one tap', go: 'Add', no: 'Close', ok: 'Got it',
-      tip: 'Tap these in order, starting at the arrow', more: 'More', share: 'Share', home: 'Add to Home Screen', menu: 'Menu', end: 'Then tap <b>Add</b> and you\'re done!',
+      tip: 'How to add it to your home screen', more: 'More', share: 'Share', home: 'Add to Home Screen', menu: 'Menu', fin: 'Add',
+      hMore: 'Bottom right, where the arrow points', hShareM: 'Top of the menu that opens', hShareB: 'Bottom middle, where the arrow points', hShareT: 'Next to the address bar',
+      hHome: 'Scroll the list down a little', hFin: 'Top right, and you\'re done!', hMenu: 'The ⋮ button at the top right', hHomeA: 'It may say <b>Install app</b>',
+      keep: 'This guide stays up here. Follow it step by step',
       inT: 'Open in your browser', inapp: 'Apps can\'t be installed from this in-app browser. Choose <b>Open in browser</b> from its menu, then try again.', ext: 'Open in browser' },
     ja: { add: 'アプリ', addS: 'アプリ', bn: 'OWtickerをホーム画面に追加', bs: 'アプリのようにすぐ開けます', go: '追加', no: '閉じる', ok: 'OK',
-      tip: '矢印のボタンから順にタップ', more: 'その他', share: '共有', home: 'ホーム画面に追加', menu: 'メニュー', end: '最後に<b>追加</b>で完了！',
+      tip: 'ホーム画面への追加方法', more: 'その他', share: '共有', home: 'ホーム画面に追加', menu: 'メニュー', fin: '追加',
+      hMore: '右下、矢印のボタン', hShareM: '開いたメニューの一番上', hShareB: '下の中央、矢印のボタン', hShareT: 'アドレスバーの右',
+      hHome: 'リストを少し下にスクロール', hFin: '右上。これで完了！', hMenu: '右上の ⋮ ボタン', hHomeA: '<b>アプリをインストール</b>の場合も',
+      keep: 'この案内は上に表示されたままです',
       inT: 'ブラウザで開いてください', inapp: 'このアプリ内ブラウザではインストールできません。メニューから<b>ブラウザで開く</b>を選んでください。', ext: 'ブラウザで開く' },
     zh: { add: '安装', addS: '安装', bn: '将 OWticker 添加到主屏幕', bs: '像应用一样直接打开', go: '添加', no: '关闭', ok: '知道了',
-      tip: '从箭头处的按钮开始依次点按', more: '更多', share: '分享', home: '添加到主屏幕', menu: '菜单', end: '最后点按<b>添加</b>即可！',
+      tip: '如何添加到主屏幕', more: '更多', share: '分享', home: '添加到主屏幕', menu: '菜单', fin: '添加',
+      hMore: '右下角，箭头所指的按钮', hShareM: '打开的菜单最上方', hShareB: '底部中间，箭头所指的按钮', hShareT: '地址栏右侧',
+      hHome: '将列表向下滑一点', hFin: '右上角，完成！', hMenu: '右上角的 ⋮ 按钮', hHomeA: '也可能显示为<b>安装应用</b>',
+      keep: '此说明会一直显示在上方',
       inT: '请在浏览器中打开', inapp: '此应用内浏览器无法安装。请在菜单中选择<b>在浏览器中打开</b>后重试。', ext: '在浏览器中打开' }
   }[LANG];
   var UA = navigator.userAgent || '';
@@ -498,8 +513,8 @@
     '[data-owcs-app] .x{flex:none;width:32px;height:32px;margin-left:-4px;border:0;border-radius:50%;background:transparent;color:#55555C;font:inherit;font-size:20px;line-height:1;cursor:pointer}',
     // the guide: a dim page, one card, and a lime arrow bouncing at the browser button to press first
     '[data-owcs-app].sheet{inset:0;display:flex;justify-content:center;background:rgba(0,0,0,.6)}',
-    '[data-owcs-app].sheet.b{align-items:flex-end;padding-bottom:calc(96px + env(safe-area-inset-bottom))}',
-    '[data-owcs-app].sheet.t{align-items:flex-start;padding-top:96px}',
+    '[data-owcs-app].sheet.b,[data-owcs-app].sheet.t{align-items:flex-start;padding-top:calc(12px + env(safe-area-inset-top))}',
+    '[data-owcs-app].sheet.t{padding-top:84px}',
     '[data-owcs-app].sheet.c{align-items:center}',
     '[data-owcs-app] .pn{width:100%;max-width:440px;margin:0 12px;padding:20px 18px 16px;border-radius:24px;background:#fff}',
     '[data-owcs-app] .hd2{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:800}',
@@ -509,6 +524,25 @@
     '[data-owcs-app] .ch.f{background:#C6FF33;box-shadow:0 0 0 2px #0B0B0F}',
     '[data-owcs-app] .ch.f svg{color:#0B0B0F}',
     '[data-owcs-app] .to{color:#8A8A92;font-size:18px;font-weight:800}',
+    // the pages style ol / li themselves (borders, padding): reset here
+    '[data-owcs-app] .st{list-style:none !important;margin:14px 0 0 !important;padding:0 !important;border:0 !important;background:none !important;box-shadow:none !important;display:flex;flex-direction:column;align-items:stretch !important;gap:8px}',
+    '[data-owcs-app] .st li{display:flex !important;justify-content:flex-start !important;text-align:left !important;align-items:flex-start;gap:12px;margin:0 !important;padding:0 !important;border:0 !important;background:none !important}',
+    '[data-owcs-app] .st li::before,[data-owcs-app] .st li::after{content:none !important}',
+    '[data-owcs-app] .st .sx{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;text-align:left}',
+    '[data-owcs-app] .st em{margin-top:5px}',
+    // compact: Safari's menu and share sheet cover the lower half of the screen, the card has to fit above them
+    '[data-owcs-app] .sheet .am,[data-owcs-app].sheet .am{width:36px;height:36px;border-radius:9px}',
+    '[data-owcs-app].sheet .am i{width:12px;height:12px;border-radius:3px}',
+    '[data-owcs-app].sheet .pn{padding:16px 16px 14px}',
+    '[data-owcs-app] .st em{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#0B0B0F;color:#C6FF33;font-style:normal;font-size:13px;font-weight:800}',
+    '[data-owcs-app] .st .ch{height:36px;font-size:14.5px}',
+    '[data-owcs-app] .st small{font-size:13px;line-height:1.35;color:#55555C}',
+    '[data-owcs-app] .st small b{font-size:inherit;font-weight:800}',
+    '[data-owcs-app] .kp{margin:10px 0 0;font-size:13px;color:#55555C}',
+    '[data-owcs-app].sheet .bs2{margin-top:12px}',
+    '[data-owcs-app].sheet .bs2 button{height:42px}',
+    'html[data-owcs-dark] [data-owcs-app] .st em{background:#C6FF33;color:#0B0B0F}',
+    'html[data-owcs-dark] [data-owcs-app] .st small,html[data-owcs-dark] [data-owcs-app] .kp{color:#A3A3AD}',
     '[data-owcs-app] p{margin:12px 0 0;font-size:14.5px}',
     '[data-owcs-app] .bs2{display:flex;gap:8px;margin-top:16px}',
     '[data-owcs-app] .bs2 a,[data-owcs-app] .bs2 button{flex:1;display:grid;place-items:center;height:46px;border:0;border-radius:14px;background:#F1F1ED;color:#0B0B0F;font:inherit;font-size:15px;font-weight:800;text-decoration:none;cursor:pointer}',
@@ -539,12 +573,14 @@
     } else {
       // where the first button is: Safari 26's compact bar ⋯ bottom right, older iPhone Safari's share bottom middle,
       // iPad / Chrome / other iPhone browsers / Android browsers top right
-      if (SAFARI26 && !IPAD) { at = 'br'; chips = [[I_MORE, AT.more], [I_SHARE, AT.share], [I_ADD, AT.home]]; }
-      else if (IOS) { at = SAFARI && !IPAD ? 'bc' : 'tr'; chips = [[I_SHARE, AT.share], [I_ADD, AT.home]]; }
-      else { at = 'tr'; chips = [[I_KEBAB, AT.menu], [I_ADD, AT.home]]; }
+      var FIN = ['', AT.fin, AT.hFin], HOME = [I_ADD, AT.home, AT.hHome];
+      if (SAFARI26 && !IPAD) { at = 'br'; chips = [[I_MORE, AT.more, AT.hMore], [I_SHARE, AT.share, AT.hShareM], HOME, FIN]; }
+      else if (IOS) { at = SAFARI && !IPAD ? 'bc' : 'tr'; chips = [[I_SHARE, AT.share, at === 'bc' ? AT.hShareB : AT.hShareT], HOME, FIN]; }
+      else { at = 'tr'; chips = [[I_KEBAB, AT.menu, AT.hMenu], [I_ADD, AT.home, AT.hHomeA]]; }
       title = AT.tip;
-      body = '<div class="fl2">' + chips.map(function (c, i) { return '<span class="ch' + (i ? '' : ' f') + '">' + c[0] + c[1] + '</span>'; }).join('<span class="to">›</span>') + '</div>' +
-        (IOS ? '<p>' + AT.end + '</p>' : '');
+      body = '<ol class="st">' + chips.map(function (c, i) {
+        return '<li><em>' + (i + 1) + '</em><span class="sx"><span class="ch' + (i ? '' : ' f') + '">' + c[0] + c[1] + '</span><small>' + c[2] + '</small></span></li>';
+      }).join('') + '</ol><p class="kp">' + AT.keep + '</p>';
     }
     s.className = 'sheet ' + (at === 'c' ? 'c' : at.charAt(0));
     s.innerHTML = '<div class="pn"><div class="hd2">' + MARK + title + '</div>' + body + '<div class="bs2">' + ext + '<button class="ok">' + AT.ok + '</button></div></div>' +
