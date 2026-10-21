@@ -471,7 +471,12 @@
   var MARK = '<span class="am"><i></i></span>';
   var acss = [
     // the top bar's 앱 설치 button: lime, next to the language picker
-    '[data-owcs-hw] .ab{display:inline-flex;align-items:center;gap:5px;height:40px;padding:0 12px 0 10px;border:0;border-radius:12px;background:#C6FF33;color:#0B0B0F;font-family:inherit;font-size:15px;font-weight:800;line-height:1;white-space:nowrap;cursor:pointer}',
+    '[data-owcs-hw] .ab{display:inline-flex;align-items:center;gap:5px;height:40px;padding:0 12px 0 10px;border:1px solid #D6EE90;border-radius:12px;background:#EEFBC8;color:#0B0B0F;font-family:inherit;font-size:15px;font-weight:800;line-height:1;white-space:nowrap;cursor:pointer}',
+    // a soft lime, not the full accent: it sits beside the white language pill without shouting
+    '[data-owcs-hw] .ab svg{color:#5A7A0C}',
+    '[data-owcs-hw] .ab:hover{background:#E4F7A8}',
+    'html[data-owcs-dark] [data-owcs-hw] .ab{background:rgba(198,255,51,.12);border-color:rgba(198,255,51,.35);color:#F2F2F5}',
+    'html[data-owcs-dark] [data-owcs-hw] .ab svg{color:#C6FF33}',
     '[data-owcs-hw] .ab[hidden]{display:none}',
     '[data-owcs-hw] .ab .s{display:none}',
     // phones: 앱 (the long label meets the logo on a 390px iPhone), the icon alone under 375px
