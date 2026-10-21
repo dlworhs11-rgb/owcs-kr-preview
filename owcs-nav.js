@@ -71,7 +71,9 @@
     // (grey with a dark-lime top arc on the beige page, light grey and lime in dark mode)
     'a:has(> span .owt) > :first-child:not(span),[data-owcs-mtop] .mk{background:url(assets/app/logo-light.svg) center/contain no-repeat !important;border-radius:0 !important}' +
     // (dark mode: <html data-owcs-dark> on the other pages; the home page only switches its theme box's --owt to lime)
-    'html[data-owcs-dark] a:has(> span .owt) > :first-child:not(span),html[data-owcs-dark] [data-owcs-mtop] .mk,[style*="--owt: #C6FF33"] a:has(> span .owt) > :first-child:not(span),[style*="--owt:#C6FF33"] a:has(> span .owt) > :first-child:not(span){background-image:url(assets/app/logo-dark.svg) !important;background-color:transparent !important}' +   // owcs-dark.js turns the old dark tile light
+    'html[data-owcs-dark] a:has(> span .owt) > :first-child:not(span),html[data-owcs-dark] [data-owcs-mtop] .mk,[style*="--owt: #C6FF33"] a:has(> span .owt) > :first-child:not(span),[style*="--owt:#C6FF33"] a:has(> span .owt) > :first-child:not(span){background-image:url(assets/app/logo-dark.svg) !important;background-color:transparent !important}' +
+    // owcs-dark.js turns the old dark tile light on the results / player pages; one element more specific than its rule
+    'html[data-owcs-dark] #dc-root [data-screen-label] header a > div[style*="width: 30px"][style*="border-radius: 7px"][style*="background: rgb(11, 11, 15)"]{background-color:transparent !important}' +
     'a:has(> span .owt) > :first-child:not(span) > *,a:has(> span .owt) > :first-child:not(span):after,[data-owcs-mtop] .mk > *{display:none !important}';
   // shared footer (same as the home page): wordmark + channels | contact | notes, on the paper sheet, a hairline on top
   var F = 'html body footer.owft';
