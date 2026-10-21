@@ -84,12 +84,12 @@
     '[data-owcs-mtop] .wm span{font-size:inherit !important}' +
     // the logo mark: every page's header tile (a dark square with a lime dot, inline on some pages) drawn as the round logo
     // (black with a dark-lime top arc on the beige page, light grey and lime in dark mode)
-    'a:has(> span .owt) > :first-child:not(span),[data-owcs-mtop] .mk{background:url(assets/app/logo-light.svg) center/contain no-repeat !important;border-radius:0 !important;flex:none !important}' +
+    'a:has(> span .owt) > :first-child:not(span),[data-owcs-mtop] .mk{background:url(assets/app/logo-light.svg?v=2) center/contain no-repeat !important;border-radius:0 !important;flex:none !important}' +
     // a round mark reads smaller than the old square tile: 34px next to the 28px wordmark, 28px on phones (24px wordmark)
     'header a:has(> span .owt) > :first-child:not(span){width:34px !important;height:34px !important}' +
     '@media (max-width:899.98px){header a:has(> span .owt) > :first-child:not(span),[data-owcs-mtop] .mk{width:28px !important;height:28px !important}}' +
     // (dark mode: <html data-owcs-dark> on the other pages; the home page only switches its theme box's --owt to lime)
-    'html[data-owcs-dark] a:has(> span .owt) > :first-child:not(span),html[data-owcs-dark] [data-owcs-mtop] .mk,[style*="--owt: #C6FF33"] a:has(> span .owt) > :first-child:not(span),[style*="--owt:#C6FF33"] a:has(> span .owt) > :first-child:not(span){background-image:url(assets/app/logo-dark.svg) !important;background-color:transparent !important}' +
+    'html[data-owcs-dark] a:has(> span .owt) > :first-child:not(span),html[data-owcs-dark] [data-owcs-mtop] .mk,[style*="--owt: #C6FF33"] a:has(> span .owt) > :first-child:not(span),[style*="--owt:#C6FF33"] a:has(> span .owt) > :first-child:not(span){background-image:url(assets/app/logo-dark.svg?v=2) !important;background-color:transparent !important}' +
     // owcs-dark.js turns the old dark tile light on the results / player pages; one element more specific than its rule
     'html[data-owcs-dark] #dc-root [data-screen-label] header a > div[style*="width: 30px"][style*="border-radius: 7px"][style*="background: rgb(11, 11, 15)"]{background-color:transparent !important}' +
     'a:has(> span .owt) > :first-child:not(span) > *,a:has(> span .owt) > :first-child:not(span):after,[data-owcs-mtop] .mk > *{display:none !important}';
@@ -511,9 +511,9 @@
     if (!h || h.querySelector('link[rel="manifest"]')) return;
     var dk = isDark(), add = function (tag, at) { var x = document.createElement(tag); for (var k in at) x.setAttribute(k, at[k]); h.appendChild(x); };
     add('link', { rel: 'manifest', href: 'assets/app/owticker.webmanifest' });
-    add('link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: 'assets/app/favicon-32.png' });
-    add('link', { rel: 'icon', type: 'image/png', sizes: '48x48', href: 'assets/app/favicon-48.png' });
-    add('link', { rel: 'apple-touch-icon', href: 'assets/app/apple-touch-icon.png' });
+    add('link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: 'assets/app/favicon-32.png?v=2' });
+    add('link', { rel: 'icon', type: 'image/png', sizes: '48x48', href: 'assets/app/favicon-48.png?v=2' });
+    add('link', { rel: 'apple-touch-icon', href: 'assets/app/apple-touch-icon.png?v=2' });
     add('meta', { name: 'apple-mobile-web-app-capable', content: 'yes' });
     add('meta', { name: 'mobile-web-app-capable', content: 'yes' });
     add('meta', { name: 'apple-mobile-web-app-title', content: 'OWticker' });
