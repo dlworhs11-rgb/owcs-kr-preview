@@ -511,9 +511,9 @@
     if (!h || h.querySelector('link[rel="manifest"]')) return;
     var dk = isDark(), add = function (tag, at) { var x = document.createElement(tag); for (var k in at) x.setAttribute(k, at[k]); h.appendChild(x); };
     add('link', { rel: 'manifest', href: 'assets/app/owticker.webmanifest' });
-    add('link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: 'assets/app/favicon-32.png?v=2' });
-    add('link', { rel: 'icon', type: 'image/png', sizes: '48x48', href: 'assets/app/favicon-48.png?v=2' });
-    add('link', { rel: 'apple-touch-icon', href: 'assets/app/apple-touch-icon.png?v=2' });
+    add('link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: 'assets/app/favicon-32.png' });
+    add('link', { rel: 'icon', type: 'image/png', sizes: '48x48', href: 'assets/app/favicon-48.png' });
+    add('link', { rel: 'apple-touch-icon', href: 'assets/app/apple-touch-icon.png' });
     add('meta', { name: 'apple-mobile-web-app-capable', content: 'yes' });
     add('meta', { name: 'mobile-web-app-capable', content: 'yes' });
     add('meta', { name: 'apple-mobile-web-app-title', content: 'OWticker' });
