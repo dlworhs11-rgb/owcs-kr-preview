@@ -410,31 +410,32 @@
     var inset = logo ? logo.getBoundingClientRect().left - hr.left : 56;
     pin(host, hr.top - pr.top + (hr.height - 40) / 2, pr.right - hr.right + inset);
   }
-  // --- the site as a phone app (홈 화면에 추가): the manifest and icons in the head, a service worker, an item in the
-  // ⋮ / ☰ menu, and a banner at the bottom of a phone from the second visit. Android / desktop Chrome install with one
-  // tap (beforeinstallprompt); an iPhone can't be asked, so the item opens a 3-step guide (공유 → 홈 화면에 추가 → 추가).
-  // In-app browsers (KakaoTalk, Instagram ...) can't install at all: the guide sends the page to the real browser.
-  // Temporary icons (the header's mark) in assets/app until the logo: replace the PNGs there, same names.
+  // --- the site as a phone app (홈 화면에 추가): the manifest and icons in the head, a service worker, a lime 앱 설치
+  // button in the top bar (next to the language picker, every page), and a banner at the bottom of a phone from the
+  // second visit. Android / desktop Chrome install with one tap (beforeinstallprompt). An iPhone can't be asked (Apple
+  // allows no install button), so the button shows the taps as icon chips (⋯ → 공유 → 홈 화면에 추가) with a bouncing
+  // arrow at the browser button to press first: bottom right in Safari 26's compact bar, bottom middle in older Safari,
+  // top right in Chrome / iPad. In-app browsers (KakaoTalk, Instagram ...) can't install at all: the guide sends the
+  // page to the real browser. Temporary icons (the header's mark) in assets/app until the logo: replace the PNGs there.
   var AT = {
-    ko: { add: '앱으로 설치', bn: '홈 화면에 OWticker 추가', bs: '앱처럼 바로 열려요. 경기 결과를 한 번에 확인하세요', go: '추가', no: '닫기', ok: '확인',
-      iosT: '홈 화면에 추가하기', ios: ['아래 공유 버튼 {S}을 눌러요', '<b>홈 화면에 추가</b>를 눌러요', '오른쪽 위 <b>추가</b>를 누르면 끝이에요'],
-      andT: '홈 화면에 추가하기', and: ['오른쪽 위 메뉴 <b>⋮</b>를 눌러요', '<b>홈 화면에 추가</b> 또는 <b>앱 설치</b>를 눌러요'],
+    ko: { add: '앱 설치', addS: '앱', bn: '홈 화면에 OWticker 추가', bs: '앱처럼 바로 열려요. 경기 결과를 한 번에 확인하세요', go: '추가', no: '닫기', ok: '알겠어요',
+      tip: '화살표 버튼부터 이 순서로 눌러 주세요', more: '더보기', share: '공유', home: '홈 화면에 추가', menu: '메뉴', end: '마지막에 <b>추가</b>를 누르면 끝!',
       inT: '브라우저에서 열어 주세요', inapp: '이 앱 안의 화면에서는 설치가 안 돼요. 메뉴에서 <b>다른 브라우저로 열기</b>를 누른 뒤 다시 해 주세요.', ext: '브라우저로 열기' },
-    en: { add: 'Install app', bn: 'Add OWticker to your home screen', bs: 'Opens like an app, results in one tap', go: 'Add', no: 'Close', ok: 'OK',
-      iosT: 'Add to Home Screen', ios: ['Tap the share button {S}', 'Tap <b>Add to Home Screen</b>', 'Tap <b>Add</b> at the top right'],
-      andT: 'Add to Home Screen', and: ['Tap the browser menu <b>⋮</b>', 'Tap <b>Add to Home screen</b> or <b>Install app</b>'],
+    en: { add: 'Get app', addS: 'App', bn: 'Add OWticker to your home screen', bs: 'Opens like an app, results in one tap', go: 'Add', no: 'Close', ok: 'Got it',
+      tip: 'Tap these in order, starting at the arrow', more: 'More', share: 'Share', home: 'Add to Home Screen', menu: 'Menu', end: 'Then tap <b>Add</b> and you\'re done!',
       inT: 'Open in your browser', inapp: 'Apps can\'t be installed from this in-app browser. Choose <b>Open in browser</b> from its menu, then try again.', ext: 'Open in browser' },
-    ja: { add: 'アプリをインストール', bn: 'OWtickerをホーム画面に追加', bs: 'アプリのようにすぐ開けます', go: '追加', no: '閉じる', ok: 'OK',
-      iosT: 'ホーム画面に追加', ios: ['共有ボタン {S} をタップ', '<b>ホーム画面に追加</b>をタップ', '右上の<b>追加</b>をタップ'],
-      andT: 'ホーム画面に追加', and: ['ブラウザのメニュー <b>⋮</b> をタップ', '<b>ホーム画面に追加</b>または<b>アプリをインストール</b>をタップ'],
+    ja: { add: 'アプリ', addS: 'アプリ', bn: 'OWtickerをホーム画面に追加', bs: 'アプリのようにすぐ開けます', go: '追加', no: '閉じる', ok: 'OK',
+      tip: '矢印のボタンから順にタップ', more: 'その他', share: '共有', home: 'ホーム画面に追加', menu: 'メニュー', end: '最後に<b>追加</b>で完了！',
       inT: 'ブラウザで開いてください', inapp: 'このアプリ内ブラウザではインストールできません。メニューから<b>ブラウザで開く</b>を選んでください。', ext: 'ブラウザで開く' },
-    zh: { add: '安装应用', bn: '将 OWticker 添加到主屏幕', bs: '像应用一样直接打开', go: '添加', no: '关闭', ok: '确定',
-      iosT: '添加到主屏幕', ios: ['点按分享按钮 {S}', '点按<b>添加到主屏幕</b>', '点按右上角的<b>添加</b>'],
-      andT: '添加到主屏幕', and: ['点按浏览器菜单 <b>⋮</b>', '点按<b>添加到主屏幕</b>或<b>安装应用</b>'],
+    zh: { add: '安装', addS: '安装', bn: '将 OWticker 添加到主屏幕', bs: '像应用一样直接打开', go: '添加', no: '关闭', ok: '知道了',
+      tip: '从箭头处的按钮开始依次点按', more: '更多', share: '分享', home: '添加到主屏幕', menu: '菜单', end: '最后点按<b>添加</b>即可！',
       inT: '请在浏览器中打开', inapp: '此应用内浏览器无法安装。请在菜单中选择<b>在浏览器中打开</b>后重试。', ext: '在浏览器中打开' }
   }[LANG];
   var UA = navigator.userAgent || '';
-  var IOS = /iPhone|iPad|iPod/.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
+  var IPAD = /iPad/.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
+  var IOS = IPAD || /iPhone|iPod/.test(UA);
+  var SAFARI = IOS && !/CriOS|FxiOS|EdgiOS|OPiOS|Whale|NAVER|KAKAOTALK/i.test(UA);
+  var SAFARI26 = SAFARI && +((UA.match(/Version\/(\d+)/) || [])[1] || 0) >= 26;   // the compact bar: share is under ⋯
   var ANDROID = /Android/.test(UA);
   var INAPP = /KAKAOTALK|Instagram|FBAN|FBAV|NAVER\(inapp|Line\/|DaumApps|everytimeApp|BAND\//i.test(UA);
   var BIP = null;   // Chrome's install prompt, kept for the button
@@ -455,9 +456,21 @@
     // the status bar in the app: the page paper (cream / dark brown), as the top of every page
     if (!h.querySelector('meta[name="theme-color"]')) add('meta', { name: 'theme-color', content: dk ? '#13110E' : '#F1EDE5' });
   }
-  var SHARE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A84FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+  var ic = function (d, sz) { return '<svg width="' + (sz || 20) + '" height="' + (sz || 20) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>'; };
+  var I_SHARE = ic('<path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/>');
+  var I_MORE = ic('<circle cx="12" cy="12" r="10"/><circle cx="7.5" cy="12" r=".9" fill="currentColor"/><circle cx="12" cy="12" r=".9" fill="currentColor"/><circle cx="16.5" cy="12" r=".9" fill="currentColor"/>');
+  var I_ADD = ic('<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/>');
+  var I_KEBAB = ic('<circle cx="12" cy="5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="19" r="1.2" fill="currentColor"/>');
+  var I_PHONE = ic('<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 7v7M9 11l3 3 3-3"/>', 18);
   var MARK = '<span class="am"><i></i></span>';
   var acss = [
+    // the top bar's 앱 설치 button: lime, next to the language picker
+    '[data-owcs-hw] .ab{display:inline-flex;align-items:center;gap:5px;height:40px;padding:0 12px 0 10px;border:0;border-radius:12px;background:#C6FF33;color:#0B0B0F;font-family:inherit;font-size:15px;font-weight:800;line-height:1;white-space:nowrap;cursor:pointer}',
+    '[data-owcs-hw] .ab[hidden]{display:none}',
+    '[data-owcs-hw] .ab .s{display:none}',
+    // phones: 앱 (the long label meets the logo on a 390px iPhone), the icon alone under 375px
+    '@media (max-width:899.98px){[data-owcs-hw] .ab{height:36px;padding:0 10px 0 8px;font-size:14px}[data-owcs-hw] .ab .l{display:none}[data-owcs-hw] .ab .s{display:inline}}',
+    '@media (max-width:374.98px){[data-owcs-hw] .ab .s{display:none}[data-owcs-hw] .ab{padding:0 9px}}',
     '[data-owcs-app]{position:fixed;z-index:70;font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;color:#0B0B0F;text-align:left;line-height:1.45}',
     '[data-owcs-app] *{box-sizing:border-box}',
     '[data-owcs-app] .am{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:11px;background:#0B0B0F}',
@@ -468,40 +481,59 @@
     '[data-owcs-app] .bt span{display:block;font-size:12.5px;color:#55555C;margin-top:2px}',
     '[data-owcs-app] .go{flex:none;height:40px;padding:0 16px;border:0;border-radius:999px;background:#C6FF33;color:#0B0B0F;font:inherit;font-size:14px;font-weight:800;cursor:pointer}',
     '[data-owcs-app] .x{flex:none;width:32px;height:32px;margin-left:-4px;border:0;border-radius:50%;background:transparent;color:#55555C;font:inherit;font-size:20px;line-height:1;cursor:pointer}',
-    '[data-owcs-app].sheet{inset:0;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.45)}',
-    '[data-owcs-app] .pn{width:100%;max-width:440px;margin:12px;margin-bottom:calc(12px + env(safe-area-inset-bottom));padding:22px 20px 18px;border-radius:24px;background:#fff}',
-    '[data-owcs-app] .hd2{display:flex;align-items:center;gap:12px;font-size:18px;font-weight:800}',
-    '[data-owcs-app] ol{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}',
-    '[data-owcs-app] li{display:flex;align-items:center;gap:12px;font-size:15px}',
-    '[data-owcs-app] li em{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#0B0B0F;color:#C6FF33;font-style:normal;font-size:13px;font-weight:800}',
-    '[data-owcs-app] p{margin:14px 0 0;font-size:15px}',
-    '[data-owcs-app] .bs2{display:flex;gap:8px;margin-top:20px}',
+    // the guide: a dim page, one card, and a lime arrow bouncing at the browser button to press first
+    '[data-owcs-app].sheet{inset:0;display:flex;justify-content:center;background:rgba(0,0,0,.6)}',
+    '[data-owcs-app].sheet.b{align-items:flex-end;padding-bottom:calc(96px + env(safe-area-inset-bottom))}',
+    '[data-owcs-app].sheet.t{align-items:flex-start;padding-top:96px}',
+    '[data-owcs-app].sheet.c{align-items:center}',
+    '[data-owcs-app] .pn{width:100%;max-width:440px;margin:0 12px;padding:20px 18px 16px;border-radius:24px;background:#fff}',
+    '[data-owcs-app] .hd2{display:flex;align-items:center;gap:12px;font-size:17px;font-weight:800}',
+    '[data-owcs-app] .fl2{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:16px}',
+    '[data-owcs-app] .ch{display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 12px;border-radius:12px;background:#F1F1ED;font-size:15px;font-weight:800;white-space:nowrap}',
+    '[data-owcs-app] .ch svg{color:#0A84FF}',
+    '[data-owcs-app] .ch.f{background:#C6FF33;box-shadow:0 0 0 2px #0B0B0F}',
+    '[data-owcs-app] .ch.f svg{color:#0B0B0F}',
+    '[data-owcs-app] .to{color:#8A8A92;font-size:18px;font-weight:800}',
+    '[data-owcs-app] p{margin:12px 0 0;font-size:14.5px}',
+    '[data-owcs-app] .bs2{display:flex;gap:8px;margin-top:16px}',
     '[data-owcs-app] .bs2 a,[data-owcs-app] .bs2 button{flex:1;display:grid;place-items:center;height:46px;border:0;border-radius:14px;background:#F1F1ED;color:#0B0B0F;font:inherit;font-size:15px;font-weight:800;text-decoration:none;cursor:pointer}',
     '[data-owcs-app] .bs2 a{background:#0B0B0F;color:#fff}',
-    '@media (min-width:900px){[data-owcs-app].sheet{align-items:center}}',
+    '[data-owcs-app] .ar{position:fixed;width:56px;height:56px;color:#C6FF33;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));pointer-events:none}',
+    '[data-owcs-app] .ar.bc{left:calc(50% - 28px);bottom:calc(8px + env(safe-area-inset-bottom));animation:owapd 1s ease-in-out infinite}',
+    '[data-owcs-app] .ar.br{right:14px;bottom:calc(8px + env(safe-area-inset-bottom));animation:owapd 1s ease-in-out infinite}',
+    '[data-owcs-app] .ar.tr{right:14px;top:10px;transform:rotate(180deg);animation:owapu 1s ease-in-out infinite}',
+    '@keyframes owapd{50%{transform:translateY(10px)}}',
+    '@keyframes owapu{0%,100%{transform:rotate(180deg)}50%{transform:rotate(180deg) translateY(10px)}}',
     'html[data-owcs-dark] [data-owcs-app]{color:#F2F2F5}',
     'html[data-owcs-dark] [data-owcs-app].bar,html[data-owcs-dark] [data-owcs-app] .pn{background:#16161C;border-color:#2E2E37}',
     'html[data-owcs-dark] [data-owcs-app] .bt span,html[data-owcs-dark] [data-owcs-app] .x{color:#A3A3AD}',
-    'html[data-owcs-dark] [data-owcs-app] .bs2 button{background:#24242C;color:#F2F2F5}',
+    'html[data-owcs-dark] [data-owcs-app] .ch,html[data-owcs-dark] [data-owcs-app] .bs2 button{background:#24242C;color:#F2F2F5}',
+    'html[data-owcs-dark] [data-owcs-app] .ch.f{background:#C6FF33;color:#0B0B0F;box-shadow:none}',
     'html[data-owcs-dark] [data-owcs-app] .bs2 a{background:#C6FF33;color:#0B0B0F}'
   ].join('\n');
   function closeApp() { Array.prototype.forEach.call(document.querySelectorAll('[data-owcs-app]'), function (x) { x.remove(); }); }
   function appGuide() {
     closeApp();
-    var s = document.createElement('div'), steps, title, body = '', ext = '';
+    var s = document.createElement('div'), title, body = '', ext = '', at = 'c', chips;
     s.setAttribute('data-owcs-app', '');
-    s.className = 'sheet';
     if (INAPP) {
       title = AT.inT;
       body = '<p>' + AT.inapp + '</p>';
       // KakaoTalk can hand the page to the phone's own browser (Safari / Chrome) itself
       if (/KAKAOTALK/i.test(UA)) ext = '<a href="kakaotalk://web/openExternal?url=' + encodeURIComponent(location.href) + '">' + AT.ext + '</a>';
     } else {
-      title = IOS ? AT.iosT : AT.andT;
-      steps = IOS ? AT.ios : AT.and;
-      body = '<ol>' + steps.map(function (t, i) { return '<li><em>' + (i + 1) + '</em><span>' + t.replace('{S}', SHARE) + '</span></li>'; }).join('') + '</ol>';
+      // where the first button is: Safari 26's compact bar ⋯ bottom right, older iPhone Safari's share bottom middle,
+      // iPad / Chrome / other iPhone browsers / Android browsers top right
+      if (SAFARI26 && !IPAD) { at = 'br'; chips = [[I_MORE, AT.more], [I_SHARE, AT.share], [I_ADD, AT.home]]; }
+      else if (IOS) { at = SAFARI && !IPAD ? 'bc' : 'tr'; chips = [[I_SHARE, AT.share], [I_ADD, AT.home]]; }
+      else { at = 'tr'; chips = [[I_KEBAB, AT.menu], [I_ADD, AT.home]]; }
+      title = AT.tip;
+      body = '<div class="fl2">' + chips.map(function (c, i) { return '<span class="ch' + (i ? '' : ' f') + '">' + c[0] + c[1] + '</span>'; }).join('<span class="to">›</span>') + '</div>' +
+        (IOS ? '<p>' + AT.end + '</p>' : '');
     }
-    s.innerHTML = '<div class="pn"><div class="hd2">' + MARK + title + '</div>' + body + '<div class="bs2">' + ext + '<button class="ok">' + AT.ok + '</button></div></div>';
+    s.className = 'sheet ' + (at === 'c' ? 'c' : at.charAt(0));
+    s.innerHTML = '<div class="pn"><div class="hd2">' + MARK + title + '</div>' + body + '<div class="bs2">' + ext + '<button class="ok">' + AT.ok + '</button></div></div>' +
+      (at === 'c' ? '' : '<svg class="ar ' + at + '" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 3h4v11h5l-7 7-7-7h5z"/></svg>');
     s.onclick = function (e) { if (e.target === s || e.target.closest('.ok')) closeApp(); };
     document.body.appendChild(s);
   }
@@ -514,19 +546,19 @@
     }
     appGuide();
   }
-  // the menu item, in the ⋮ menu (desktop) and the ☰ menu (phone / tablet, all pages but home, which keeps its own)
+  // the top bar's 앱 설치 button (every page; on a computer only when the browser offers an install)
   function appSync() {
-    var show = canAdd();
-    Array.prototype.forEach.call(document.querySelectorAll('[data-owcs-hw] .mw .dd, [data-owcs-mtop] .tb'), function (box) {
-      var b = box.querySelector('.ap');
-      if (!b && show) {
-        b = document.createElement('button');
-        b.className = box.classList.contains('tb') ? 'sw ap' : 'it hsw ap';
-        b.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 7v7M9 11l3 3 3-3"/></svg>' + AT.add;
-        b.onclick = function (e) { e.stopPropagation(); install(); };
-        box.appendChild(b);
-      } else if (b && !show) b.remove();
-    });
+    var w = HW, b = w && w.querySelector('.ab'), show = canAdd() || INAPP;
+    if (!w) return;
+    if (!b) {
+      b = document.createElement('button');
+      b.className = 'ab';
+      b.setAttribute('aria-label', AT.add);
+      b.innerHTML = I_PHONE + '<span class="l">' + AT.add + '</span><span class="s">' + AT.addS + '</span>';
+      b.onclick = function (e) { e.stopPropagation(); install(); };
+      w.insertBefore(b, w.firstChild);
+    }
+    if (b.hidden === show) b.hidden = !show;
   }
   function KEY(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
   // the bottom banner: phones only, from the second visit, not again for 14 days after 닫기
