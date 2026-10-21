@@ -70,8 +70,8 @@
     // the logo mark: every page's header tile (a dark square with a lime dot, inline on some pages) drawn as the round logo
     // (black on the beige page, lime in dark mode)
     'a:has(> span .owt) > :first-child:not(span),[data-owcs-mtop] .mk{background:url(assets/app/' + (/[?&]logo=2/.test(location.search) ? 'logo-light2' : 'logo-light') + '.svg) center/contain no-repeat !important;border-radius:0 !important}' +
-    // (dark mode: <html data-owcs-dark> on the other pages, data-tm="dark" on the home page's theme box)
-    'html[data-owcs-dark] a:has(> span .owt) > :first-child:not(span),html[data-owcs-dark] [data-owcs-mtop] .mk,[data-tm="dark"] a:has(> span .owt) > :first-child:not(span){background-image:url(assets/app/logo-dark.svg) !important}' +
+    // (dark mode: <html data-owcs-dark> on the other pages; the home page only switches its theme box's --owt to lime)
+    'html[data-owcs-dark] a:has(> span .owt) > :first-child:not(span),html[data-owcs-dark] [data-owcs-mtop] .mk,[style*="--owt: #C6FF33"] a:has(> span .owt) > :first-child:not(span),[style*="--owt:#C6FF33"] a:has(> span .owt) > :first-child:not(span){background-image:url(assets/app/logo-dark.svg) !important}' +
     'a:has(> span .owt) > :first-child:not(span) > *,a:has(> span .owt) > :first-child:not(span):after,[data-owcs-mtop] .mk > *{display:none !important}';
   // shared footer (same as the home page): wordmark + channels | contact | notes, on the paper sheet, a hairline on top
   var F = 'html body footer.owft';
