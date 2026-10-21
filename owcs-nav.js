@@ -68,7 +68,9 @@
   var owt = '.owt{font-style:italic;letter-spacing:.02em;padding-right:.06em}.owt b{font-weight:inherit;color:var(--owt,#6E8F14)}' +
     'html[data-owcs-dark] .owt b{color:#C6FF33}' +
     // the logo mark: every page's header tile (a dark square with a lime dot, inline on some pages) drawn as the round logo
-    'a:has(> span .owt) > :first-child:not(span),[data-owcs-mtop] .mk{background:url(assets/app/logo-badge.svg) center/contain no-repeat !important;border-radius:50% !important}' +
+    // (black on the beige page, lime in dark mode)
+    'a:has(> span .owt) > :first-child:not(span),[data-owcs-mtop] .mk{background:url(assets/app/' + (/[?&]logo=2/.test(location.search) ? 'logo-light2' : 'logo-light') + '.svg) center/contain no-repeat !important;border-radius:0 !important}' +
+    'html[data-owcs-dark] a:has(> span .owt) > :first-child:not(span),html[data-owcs-dark] [data-owcs-mtop] .mk{background-image:url(assets/app/logo-dark.svg) !important}' +
     'a:has(> span .owt) > :first-child:not(span) > *,a:has(> span .owt) > :first-child:not(span):after,[data-owcs-mtop] .mk > *{display:none !important}';
   // shared footer (same as the home page): wordmark + channels | contact | notes, on the paper sheet, a hairline on top
   var F = 'html body footer.owft';
