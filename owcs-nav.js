@@ -70,7 +70,7 @@
     // the logo mark: every page's header tile (a dark square with a lime dot, inline on some pages) drawn as the round logo
     // (black on the beige page, lime in dark mode)
     'a:has(> span .owt) > :first-child:not(span),[data-owcs-mtop] .mk{background:url(assets/app/' + (/[?&]logo=2/.test(location.search) ? 'logo-light2' : 'logo-light') + '.svg) center/contain no-repeat !important;border-radius:0 !important}' +
-    'html[data-owcs-dark] a:has(> span .owt) > :first-child:not(span),html[data-owcs-dark] [data-owcs-mtop] .mk{background-image:url(assets/app/logo-dark.svg) !important}' +
+    'html[data-owcs-logodk] a:has(> span .owt) > :first-child:not(span),html[data-owcs-logodk] [data-owcs-mtop] .mk{background-image:url(assets/app/logo-dark.svg) !important}' +
     'a:has(> span .owt) > :first-child:not(span) > *,a:has(> span .owt) > :first-child:not(span):after,[data-owcs-mtop] .mk > *{display:none !important}';
   // shared footer (same as the home page): wordmark + channels | contact | notes, on the paper sheet, a hairline on top
   var F = 'html body footer.owft';
@@ -398,6 +398,10 @@
   function place() {
     markNav();
     appSync();
+    // dark logo: the other pages mark dark mode on <html>, the home page only sets its lime --owt in dark mode
+    var ow = document.querySelector('.owt'), html = document.documentElement;
+    var dk = html.hasAttribute('data-owcs-dark') || (!!ow && /^#C6FF33$/i.test(getComputedStyle(ow).getPropertyValue('--owt').trim()));
+    if (dk !== html.hasAttribute('data-owcs-logodk')) dk ? html.setAttribute('data-owcs-logodk', '') : html.removeAttribute('data-owcs-logodk');
     if (window.innerWidth < 900) { if (HOME) placeHomeMobile(); else placeMobile(); return; }
     var h = Array.prototype.find.call(document.querySelectorAll('header'), function (x) { return x.offsetWidth > 0 && !x.closest('[data-owcs-mtop]'); });
     if (!h) return;
