@@ -22,6 +22,10 @@
     bday: function () {
       var td = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10), seen = {};
       O.players.forEach(function (p) { if (!seen[p.team]) { seen[p.team] = 1; p.birth = '2000' + td.slice(4); } });
+    },
+    // 동률: SEIJI and ZAN level on wins and set difference, SEIJI above on head-to-head (the build's standings[].tie)
+    tie: function () {
+      O.standings.forEach(function (s) { if (s.a === 'SEIJI') s.tie = [1, 0]; if (s.a === 'ZAN') s.tie = [0, 1]; });
     }
   };
   if (t && TESTS[t] && O) {
