@@ -138,7 +138,7 @@
     test();
     fs.addEventListener && fs.addEventListener('loadingdone', test);
     document.addEventListener('DOMContentLoaded', test);
-    window.addEventListener('load', show);
+    window.addEventListener('load', test);
   })();
   hst.textContent = centre + '\n' + hw + '\n' + owt + '\n' + ft;
   (document.head || document.documentElement).appendChild(hst);
