@@ -71,12 +71,13 @@
   var hst = document.createElement('style');
   // wordmark: italic caps, OW in lime (darker lime on the light header so it stays readable)
   // leaned 8deg past the italic, with a diagonal cut through the legs of K and R: two mask stripes over those letters
-  // (em boxes measured on TICKER, so they hold at every size; the .1em side padding keeps the italic overhang inside the mask
+  // (em boxes = the K and R advance boxes measured on TICKER, so they hold at every size and a cut never runs into the E;
+  // the .1em side padding keeps the italic overhang inside the mask
   // and the negative margins give the same width as before)
   var owt = '.owt{font-style:italic;letter-spacing:.02em;display:inline-block;line-height:1.214;padding:0 .1em;margin:0 -.04em 0 -.1em;transform:skewX(-8deg);' +
-      '--owcut:linear-gradient(150deg,transparent 58%,#000 58%,#000 63%,transparent 63%);' +
-      '-webkit-mask:var(--owcut) 2.402em 0/.711em 100% no-repeat,var(--owcut) 3.36em 0/.687em 100% no-repeat,linear-gradient(#000,#000);-webkit-mask-composite:xor;' +
-      'mask:var(--owcut) 2.402em 0/.711em 100% no-repeat,var(--owcut) 3.36em 0/.687em 100% no-repeat,linear-gradient(#000,#000);mask-composite:exclude}' +
+      '--owcut:linear-gradient(150deg,transparent 58.6%,#000 59.1%,#000 63.5%,transparent 64%);' +
+      '-webkit-mask:var(--owcut) 2.502em 0/.511em 100% no-repeat,var(--owcut) 3.46em 0/.487em 100% no-repeat,linear-gradient(#000,#000);-webkit-mask-composite:xor;' +
+      'mask:var(--owcut) 2.502em 0/.511em 100% no-repeat,var(--owcut) 3.46em 0/.487em 100% no-repeat,linear-gradient(#000,#000);mask-composite:exclude}' +
       '.owt b{font-weight:inherit;color:var(--owt,#6E8F14)}' +
     'html[data-owcs-dark] .owt b{color:#C6FF33}' +
     // phones / tablets: the top bar's wordmark 24px on every page (schedule / streams / live-viewing gave it 26px from their own .brand span rule)
@@ -443,7 +444,7 @@
   // allows no install button), so the button shows the taps as icon chips (⋯ → 공유 → 홈 화면에 추가) with a bouncing
   // arrow at the browser button to press first: bottom right in Safari 26's compact bar, bottom middle in older Safari,
   // top right in Chrome / iPad. In-app browsers (KakaoTalk, Instagram ...) can't install at all: the guide sends the
-  // page to the real browser. Temporary icons (the header's mark) in assets/app until the logo: replace the PNGs there.
+  // page to the real browser. Icons: assets/app (the logo).
   var AT = {
     ko: { add: '앱 설치', addS: '앱', bn: '홈 화면에 OWticker 추가', bs: '앱처럼 바로 열려요. 경기 결과를 한 번에 확인하세요', go: '추가', no: '닫기', ok: '알겠어요',
       tip: '홈 화면에 추가하는 법', more: '더보기', share: '공유', home: '홈 화면에 추가', menu: '메뉴', fin: '추가',
