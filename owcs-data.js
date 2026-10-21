@@ -17,6 +17,11 @@
       var W = { ZETA: 7, CR: 7, T1: 6, CB: 5, FLC: 5, O2: 4, ZAN: 4, PF: 2, SEIJI: 2 };
       O.standings.forEach(function (s) { if (W[s.a] != null) { s.w = W[s.a]; s.l = (s.a === 'PF' || s.a === 'SEIJI' ? 6 : 7) - s.w; } });
       O.standings.sort(function (a, b) { return b.w - a.w; });
+    },
+    // 생일: the first player of every team has a birthday today (KST)
+    bday: function () {
+      var td = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10), seen = {};
+      O.players.forEach(function (p) { if (!seen[p.team]) { seen[p.team] = 1; p.birth = '2000' + td.slice(4); } });
     }
   };
   if (t && TESTS[t] && O) {
