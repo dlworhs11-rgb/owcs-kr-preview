@@ -17,18 +17,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1021215525"></script>
-<script src="./owcs-datapoll.js?v=1021215525"></script>
-<script src="./owcs-phase.js?v=1021215525"></script>
-<script src="./owcs-i18n.js?v=1021215525"></script>
-<script src="./owcs-stats.js?v=1021215525"></script>
-<script src="./owcs-nav.js?v=1021215525"></script>
-<script src="./owcs-test.js?v=1021215525"></script>
-<script src="./owcs-maps.js?v=1021215525"></script>
-<script src="./owcs-bracket.js?v=1021215525"></script>
-<script src="./support.js?v=1021215525"></script>
-<script src="./owcs-theme.js?v=1021215525"></script>
-<script src="./owcs-theme-wise.js?v=1021215525"></script>
+<script src="./owcs-data.js?v=1021215813"></script>
+<script src="./owcs-datapoll.js?v=1021215813"></script>
+<script src="./owcs-phase.js?v=1021215813"></script>
+<script src="./owcs-i18n.js?v=1021215813"></script>
+<script src="./owcs-stats.js?v=1021215813"></script>
+<script src="./owcs-nav.js?v=1021215813"></script>
+<script src="./owcs-test.js?v=1021215813"></script>
+<script src="./owcs-maps.js?v=1021215813"></script>
+<script src="./owcs-bracket.js?v=1021215813"></script>
+<script src="./support.js?v=1021215813"></script>
+<script src="./owcs-theme.js?v=1021215813"></script>
+<script src="./owcs-theme-wise.js?v=1021215813"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1702,14 +1702,19 @@ class Component extends DCLogic {
         const norm = (x) => String(x || '').toLowerCase().replace(/[\s\-_.']/g, '');
         const leet = (x) => x.replace(/[013457]/g, (d) => ({ 0: 'o', 1: 'i', 3: 'e', 4: 'a', 5: 's', 7: 't' })[d]);
         const cho = (x) => [...x].map((c) => { const k = c.charCodeAt(0) - 0xAC00; return k >= 0 && k < 11172 ? CHO[Math.floor(k / 588)] : c; }).join('');
-        const raw = this.state.pq || '', q = norm(raw), onlyCho = /^[ㄱ-ㅎ]+$/.test(q);
+        // typed fast, the keyboard joins consonants (ㄹ+ㅍ → ㄿ) or sends the other jamo set (ᄑ): split / map them back.
+        // A lone consonant matches any syllable starting with it, also mixed with whole syllables (프ㄹ, ㅍ로)
+        const JO = { 'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ', 'ㄼ': 'ㄹㅂ', 'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ', 'ㅄ': 'ㅂㅅ' };
+        const jamo = (x) => x.replace(/[ᄀ-ᄒ]/g, (c) => CHO[c.charCodeAt(0) - 0x1100]).replace(/[ㄳㄵㄶㄺㄻㄼㄽㄾㄿㅀㅄ]/g, (c) => JO[c]);
+        const raw = this.state.pq || '', q = jamo(norm(raw));
+        const at = (a, b, i) => b.every((c, j) => a[i + j] === c || (/[ㄱ-ㅎ]/.test(c) && a[i + j] && cho(a[i + j]) === c));
+        const hit = (a, b) => { a = [...a]; b = [...b]; if (at(a, b, 0)) return a.length === b.length ? 3 : 2; for (let i = 1; i <= a.length - b.length; i++) if (at(a, b, i)) return 1; return 0; };
         const pool = D.players.map((p) => ({ p, keys: [p.id, p.ko, p.real, p.name], staff: '' }))
           .concat(Object.entries(D.staff || {}).flatMap(([a, xs]) => xs.map((x) => ({ p: { ...x, team: a }, keys: [x.id, x.ko], staff: x.role }))));
         const score = (keys) => {
           let best = 0;
           for (const k of keys.map(norm).filter(Boolean)) {
-            const ks = onlyCho ? [cho(k)] : [k, leet(k)], qs = onlyCho ? [q] : [q, leet(q)];
-            for (const a of ks) for (const b of qs) best = Math.max(best, a === b ? 3 : a.startsWith(b) ? 2 : a.includes(b) ? 1 : 0);
+            for (const a of [k, leet(k)]) for (const b of [q, leet(q)]) best = Math.max(best, hit(a, b));
           }
           return best;
         };
