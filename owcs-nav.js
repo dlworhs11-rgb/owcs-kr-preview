@@ -50,8 +50,10 @@
     // iPhone Safari draw the home page's current-page underline thin (순위 · 선수), unlike every other page's
     'header nav a{text-decoration:none}',
     // An underline, not a background: it follows the text, so it sits the same on every page whatever the button's size
-    'html body a[data-owcs-nv][data-owcs-nv].cur{color:var(--ink,#0B0B0F) !important;text-decoration-line:underline !important;text-decoration-style:solid !important;text-decoration-color:var(--ac2,#C6FF33) !important;text-decoration-thickness:5px !important;text-underline-offset:-1px !important;text-decoration-skip-ink:none !important}',
-    'html[data-owcs-dark] body a[data-owcs-nv][data-owcs-nv].cur{color:#F2F2F5 !important;text-decoration-thickness:2px !important;text-underline-offset:3px !important}',
+    'html body a[data-owcs-nv][data-owcs-nv].cur{color:var(--ink,#0B0B0F) !important;text-decoration-line:underline !important;text-decoration-style:solid !important;text-decoration-color:currentColor !important;text-decoration-thickness:5px !important;text-underline-offset:-1px !important;text-decoration-skip-ink:none !important}',
+    // current page: an ink underline on the light page (the neon lime was too loud on the beige), a thin lime one in dark mode
+    'html[data-owcs-dark] body a[data-owcs-nv][data-owcs-nv].cur{color:#F2F2F5 !important;text-decoration-color:#C6FF33 !important;text-decoration-thickness:2px !important;text-underline-offset:3px !important}',
+    '[style*="--owt: #C6FF33"] a[data-owcs-nv][data-owcs-nv].cur,[style*="--owt:#C6FF33"] a[data-owcs-nv][data-owcs-nv].cur{text-decoration-color:#C6FF33 !important;text-decoration-thickness:2px !important;text-underline-offset:3px !important}',
     'html[data-owcs-dark] [data-owcs-hw]{color:#F2F2F5}',
     'html[data-owcs-dark] [data-owcs-hw] .lb,html[data-owcs-dark] [data-owcs-hw] .dd{background:#16161C;border-color:#2E2E37}',
     'html[data-owcs-dark] [data-owcs-hw] .it{color:#A3A3AD}',
@@ -68,7 +70,7 @@
   var owt = '.owt{font-style:italic;letter-spacing:.02em;padding-right:.06em}.owt b{font-weight:inherit;color:var(--owt,#6E8F14)}' +
     'html[data-owcs-dark] .owt b{color:#C6FF33}' +
     // the logo mark: every page's header tile (a dark square with a lime dot, inline on some pages) drawn as the round logo
-    // (grey (#55555C) with a dark-lime top arc on the beige page, light grey and lime in dark mode)
+    // (black with a dark-lime top arc on the beige page, light grey and lime in dark mode)
     'a:has(> span .owt) > :first-child:not(span),[data-owcs-mtop] .mk{background:url(assets/app/logo-light.svg) center/contain no-repeat !important;border-radius:0 !important;flex:none !important}' +
     // a round mark reads smaller than the old square tile: 34px next to the 28px wordmark, 28px on phones (24px wordmark)
     'header a:has(> span .owt) > :first-child:not(span){width:34px !important;height:34px !important}' +
@@ -78,6 +80,8 @@
     // owcs-dark.js turns the old dark tile light on the results / player pages; one element more specific than its rule
     'html[data-owcs-dark] #dc-root [data-screen-label] header a > div[style*="width: 30px"][style*="border-radius: 7px"][style*="background: rgb(11, 11, 15)"]{background-color:transparent !important}' +
     'a:has(> span .owt) > :first-child:not(span) > *,a:has(> span .owt) > :first-child:not(span):after,[data-owcs-mtop] .mk > *{display:none !important}';
+  // the name under the icon when an iPhone adds the site to its home screen (otherwise the page title)
+  if (!document.querySelector('meta[name="apple-mobile-web-app-title"]')) { var amt = document.createElement('meta'); amt.name = 'apple-mobile-web-app-title'; amt.content = 'OWticker'; (document.head || document.documentElement).appendChild(amt); }
   // shared footer (same as the home page): wordmark + channels | contact | notes, on the paper sheet, a hairline on top
   var F = 'html body footer.owft';
   var ft = [
