@@ -45,7 +45,7 @@
     'html body a[data-owcs-nv]:hover{color:var(--ink,#0B0B0F) !important}',
     'html[data-owcs-dark] body a[data-owcs-nv][data-owcs-nv]{color:#A3A3AD !important}',
     'html[data-owcs-dark] body a[data-owcs-nv]:hover{color:#F2F2F5 !important}',
-    // light: a lime highlighter stroke under the word, just touching the letters' feet; dark: a thin lime line under it.
+    // light: an olive highlighter stroke under the word, just touching the letters' feet; dark: a thin lime line under it.
     // menu links: no underline but the current page's. Not inline on the pages' links: an inline text-decoration made
     // iPhone Safari draw the home page's current-page underline thin (순위 · 선수), unlike every other page's
     'header nav a{text-decoration:none}',
@@ -541,8 +541,6 @@
     '[data-owcs-app] .kp{margin:10px 0 0;font-size:13px;color:#55555C}',
     '[data-owcs-app].sheet .bs2{margin-top:12px}',
     '[data-owcs-app].sheet .bs2 button{height:42px}',
-    'html[data-owcs-dark] [data-owcs-app] .st em{background:#C6FF33;color:#0B0B0F}',
-    'html[data-owcs-dark] [data-owcs-app] .st small,html[data-owcs-dark] [data-owcs-app] .kp{color:#A3A3AD}',
     '[data-owcs-app] p{margin:12px 0 0;font-size:14.5px}',
     '[data-owcs-app] .bs2{display:flex;gap:8px;margin-top:16px}',
     '[data-owcs-app] .bs2 a,[data-owcs-app] .bs2 button{flex:1;display:grid;place-items:center;height:46px;border:0;border-radius:14px;background:#F1F1ED;color:#0B0B0F;font:inherit;font-size:15px;font-weight:800;text-decoration:none;cursor:pointer}',
@@ -553,12 +551,11 @@
     '[data-owcs-app] .ar.tr{right:14px;top:10px;transform:rotate(180deg);animation:owapu 1s ease-in-out infinite}',
     '@keyframes owapd{50%{transform:translateY(10px)}}',
     '@keyframes owapu{0%,100%{transform:rotate(180deg)}50%{transform:rotate(180deg) translateY(10px)}}',
-    'html[data-owcs-dark] [data-owcs-app]{color:#F2F2F5}',
-    'html[data-owcs-dark] [data-owcs-app].bar,html[data-owcs-dark] [data-owcs-app] .pn{background:#16161C;border-color:#2E2E37}',
+    // dark mode: the bottom banner turns dark; the guide stays a white card on a deeper dim, so it stands
+    // apart from the dark page (a dark card on the dark page read as one mass, 10-21)
+    'html[data-owcs-dark] [data-owcs-app].bar{color:#F2F2F5;background:#16161C;border-color:#2E2E37}',
     'html[data-owcs-dark] [data-owcs-app] .bt span,html[data-owcs-dark] [data-owcs-app] .x{color:#A3A3AD}',
-    'html[data-owcs-dark] [data-owcs-app] .ch,html[data-owcs-dark] [data-owcs-app] .bs2 button{background:#24242C;color:#F2F2F5}',
-    'html[data-owcs-dark] [data-owcs-app] .ch.f{background:#C6FF33;color:#0B0B0F;box-shadow:none}',
-    'html[data-owcs-dark] [data-owcs-app] .bs2 a{background:#C6FF33;color:#0B0B0F}'
+    'html[data-owcs-dark] [data-owcs-app].sheet{background:rgba(0,0,0,.75)}'
   ].join('\n');
   function closeApp() { Array.prototype.forEach.call(document.querySelectorAll('[data-owcs-app]'), function (x) { x.remove(); }); }
   function appGuide() {
