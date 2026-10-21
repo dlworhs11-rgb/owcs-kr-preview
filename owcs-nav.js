@@ -439,32 +439,32 @@
     pin(host, hr.top - pr.top + (hr.height - 40) / 2, pr.right - hr.right + inset);
   }
   // --- the site as a phone app (홈 화면에 추가): the manifest and icons in the head, a service worker, a lime 앱 설치
-  // button in the top bar (next to the language picker, every page), and a banner at the bottom of a phone from the
-  // second visit. Android / desktop Chrome install with one tap (beforeinstallprompt). An iPhone can't be asked (Apple
+  // button in the top bar (next to the language picker, every page; no bottom banner: the user found it pushy, 10-21).
+  // Android / desktop Chrome install with one tap (beforeinstallprompt). An iPhone can't be asked (Apple
   // allows no install button), so the button shows the taps as icon chips (⋯ → 공유 → 홈 화면에 추가) with a bouncing
   // arrow at the browser button to press first: bottom right in Safari 26's compact bar, bottom middle in older Safari,
   // top right in Chrome / iPad. In-app browsers (KakaoTalk, Instagram ...) can't install at all: the guide sends the
   // page to the real browser. Icons: assets/app (the logo).
   var AT = {
-    ko: { add: '앱 설치', addS: '앱', bn: '홈 화면에 OWticker 추가', bs: '앱처럼 바로 열려요. 경기 결과를 한 번에 확인하세요', go: '추가', no: '닫기', ok: '알겠어요',
+    ko: { add: '앱 설치', addS: '앱', ok: '알겠어요',
       tip: '홈 화면에 추가하는 법', more: '더보기', share: '공유', home: '홈 화면에 추가', menu: '메뉴', fin: '추가',
       hMore: '화면 오른쪽 아래, 화살표가 가리키는 버튼', hShareM: '열린 메뉴의 맨 위', hShareB: '화면 아래 가운데, 화살표가 가리키는 버튼', hShareT: '주소창 오른쪽 버튼',
       hHome: '목록을 아래로 조금 내리면 있어요', hFin: '오른쪽 위. 누르면 끝!', hMenu: '화면 오른쪽 위 ⋮ 버튼', hHomeA: '<b>앱 설치</b>라고 되어 있을 수도 있어요',
       keep: '이 안내는 위에 그대로 있어요. 보면서 하나씩 따라 하세요',
       inT: '브라우저에서 열어 주세요', inapp: '이 앱 안의 화면에서는 설치가 안 돼요. 메뉴에서 <b>다른 브라우저로 열기</b>를 누른 뒤 다시 해 주세요.', ext: '브라우저로 열기' },
-    en: { add: 'Get app', addS: 'App', bn: 'Add OWticker to your home screen', bs: 'Opens like an app, results in one tap', go: 'Add', no: 'Close', ok: 'Got it',
+    en: { add: 'Get app', addS: 'App', ok: 'Got it',
       tip: 'How to add it to your home screen', more: 'More', share: 'Share', home: 'Add to Home Screen', menu: 'Menu', fin: 'Add',
       hMore: 'Bottom right, where the arrow points', hShareM: 'Top of the menu that opens', hShareB: 'Bottom middle, where the arrow points', hShareT: 'Next to the address bar',
       hHome: 'Scroll the list down a little', hFin: 'Top right, and you\'re done!', hMenu: 'The ⋮ button at the top right', hHomeA: 'It may say <b>Install app</b>',
       keep: 'This guide stays up here. Follow it step by step',
       inT: 'Open in your browser', inapp: 'Apps can\'t be installed from this in-app browser. Choose <b>Open in browser</b> from its menu, then try again.', ext: 'Open in browser' },
-    ja: { add: 'アプリ', addS: 'アプリ', bn: 'OWtickerをホーム画面に追加', bs: 'アプリのようにすぐ開けます', go: '追加', no: '閉じる', ok: 'OK',
+    ja: { add: 'アプリ', addS: 'アプリ', ok: 'OK',
       tip: 'ホーム画面への追加方法', more: 'その他', share: '共有', home: 'ホーム画面に追加', menu: 'メニュー', fin: '追加',
       hMore: '右下、矢印のボタン', hShareM: '開いたメニューの一番上', hShareB: '下の中央、矢印のボタン', hShareT: 'アドレスバーの右',
       hHome: 'リストを少し下にスクロール', hFin: '右上。これで完了！', hMenu: '右上の ⋮ ボタン', hHomeA: '<b>アプリをインストール</b>の場合も',
       keep: 'この案内は上に表示されたままです',
       inT: 'ブラウザで開いてください', inapp: 'このアプリ内ブラウザではインストールできません。メニューから<b>ブラウザで開く</b>を選んでください。', ext: 'ブラウザで開く' },
-    zh: { add: '安装', addS: '安装', bn: '将 OWticker 添加到主屏幕', bs: '像应用一样直接打开', go: '添加', no: '关闭', ok: '知道了',
+    zh: { add: '安装', addS: '安装', ok: '知道了',
       tip: '如何添加到主屏幕', more: '更多', share: '分享', home: '添加到主屏幕', menu: '菜单', fin: '添加',
       hMore: '右下角，箭头所指的按钮', hShareM: '打开的菜单最上方', hShareB: '底部中间，箭头所指的按钮', hShareT: '地址栏右侧',
       hHome: '将列表向下滑一点', hFin: '右上角，完成！', hMenu: '右上角的 ⋮ 按钮', hHomeA: '也可能显示为<b>安装应用</b>',
@@ -515,12 +515,6 @@
     '[data-owcs-app] *{box-sizing:border-box}',
     '[data-owcs-app] .am{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:11px;background:#0B0B0F}',
     '[data-owcs-app] .am i{width:15px;height:15px;border-radius:4px;background:#C6FF33}',
-    '[data-owcs-app].bar{left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;padding:12px;border-radius:18px;background:#fff;border:1px solid #E6E6E1;box-shadow:0 14px 40px rgba(0,0,0,.18)}',
-    '[data-owcs-app] .bt{flex:1;min-width:0}',
-    '[data-owcs-app] .bt b{display:block;font-size:15px;font-weight:800}',
-    '[data-owcs-app] .bt span{display:block;font-size:12.5px;color:#55555C;margin-top:2px}',
-    '[data-owcs-app] .go{flex:none;height:40px;padding:0 16px;border:0;border-radius:999px;background:#C6FF33;color:#0B0B0F;font:inherit;font-size:14px;font-weight:800;cursor:pointer}',
-    '[data-owcs-app] .x{flex:none;width:32px;height:32px;margin-left:-4px;border:0;border-radius:50%;background:transparent;color:#55555C;font:inherit;font-size:20px;line-height:1;cursor:pointer}',
     // the guide: a dim page, one card, and a lime arrow bouncing at the browser button to press first
     '[data-owcs-app].sheet{inset:0;display:flex;justify-content:center;background:rgba(0,0,0,.6)}',
     '[data-owcs-app].sheet.b,[data-owcs-app].sheet.t{align-items:flex-start;padding-top:calc(12px + env(safe-area-inset-top))}',
@@ -561,10 +555,7 @@
     '[data-owcs-app] .ar.tr{right:6px;top:4px;transform:rotate(180deg);animation:owapu 1s ease-in-out infinite}',
     '@keyframes owapd{50%{transform:translateY(14px)}}',
     '@keyframes owapu{0%,100%{transform:rotate(180deg)}50%{transform:rotate(180deg) translateY(14px)}}',
-    // dark mode: the bottom banner turns dark; the guide stays a white card on a deeper dim, so it stands
-    // apart from the dark page (a dark card on the dark page read as one mass, 10-21)
-    'html[data-owcs-dark] [data-owcs-app].bar{color:#F2F2F5;background:#16161C;border-color:#2E2E37}',
-    'html[data-owcs-dark] [data-owcs-app] .bt span,html[data-owcs-dark] [data-owcs-app] .x{color:#A3A3AD}',
+    // dark mode: the guide stays a white card on a deeper dim, so it stands apart from the dark page (a dark card on the dark page read as one mass, 10-21)
     'html[data-owcs-dark] [data-owcs-app].sheet{background:rgba(0,0,0,.75)}'
   ].join('\n');
   function closeApp() { Array.prototype.forEach.call(document.querySelectorAll('[data-owcs-app]'), function (x) { x.remove(); }); }
@@ -618,33 +609,14 @@
     }
     if (b.hidden === show) b.hidden = !show;
   }
-  function KEY(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; }
-  // the bottom banner: phones only, from the second visit, not again for 14 days after 닫기
-  function appBanner() {
-    if (window.innerWidth >= 900 || !canAdd() && !INAPP || document.querySelector('[data-owcs-app]')) return;
-    if (/[?&](date|time|test)=/.test(location.search)) return;   // previews of a given day / made-up data
-    if (+(KEY('owcs-app-visits') || 0) < 2) return;
-    if (Date.now() - +(KEY('owcs-app-closed') || 0) < 14 * 864e5) return;
-    var b = document.createElement('div');
-    b.setAttribute('data-owcs-app', '');
-    b.className = 'bar';
-    b.innerHTML = MARK + '<div class="bt"><b>' + AT.bn + '</b><span>' + AT.bs + '</span></div><button class="go">' + AT.go + '</button><button class="x" aria-label="' + AT.no + '">×</button>';
-    b.querySelector('.go').onclick = install;
-    b.querySelector('.x').onclick = function () { KEY('owcs-app-closed', String(Date.now())); closeApp(); };
-    document.body.appendChild(b);
-  }
   function appInit() {
     appHead();
     var s = document.createElement('style');
     s.textContent = acss;
     document.head.appendChild(s);
-    try {   // one visit per browser session
-      if (!sessionStorage.getItem('owcs-app-v')) { sessionStorage.setItem('owcs-app-v', '1'); KEY('owcs-app-visits', String(+(KEY('owcs-app-visits') || 0) + 1)); }
-    } catch (e) {}
     if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('owcs-sw.js').catch(function () {});
     window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); BIP = e; appSync(); });
     window.addEventListener('appinstalled', function () { BIP = null; closeApp(); appSync(); });
-    setTimeout(appBanner, 4000);
   }
   appInit();
 
