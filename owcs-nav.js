@@ -545,12 +545,12 @@
     '[data-owcs-app] .bs2{display:flex;gap:8px;margin-top:16px}',
     '[data-owcs-app] .bs2 a,[data-owcs-app] .bs2 button{flex:1;display:grid;place-items:center;height:46px;border:0;border-radius:14px;background:#F1F1ED;color:#0B0B0F;font:inherit;font-size:15px;font-weight:800;text-decoration:none;cursor:pointer}',
     '[data-owcs-app] .bs2 a{background:#0B0B0F;color:#fff}',
-    '[data-owcs-app] .ar{position:fixed;width:56px;height:56px;color:#C6FF33;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));pointer-events:none}',
-    '[data-owcs-app] .ar.bc{left:calc(50% - 28px);bottom:calc(8px + env(safe-area-inset-bottom));animation:owapd 1s ease-in-out infinite}',
-    '[data-owcs-app] .ar.br{right:14px;bottom:calc(8px + env(safe-area-inset-bottom));animation:owapd 1s ease-in-out infinite}',
-    '[data-owcs-app] .ar.tr{right:14px;top:10px;transform:rotate(180deg);animation:owapu 1s ease-in-out infinite}',
-    '@keyframes owapd{50%{transform:translateY(10px)}}',
-    '@keyframes owapu{0%,100%{transform:rotate(180deg)}50%{transform:rotate(180deg) translateY(10px)}}',
+    '[data-owcs-app] .ar{position:fixed;width:88px;height:88px;color:#C6FF33;filter:drop-shadow(0 0 10px rgba(198,255,51,.55)) drop-shadow(0 3px 8px rgba(0,0,0,.6));pointer-events:none}',
+    '[data-owcs-app] .ar.bc{left:calc(50% - 44px);bottom:calc(8px + env(safe-area-inset-bottom));animation:owapd 1s ease-in-out infinite}',
+    '[data-owcs-app] .ar.br{right:13px;bottom:calc(8px + env(safe-area-inset-bottom));animation:owapd 1s ease-in-out infinite}',
+    '[data-owcs-app] .ar.tr{right:6px;top:4px;transform:rotate(180deg);animation:owapu 1s ease-in-out infinite}',
+    '@keyframes owapd{50%{transform:translateY(14px)}}',
+    '@keyframes owapu{0%,100%{transform:rotate(180deg)}50%{transform:rotate(180deg) translateY(14px)}}',
     // dark mode: the bottom banner turns dark; the guide stays a white card on a deeper dim, so it stands
     // apart from the dark page (a dark card on the dark page read as one mass, 10-21)
     'html[data-owcs-dark] [data-owcs-app].bar{color:#F2F2F5;background:#16161C;border-color:#2E2E37}',
@@ -581,7 +581,7 @@
     }
     s.className = 'sheet ' + (at === 'c' ? 'c' : at.charAt(0));
     s.innerHTML = '<div class="pn"><div class="hd2">' + MARK + title + '</div>' + body + '<div class="bs2">' + ext + '<button class="ok">' + AT.ok + '</button></div></div>' +
-      (at === 'c' ? '' : '<svg class="ar ' + at + '" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 3h4v11h5l-7 7-7-7h5z"/></svg>');
+      (at === 'c' ? '' : '<svg class="ar ' + at + '" viewBox="0 0 24 24" fill="currentColor" stroke="#0B0B0F" stroke-width="1" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2h5v11h5.5l-8 9-8-9h5.5z"/></svg>');
     s.onclick = function (e) { if (e.target === s || e.target.closest('.ok')) closeApp(); };
     document.body.appendChild(s);
   }
