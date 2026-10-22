@@ -584,8 +584,8 @@
     '[data-owcs-app] .ar.bc{left:calc(50% - 44px);bottom:calc(8px + env(safe-area-inset-bottom));animation:owapd 1s ease-in-out infinite}',
     '[data-owcs-app] .ar.br{right:13px;bottom:calc(8px + env(safe-area-inset-bottom));animation:owapd 1s ease-in-out infinite}',
     '[data-owcs-app] .ar.tr{right:6px;top:4px;transform:rotate(180deg);animation:owapu 1s ease-in-out infinite}',
-    '[data-owcs-app] .st .sx{position:relative}',
-    '[data-owcs-app] .pt{position:absolute;left:190px;top:0;width:40px;height:36px;color:#C6FF33;filter:drop-shadow(0 0 6px rgba(198,255,51,.7));animation:owapl 1s ease-in-out infinite;pointer-events:none}',
+    '[data-owcs-app] .rw{display:flex;align-items:center;gap:4px}',
+    '[data-owcs-app] .pt{flex:none;width:40px;height:36px;color:#C6FF33;filter:drop-shadow(0 0 6px rgba(198,255,51,.7));animation:owapl 1s ease-in-out infinite;pointer-events:none}',
     '@keyframes owapl{50%{transform:translateX(10px)}}',
     '@keyframes owapd{50%{transform:translateY(14px)}}',
     '@keyframes owapu{0%,100%{transform:rotate(180deg)}50%{transform:rotate(180deg) translateY(14px)}}',
@@ -613,7 +613,7 @@
       else { at = 'tr'; chips = [[I_KEBAB, AT.menu, AT.hMenu], [I_ADD, AT.home, AT.hHomeA]]; }
       title = AT.tip;
       body = '<ol class="st">' + chips.map(function (c, i) {
-        return '<li><em>' + (i + 1) + '</em><span class="sx"><' + (c[3] ? 'button type="button"' : 'span') + ' class="ch' + (i ? '' : ' f') + (c[3] ? ' sh' : '') + '">' + c[0] + c[1] + '</' + (c[3] ? 'button' : 'span') + '>' + (c[3] ? PTR : '') + '<small>' + c[2] + '</small></span></li>';
+        return '<li><em>' + (i + 1) + '</em><span class="sx"><span class="rw"><' + (c[3] ? 'button type="button"' : 'span') + ' class="ch' + (i ? '' : ' f') + (c[3] ? ' sh' : '') + '">' + c[0] + c[1] + '</' + (c[3] ? 'button' : 'span') + '>' + (c[3] ? PTR : '') + '</span><small>' + c[2] + '</small></span></li>';
       }).join('') + '</ol><p class="kp">' + AT.keep + '</p>';
     }
     s.className = 'sheet ' + (at === 'c' ? 'c' : at.charAt(0));
