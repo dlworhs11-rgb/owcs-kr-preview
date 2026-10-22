@@ -26,6 +26,23 @@
     // 동률: SEIJI and ZAN level on wins and set difference, SEIJI above on head-to-head (the build's standings[].tie)
     tie: function () {
       O.standings.forEach(function (s) { if (s.a === 'SEIJI') s.tie = [1, 0]; if (s.a === 'ZAN') s.tie = [0, 1]; });
+    },
+    // LCQ: seeding deciders done (ZETA CR T1 CB), LCQ 5v6 and 7v8 played, losers final + 8강 waiting. Use with &date=2026-11-01
+    lcq: function () {
+      var set = function (id, a, b, sa, sb) {
+        var m = O.matches.filter(function (x) { return x.id === '2026s3-' + id; })[0];
+        if (!m) return;
+        m.a = a; m.b = b; m.tbd = false;
+        if (sa != null) { m.sa = sa; m.sb = sb; m.played = true; m.live = false; }
+      };
+      set('p0', 'ZETA', 'CR', 3, 1); set('p1', 'T1', 'CB', 3, 2); set('p2', 'ZETA', 'T1', 3, 0);
+      set('p3', 'CR', 'CB', 3, 1); set('p4', 'ZETA', 'CB', 3, 1); set('p5', 'CR', 'T1', 3, 2);
+      set('p6', 'FLC', 'O2', 3, 2); set('p7', 'SEIJI', 'ZAN', 1, 3); set('p8', 'O2', 'ZAN');
+      set('p9', 'CB', 'FLC'); set('p10', 'T1', 'TBD'); set('p11', 'ZETA', 'TBD'); set('p12', 'CR', 'TBD');
+      var st = {}; O.standings.forEach(function (s) { st[s.a] = s; });
+      O.bracket.seeding = [['ZETA', 3, 0], ['CR', 2, 1], ['T1', 1, 2], ['CB', 0, 3]].map(function (r) {
+        return { a: r[0], w: st[r[0]].w + r[1], l: st[r[0]].l + r[2], sw: r[1], sl: r[2] };
+      });
     }
   };
   if (t && TESTS[t] && O) {
