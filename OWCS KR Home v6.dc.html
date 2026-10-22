@@ -17,18 +17,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1022234354"></script>
-<script src="./owcs-datapoll.js?v=1022234354"></script>
-<script src="./owcs-phase.js?v=1022234354"></script>
-<script src="./owcs-i18n.js?v=1022234354"></script>
-<script src="./owcs-stats.js?v=1022234354"></script>
-<script src="./owcs-nav.js?v=1022234354"></script>
-<script src="./owcs-test.js?v=1022234354"></script>
-<script src="./owcs-maps.js?v=1022234354"></script>
-<script src="./owcs-bracket.js?v=1022234354"></script>
-<script src="./support.js?v=1022234354"></script>
-<script src="./owcs-theme.js?v=1022234354"></script>
-<script src="./owcs-theme-wise.js?v=1022234354"></script>
+<script src="./owcs-data.js?v=1022235614"></script>
+<script src="./owcs-datapoll.js?v=1022235614"></script>
+<script src="./owcs-phase.js?v=1022235614"></script>
+<script src="./owcs-i18n.js?v=1022235614"></script>
+<script src="./owcs-stats.js?v=1022235614"></script>
+<script src="./owcs-nav.js?v=1022235614"></script>
+<script src="./owcs-test.js?v=1022235614"></script>
+<script src="./owcs-maps.js?v=1022235614"></script>
+<script src="./owcs-bracket.js?v=1022235614"></script>
+<script src="./support.js?v=1022235614"></script>
+<script src="./owcs-theme.js?v=1022235614"></script>
+<script src="./owcs-theme-wise.js?v=1022235614"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1149,6 +1149,8 @@ const STAGE_SHORT = D.stage.replace(/^\d{4} OWCS KR /, '');
 // "오늘 결과" cards: the same-width slot on both ends, so the score stays centred on every card - the POTM's bust on the
 // winner's end, the loser's logo faded on the other (cards without a POTM keep the same padding and type)
 // the slots shrink with the window (three cards share the row), so names and score never run into each other
+// POTM as the player page spells it (the broadcast capture writes KNIFE for Knife)
+const potmName = (id) => (D.players.find((x) => x.id.toLowerCase() === id.toLowerCase()) || { id }).id;
 const potmLook = (pm, side, loserLogo) => {
   const W = window.innerWidth || 1440, k = W >= 1360 ? 0 : W >= 1120 ? 1 : 2;
   const slot = [88, 64, 46][k], logo = [56, 42, 30][k];
@@ -1297,13 +1299,14 @@ const resolve = (tok) => {
   const part = D.teams.find((t) => norm(t.n).includes(k) || t.ko.includes(tok.trim())); return part ? part.a : null;
 };
 const heroName = (h) => window.OWCSMaps.heroName(h);
+const calMin = (m) => (m.bo || 5) >= 7 ? 120 : 90;   // calendar entry length as the official schedule shows it: BO5 1h30, BO7 2h
 const icsEsc = (s) => String(s).replace(/[,;\\]/g, (c) => '\\' + c);
 const icsTime = (ms) => new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
 const icsOf = (list) => {
   const ev = list.map((m) => {
     const t0 = new Date(m.date).getTime();
     const day = (d) => d.replace(/-/g, ''), next = (d) => dayOf(new Date(d + 'T12:00:00+09:00').getTime() + 86400e3);
-    const when = m.tbd ? ['DTSTART;VALUE=DATE:' + day(m.day), 'DTEND;VALUE=DATE:' + day(next(m.day))] : ['DTSTART:' + icsTime(t0), 'DTEND:' + icsTime(t0 + 2 * 3600e3)];
+    const when = m.tbd ? ['DTSTART;VALUE=DATE:' + day(m.day), 'DTEND;VALUE=DATE:' + day(next(m.day))] : ['DTSTART:' + icsTime(t0), 'DTEND:' + icsTime(t0 + calMin(m) * 60e3)];
     return ['BEGIN:VEVENT', 'UID:owcs-' + m.id + '@owcskr.fan', 'DTSTAMP:' + icsTime(t0), ...when,
       'SUMMARY:' + icsEsc(team(m.a).n + ' vs ' + team(m.b).n),
       'DESCRIPTION:' + icsEsc(D.stage + ' ' + (m.label || m.week + '주차') + ' · SOOP owesports 생중계 https://www.sooplive.com/station/owesports'),
@@ -1326,8 +1329,9 @@ const calUrl = (a, to) => !/^https:$/.test(location.protocol) ? calFile(a)
 const subPrev = () => { try { const v = JSON.parse(localStorage.getItem('owcs-subbed') || 'null'); return v === 'ALL' || Array.isArray(v) ? v : null; } catch (e) { return null; } };
 const gcalOf = (m) => {
   const t0 = new Date(m.date).getTime();
+  const day = (d) => d.replace(/-/g, '');   // start time not announced: an all-day entry, as the .ics does
   return 'https://calendar.google.com/calendar/render?' + new URLSearchParams({ action: 'TEMPLATE', text: team(m.a).n + ' vs ' + team(m.b).n,
-    dates: icsTime(t0) + '/' + icsTime(t0 + 2 * 3600e3), details: D.stage + ' ' + (m.label || m.week + '주차') + ' · SOOP owesports https://www.sooplive.com/station/owesports', location: 'SOOP owesports', ctz: (window.OWCSi18n && OWCSi18n.tz) || 'Asia/Seoul' }).toString();
+    dates: m.tbd ? day(m.day) + '/' + day(dayOf(new Date(m.day + 'T12:00:00+09:00').getTime() + 86400e3)) : icsTime(t0) + '/' + icsTime(t0 + calMin(m) * 60e3), details: D.stage + ' ' + (m.label || m.week + '주차') + ' · SOOP owesports https://www.sooplive.com/station/owesports', location: 'SOOP owesports', ctz: (window.OWCSi18n && OWCSi18n.tz) || 'Asia/Seoul' }).toString();
 };
 
 const DARK = { '--owt': '#C6FF33', '--glass': 'rgba(30,30,38,0.72)', '--paper': '#16161C', '--paper2': '#0E0E12', '--paper3': '#24242C', '--chip': '#22222A', '--chipLine': '#3A3A45', '--line': '#2E2E37', '--ink': '#F2F2F5', '--mute': '#A3A3AD', '--banner-edge': '#2E2E37' };
@@ -1665,7 +1669,7 @@ class Component extends DCLogic {
         status: !hero ? '' : hero.st === 'live' ? 'LIVE · ' + Math.max(1, heroSet) + '세트' : hero.st === 'done' ? (hero.nr ? '결과 대기' : '종료') : hero.tbd ? '시간 미정' : hmOf(hero) + ' 시작' },
       // broadcast crew in Korean (the source lists them romanized)
       cast: hero && hero.casters.length ? hero.casters.map((c) => ({ 'Sim Ji-soo': '심지수', 'Park Han-eol': '박한얼', 'AKaros': '장지수', 'Strings': '홍현성', 'ChangSik': '창식', 'Aid': '에이드' })[c] || c).join(' · ') : '발표 전',
-      potmLine: hero && hero.potm && !SP ? hero.potm : '',
+      potmLine: hero && hero.potm && !SP ? potmName(hero.potm) : '',
       showCrew: (P.showCasters ?? true) && !(sh && sh.st === 'done'),
       nx: nextM ? { when: md(nextM.date) + ' (' + dow(nextM.date) + ') ' + tmOf(nextM), a: nextM.a, b: nextM.b, la: logoBg(nextM.a, true), lb: logoBg(nextM.b, true) } : { when: '–', a: '', b: '', la: 'none', lb: 'none' },
       offNote: nextM ? '다음 경기 ' + md(nextM.date) + ' (' + dow(nextM.date) + ') ' + (nextM.tbd ? '· 시작 시간 발표 전' : hmOf(nextM) + ' KST') + ' · 방송이 시작되면 이곳에 자동으로 표시돼요' : '이번 스테이지 일정이 모두 끝났어요',
@@ -1693,7 +1697,7 @@ class Component extends DCLogic {
           bg: m.st === 'live' ? 'linear-gradient(135deg, rgba(217,45,32,.82), rgba(140,22,16,.78))' : m.st === 'up' ? 'transparent' : sel ? '#0B0B0F' : 'rgba(24,24,30,.82)',
           lift: sel ? 'translateY(-4px)' : 'none', sh: sel ? '0 10px 20px rgba(0,0,0,.3)' : 'none',
           fg: m.st === 'up' ? 'var(--ink,#0B0B0F)' : '#fff', op: 1, face, ...potmLook(pm, o[1] > o[3] ? 'left' : 'right', done && logoBg(o[1] > o[3] ? o[2] : o[0], true)),
-          sub: m.st === 'live' ? '● LIVE' : m.st === 'up' ? (m.tbd ? '시간 미정' : hmOf(m) + ' 시작') : m.potm && !SP ? 'POTM ' + m.potm : '', subC: m.st === 'up' ? 'var(--mute,#6B6B72)' : '#fff',
+          sub: m.st === 'live' ? '● LIVE' : m.st === 'up' ? (m.tbd ? '시간 미정' : hmOf(m) + ' 시작') : m.potm && !SP ? 'POTM ' + potmName(m.potm) : '', subC: m.st === 'up' ? 'var(--mute,#6B6B72)' : '#fff',
           // every card the same dark grey (not faded); the one being looked at turns black and lifts off the page
           bd: sel && m.st !== 'live' ? '2px solid #0B0B0F' : m.st === 'live' ? '2px solid #FF5A4F' : m.st === 'up' ? '2px dashed var(--mute,#9A9AA0)' : '2px solid rgba(255,255,255,.1)',
           go: () => { if (m.st === 'up') return; this.setState({ pick: m.id, mapsShown: true }); const t = document.getElementById('today'); t && t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }; }),
