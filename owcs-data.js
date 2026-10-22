@@ -31,6 +31,18 @@
     ig: function () {
       O.igReels = ['DeynsrKTCGE', 'DeynHf8Tgm1', 'DeyhWvITstt', 'Deyg0H7zKxX', 'DeygSiKTSw0', 'DewC6irTgXr'];
     },
+    // 1경기 끝: the day's first match over at 3:1 with maps, bans and POTM. Use with &date=<match day>&time=<between game 1 and 2>
+    g1done: function () {
+      var d = (location.search.match(/[?&]date=([\d-]+)/) || [])[1] || new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+      var m = O.matches.filter(function (x) { return x.day === d; })[0];
+      if (!m) return;
+      var P = [['Busan', '쟁탈', 'a', 2, 1, 'sombra', 'ana'], ['Kings Row', '혼합', 'b', 2, 3, 'cassidy', 'dva'], ['New Junk City', '플래시포인트', 'a', 3, 1, 'tracer', 'mauga'], ['Rialto', '호위', 'a', 3, 2, 'genji', 'kiriko']];
+      m.maps = P.map(function (p, i) {
+        return { no: i + 1, map: p[0], mode: p[1], winner: p[2], sa: p[3], sb: p[4], banFirst: 'a', bans: [{ t: 'a', h: p[5], code: p[5].slice(0, 3).toUpperCase() }, { t: 'b', h: p[6], code: p[6].slice(0, 3).toUpperCase() }] };
+      });
+      m.sa = 3; m.sb = 1; m.played = true; m.live = false;
+      m.potm = (O.players.filter(function (p) { return p.team === m.a; })[0] || {}).id || null;
+    },
     // LCQ: seeding deciders done (ZETA CR T1 CB), LCQ 5v6 and 7v8 played, losers final + 8강 waiting. Use with &date=2026-11-01
     lcq: function () {
       var set = function (id, a, b, sa, sb) {
