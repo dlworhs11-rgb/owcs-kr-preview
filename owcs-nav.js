@@ -39,6 +39,9 @@
     // on a phone they don't fit, so they start at the left and scroll
     '@media (max-width:899.98px){[data-owcs-mtop] nav a:first-child,header nav a[data-owcs-nv]:first-child{margin-left:auto !important}' +
     '[data-owcs-mtop] nav a:last-child,header nav a[data-owcs-nv]:last-child{margin-right:auto !important}}',
+    // phones: the 7 chips share the row, so 직관 is not cut off at the right edge (a language with longer labels still scrolls)
+    '@media (max-width:559.98px){[data-owcs-mtop] nav,header nav:has(> a[data-owcs-nv]){padding:0 10px 10px !important}' +
+    '[data-owcs-mtop] nav a,header nav a[data-owcs-nv]{flex:1 0 auto !important;justify-content:center !important;padding:0 clamp(6px,1.6vw,14px) !important}}',
     // the menu: the page you are on in ink with a short lime bar under it (the site's accent), the others muted
     // (html body + the doubled attribute: beats the phone menu's own chip colours, light and dark)
     'html body a[data-owcs-nv][data-owcs-nv]{color:var(--mute,#6B6B72) !important}',
@@ -659,6 +662,8 @@
 
   var busy = false;
   new MutationObserver(function () {
+    // until the 직관 안내 banner is in, place at once (before the first paint): put in 50 ms later it pushed the page down
+    if (!HOME && !document.querySelector('[data-owcs-tk]')) { place(); return; }
     if (busy) return;
     busy = true;
     setTimeout(function () { busy = false; place(); }, 50);   // not requestAnimationFrame: it never fires in a background tab

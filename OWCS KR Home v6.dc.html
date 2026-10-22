@@ -17,18 +17,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1022173644"></script>
-<script src="./owcs-datapoll.js?v=1022173644"></script>
-<script src="./owcs-phase.js?v=1022173644"></script>
-<script src="./owcs-i18n.js?v=1022173644"></script>
-<script src="./owcs-stats.js?v=1022173644"></script>
-<script src="./owcs-nav.js?v=1022173644"></script>
-<script src="./owcs-test.js?v=1022173644"></script>
-<script src="./owcs-maps.js?v=1022173644"></script>
-<script src="./owcs-bracket.js?v=1022173644"></script>
-<script src="./support.js?v=1022173644"></script>
-<script src="./owcs-theme.js?v=1022173644"></script>
-<script src="./owcs-theme-wise.js?v=1022173644"></script>
+<script src="./owcs-data.js?v=1022225938"></script>
+<script src="./owcs-datapoll.js?v=1022225938"></script>
+<script src="./owcs-phase.js?v=1022225938"></script>
+<script src="./owcs-i18n.js?v=1022225938"></script>
+<script src="./owcs-stats.js?v=1022225938"></script>
+<script src="./owcs-nav.js?v=1022225938"></script>
+<script src="./owcs-test.js?v=1022225938"></script>
+<script src="./owcs-maps.js?v=1022225938"></script>
+<script src="./owcs-bracket.js?v=1022225938"></script>
+<script src="./support.js?v=1022225938"></script>
+<script src="./owcs-theme.js?v=1022225938"></script>
+<script src="./owcs-theme-wise.js?v=1022225938"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -77,6 +77,29 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
+})();
+</script>
+<script>
+// Embeds only in the layout on show: all four layouts (PC, tablet, two phone) are in the page, and each hidden one
+// would load its own autoplaying SOOP / YouTube player (4 live streams at once on match night)
+(function () {
+  function sync() {
+    var fr = document.querySelectorAll('#dc-root [data-screen-label] iframe');
+    for (var i = 0; i < fr.length; i++) {
+      var f = fr[i], on = f.closest('[data-screen-label]').offsetWidth > 0, src = f.getAttribute('src');
+      if (!on && src && src !== 'about:blank') { f.setAttribute('data-owcs-src', src); f.setAttribute('src', 'about:blank'); }
+      else if (on && f.hasAttribute('data-owcs-src')) { f.setAttribute('src', f.getAttribute('data-owcs-src')); f.removeAttribute('data-owcs-src'); }
+    }
+  }
+  function hasFrame(n) { return n.nodeType === 1 && (n.tagName === 'IFRAME' || !!n.querySelector('iframe')); }
+  new MutationObserver(function (recs) {
+    for (var i = 0; i < recs.length; i++) {
+      var r = recs[i];
+      if (r.type === 'attributes' ? r.target.tagName === 'IFRAME' : Array.prototype.some.call(r.addedNodes, hasFrame)) { sync(); return; }
+    }
+  }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['src'] });
+  window.addEventListener('resize', sync);
+  window.addEventListener('load', sync);
 })();
 </script>
 </head>
