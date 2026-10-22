@@ -27,6 +27,10 @@
     tie: function () {
       O.standings.forEach(function (s) { if (s.a === 'SEIJI') s.tie = [1, 0]; if (s.a === 'ZAN') s.tie = [0, 1]; });
     },
+    // 인스타: the official Instagram reels the build fetches (owcs_cloud.ig_reels), for the 방송 예정 box. Use with &date=<match day>&time=12:00
+    ig: function () {
+      O.igReels = ['DeynsrKTCGE', 'DeynHf8Tgm1', 'DeyhWvITstt', 'Deyg0H7zKxX', 'DeygSiKTSw0', 'DewC6irTgXr'];
+    },
     // LCQ: seeding deciders done (ZETA CR T1 CB), LCQ 5v6 and 7v8 played, losers final + 8강 waiting. Use with &date=2026-11-01
     lcq: function () {
       var set = function (id, a, b, sa, sb) {
