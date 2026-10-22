@@ -16,18 +16,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1023001154"></script>
-<script src="./owcs-phase.js?v=1023001154"></script>
-<script src="./owcs-i18n.js?v=1023001154"></script>
-<script src="./owcs-stats.js?v=1023001154"></script>
-<script src="./owcs-nav.js?v=1023001154"></script>
-<script src="./owcs-dark.js?v=1023001154"></script>
-<script src="./owcs-test.js?v=1023001154"></script>
-<script src="./owcs-maps.js?v=1023001154"></script>
-<script src="./owcs-bracket.js?v=1023001154"></script>
-<script src="./support.js?v=1023001154"></script>
-<script src="./owcs-theme.js?v=1023001154"></script>
-<script src="./owcs-theme-wise.js?v=1023001154"></script>
+<script src="./owcs-data.js?v=1023001706"></script>
+<script src="./owcs-phase.js?v=1023001706"></script>
+<script src="./owcs-i18n.js?v=1023001706"></script>
+<script src="./owcs-stats.js?v=1023001706"></script>
+<script src="./owcs-nav.js?v=1023001706"></script>
+<script src="./owcs-dark.js?v=1023001706"></script>
+<script src="./owcs-test.js?v=1023001706"></script>
+<script src="./owcs-maps.js?v=1023001706"></script>
+<script src="./owcs-bracket.js?v=1023001706"></script>
+<script src="./support.js?v=1023001706"></script>
+<script src="./owcs-theme.js?v=1023001706"></script>
+<script src="./owcs-theme-wise.js?v=1023001706"></script>
 </head>
 <body>
 <x-dc>
@@ -87,7 +87,7 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 140px minmax(0,1fr) 96px 104px;gap:16px;align-items:center;min-height:76px;border-bottom:1px solid #ECECE7;padding:0 8px;background:{{ g.mine }}">
 <span style="font-size:15px;color:#55555C">{{ g.date }}</span>
 <span style="display:flex;align-items:center;justify-content:flex-end;gap:12px"><span style="font-size:17px;font-weight:{{ g.wa }};color:{{ g.ta }}">{{ g.na }}</span><span style="width:36px;height:36px;background:{{ g.ca }};opacity:{{ g.oa }}"></span></span>
-<span style="justify-self:center;padding:2px 16px;border-radius:12px;background:#0B0B0F;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:36px;text-align:center;letter-spacing:.02em;white-space:nowrap;filter:{{ blur }}"><span style="color:{{ g.sca }}">{{ g.sa }}</span> <span style="color:#55555C">:</span> <span style="color:{{ g.scb }}">{{ g.sb }}</span></span>
+<span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:36px;text-align:center;letter-spacing:.02em;filter:{{ blur }}"><span style="color:{{ g.ta }}">{{ g.sa }}</span> <span style="color:#B5B5BD">:</span> <span style="color:{{ g.tb }}">{{ g.sb }}</span></span>
 <span style="display:flex;align-items:center;gap:12px"><span style="width:36px;height:36px;background:{{ g.cb }};opacity:{{ g.ob }}"></span><span style="font-size:17px;font-weight:{{ g.wb }};color:{{ g.tb }}">{{ g.nb }}</span></span>
 <a href="{{ g.vod }}" target="_blank" style="display:inline-flex;align-items:center;justify-content:center;height:26px;padding:0 10px;border-radius:999px;background:#ECECE8;color:#0B0B0F;font-size:12px;font-weight:700;text-decoration:none" style-hover="background:#C6FF33;color:#0B0B0F">다시보기 ↗</a>
 <sc-if value="{{ g.hasMaps }}"><button onClick="{{ g.toggle }}" style="font:inherit;font-size:14px;font-weight:600;color:#0B0B0F;text-align:right;background:none;border:0;padding:0;cursor:pointer">{{ g.detailLabel }}</button></sc-if>
@@ -206,7 +206,7 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 <span style="flex:none;font-size:11px;color:#6B6B72;font-variant-numeric:tabular-nums">{{ g.dshort }}</span>
 <div onClick="{{ g.toggle }}" style="flex:1;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:14px;align-items:center;color:#0B0B0F;cursor:pointer">
 <span style="display:flex;align-items:center;justify-content:flex-end;gap:5px;min-width:0"><span style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;color:{{ g.ta }}">{{ g.a }}</span><span style="flex:none;width:20px;height:20px;background:{{ g.ca }};opacity:{{ g.oa }}"></span></span>
-<span style="justify-self:center;padding:1px 8px;border-radius:8px;background:#0B0B0F;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:21px;text-align:center;white-space:nowrap"><span style="color:{{ g.sca }}">{{ g.sa }}</span><span style="color:#55555C">:</span><span style="color:{{ g.scb }}">{{ g.sb }}</span></span>
+<span style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:21px;text-align:center;white-space:nowrap"><span style="color:{{ g.ta }}">{{ g.sa }}</span><span style="color:#B5B5BD">:</span><span style="color:{{ g.tb }}">{{ g.sb }}</span></span>
 <span style="display:flex;align-items:center;gap:5px;min-width:0"><span style="flex:none;width:20px;height:20px;background:{{ g.cb }};opacity:{{ g.ob }}"></span><span style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;color:{{ g.tb }}">{{ g.b }}</span></span>
 </div>
 <a href="{{ g.vod }}" target="_blank" rel="noopener" style="flex:none;display:inline-flex;align-items:center;height:26px;padding:0 8px;border-radius:999px;background:#ECECE8;color:#0B0B0F;font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap">다시보기</a>
@@ -348,8 +348,6 @@ class Component extends DCLogic {
           const A = SP ? winStyle(true) : winStyle(sa > sb), B = SP ? winStyle(true) : winStyle(sb > sa);
           if (SP) { sa = '–'; sb = '–'; }
           return { date: mdw(m.date), dshort: md(m.date), a: SHORT(m.a), b: SHORT(m.b), na: NAME(m.a), nb: NAME(m.b), sa, sb, ca: logo(m.a), cb: logo(m.b), oa: !SP && m.played && m.sa < m.sb ? .4 : 1, ob: !SP && m.played && m.sb < m.sa ? .4 : 1, wa: A.w, ta: A.t, wb: B.w, tb: B.t,
-            // score in a black box: winner lime, loser grey, like the home result cards (spoiler mode: both white)
-            sca: SP ? '#fff' : m.sa > m.sb ? '#C6FF33' : '#7E7E85', scb: SP ? '#fff' : m.sb > m.sa ? '#C6FF33' : '#7E7E85',
             href: 'OWCS KR Home v6.dc.html?date=' + m.day + '#today', vod: m.vod || 'https://www.sooplive.com/station/owesports/vod/review', mine: mine(m.a, m.b),
             hasMaps: !!(m.maps && m.maps.length), open: !!(m.maps && m.maps.length) && !!this.state.openRows[m.id], detailLabel: this.state.openRows[m.id] ? '맵 상세 ▴' : '맵 상세 ▾',
             toggle: () => this.setState((s) => ({ openRows: { ...s.openRows, [m.id]: !s.openRows[m.id] } })),
