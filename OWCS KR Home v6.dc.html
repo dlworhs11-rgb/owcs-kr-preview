@@ -17,18 +17,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1022233443"></script>
-<script src="./owcs-datapoll.js?v=1022233443"></script>
-<script src="./owcs-phase.js?v=1022233443"></script>
-<script src="./owcs-i18n.js?v=1022233443"></script>
-<script src="./owcs-stats.js?v=1022233443"></script>
-<script src="./owcs-nav.js?v=1022233443"></script>
-<script src="./owcs-test.js?v=1022233443"></script>
-<script src="./owcs-maps.js?v=1022233443"></script>
-<script src="./owcs-bracket.js?v=1022233443"></script>
-<script src="./support.js?v=1022233443"></script>
-<script src="./owcs-theme.js?v=1022233443"></script>
-<script src="./owcs-theme-wise.js?v=1022233443"></script>
+<script src="./owcs-data.js?v=1022233534"></script>
+<script src="./owcs-datapoll.js?v=1022233534"></script>
+<script src="./owcs-phase.js?v=1022233534"></script>
+<script src="./owcs-i18n.js?v=1022233534"></script>
+<script src="./owcs-stats.js?v=1022233534"></script>
+<script src="./owcs-nav.js?v=1022233534"></script>
+<script src="./owcs-test.js?v=1022233534"></script>
+<script src="./owcs-maps.js?v=1022233534"></script>
+<script src="./owcs-bracket.js?v=1022233534"></script>
+<script src="./support.js?v=1022233534"></script>
+<script src="./owcs-theme.js?v=1022233534"></script>
+<script src="./owcs-theme-wise.js?v=1022233534"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1569,7 +1569,7 @@ class Component extends DCLogic {
       // calendar subscription: owcs-kr-upcoming.ics (matches not played yet), rebuilt by the site's cloud refresh.
       // On the public site Google Calendar subscribes to it (stays current); opened from this PC it just downloads the file.
       calSubLabel: '구글 캘린더 구독', appleSubLabel: '애플 캘린더 구독',
-      appleOk: !/Windows/.test(navigator.userAgent),   // Windows has no Apple Calendar: only the Google button there
+      appleOk: !/Windows|Android/.test(navigator.userAgent),   // Windows and Android have no Apple Calendar: only the Google button there
       appleSubShort: '애플 캘린더', calSubShort: '구글 캘린더', shareShort: '공유',
       // my team, also set from the team card in the players section (same state, same localStorage key)
       myPickOpen: this.state.myPick, myPickToggle: () => this.setState((s) => ({ myPick: !s.myPick })),
