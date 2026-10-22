@@ -596,7 +596,7 @@
       title = AT.inT;
       body = '<p>' + AT.inapp + '</p>';
       // KakaoTalk can hand the page to the phone's own browser (Safari / Chrome) itself
-      if (/KAKAOTALK/i.test(UA)) ext = '<a href="kakaotalk://web/openExternal?url=' + encodeURIComponent(location.href) + '">' + AT.ext + '</a>';
+      if (/KAKAOTALK/i.test(UA)) ext = '<a href="kakaotalk://web/openExternal?url=' + encodeURIComponent(location.origin + location.pathname + '?app=1') + '">' + AT.ext + '</a>';
     } else {
       // where the first button is: Safari 26's compact bar ⋯ bottom right, older iPhone Safari's share bottom middle,
       // iPad / Chrome / other iPhone browsers / Android browsers top right
@@ -650,6 +650,11 @@
     if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('owcs-sw.js').catch(function () {});
     window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); BIP = e; appSync(); });
     window.addEventListener('appinstalled', function () { BIP = null; closeApp(); appSync(); });
+    // arriving from KakaoTalk's 브라우저로 열기 (?app=1): show the guide at once, no second tap on 앱 설치
+    if (/[?&]app=1/.test(location.search)) {
+      try { history.replaceState(null, '', location.pathname + location.hash); } catch (x) {}
+      setTimeout(function () { if (!INAPP && canAdd()) appGuide(); }, 700);
+    }
   }
   appInit();
 
