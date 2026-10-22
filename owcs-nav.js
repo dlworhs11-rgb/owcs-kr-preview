@@ -595,7 +595,10 @@
       title = AT.inT;
       body = '<p>' + AT.inapp + '</p>';
       // KakaoTalk can hand the page to the phone's own browser (Safari / Chrome) itself
-      if (/KAKAOTALK/i.test(UA)) ext = '<a href="kakaotalk://web/openExternal?url=' + encodeURIComponent(location.origin + location.pathname + '?app=1') + '">' + AT.ext + '</a>';
+      var back = location.origin + location.pathname + '?app=1';
+      if (/KAKAOTALK/i.test(UA)) ext = '<a href="kakaotalk://web/openExternal?url=' + encodeURIComponent(back) + '">' + AT.ext + '</a>';
+      // other iPhone apps (Google, X ...): iOS 17+ opens x-safari-https:// links in Safari itself
+      else if (IOS) ext = '<a href="x-safari-' + back + '">' + AT.ext + '</a>';
     } else {
       // where the first button is: Safari 26's compact bar ⋯ bottom right, older iPhone Safari's share bottom middle,
       // iPad / Chrome / other iPhone browsers / Android browsers top right
