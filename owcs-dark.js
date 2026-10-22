@@ -54,7 +54,7 @@
     D + 'body.ticket-page .brand i{background:#F2F2F5}',
     D + 'body.ticket-page nav a:hover,' + D + 'body.ticket-page nav a.on{background:#24242C;color:#F2F2F5}',
     D + 'body.ticket-page .chip,' + D + 'body.ticket-page .card,' + D + 'body.ticket-page .tablewrap,' + D + 'body.ticket-page .st,' + D + 'body.ticket-page .map{background:#16161C}',
-    D + 'body.ticket-page .eyebrow{color:#A3A3AD}' + D + 'body.ticket-page .title .ko,' + D + 'body.ticket-page .chip b{color:#B89BFF}',
+    D + 'body.ticket-page .eyebrow,' + D + 'body.ticket-page .title .ko{color:#A3A3AD}' + D + 'body.ticket-page .chip b{color:#B89BFF}',
     D + 'body.ticket-page .cta.ghost{color:#F2F2F5;border-color:#F2F2F5}',
     D + 'body.ticket-page .next{border:1px solid #2E2E37}',
     D + 'body.ticket-page th{border-bottom-color:#F2F2F5}',

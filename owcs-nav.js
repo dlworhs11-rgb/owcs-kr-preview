@@ -179,6 +179,8 @@
     'html[data-owcs-dark] [data-owcs-tk] a{box-shadow:inset 0 0 0 1px #2E2E37}',
     '@media (max-width:899.98px){',
     '  [data-owcs-tk]{padding:12px 20px}',
+    // block, not the schedule page's .m match-card grid (its 2nd column cut 10 px off the banner's right side)
+    '  [data-owcs-tk].m{display:block;border-radius:0}',
     '  [data-owcs-tk] a{grid-template-columns:auto minmax(0,1fr);gap:12px;padding:8px 10px;border-radius:14px}',
     '  [data-owcs-tk] img{width:56px;height:56px;border-radius:8px;padding:3px}',
     '  [data-owcs-tk] .k{font-size:12px}',
