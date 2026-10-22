@@ -43,6 +43,35 @@
       m.sa = 3; m.sb = 1; m.played = true; m.live = false;
       m.potm = (O.players.filter(function (p) { return p.team === m.a; })[0] || {}).id || null;
     },
+    // 경기일 끝: every match of that day over (3:1, 2:3, 3:0 ...) with maps, bans and POTM, earlier unplayed days given
+    // plain scores, standings recounted from them. Use with &date=<match day>&time=23:00
+    daydone: function () {
+      var d = (location.search.match(/[?&]date=([\d-]+)/) || [])[1] || new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+      var S = [[3, 1], [2, 3], [3, 0], [1, 3], [3, 2]], k = 0;
+      var P = [['Busan', '쟁탈', 'sombra', 'ana'], ['Kings Row', '혼합', 'cassidy', 'dva'], ['New Junk City', '플래시포인트', 'tracer', 'mauga'], ['Rialto', '호위', 'genji', 'kiriko'], ['Lijiang Tower', '쟁탈', 'widowmaker', 'lucio']];
+      O.matches.forEach(function (m) {
+        if (m.phase !== 'rs' || (m.played && !m.live) || m.day > d) return;
+        var s = S[k++ % S.length], ra = s[0], rb = s[1], w = [];
+        while (ra + rb > 1) { var x = (ra + rb) % 2 ? (ra >= rb ? 'a' : 'b') : (rb > 0 ? 'b' : 'a'); if (x === 'a' && !ra) x = 'b'; if (x === 'b' && !rb) x = 'a'; w.push(x); if (x === 'a') ra--; else rb--; }
+        w.push(s[0] > s[1] ? 'a' : 'b');
+        m.maps = m.day === d ? w.map(function (x, i) {
+          var p = P[i], sc = p[1] === '쟁탈' ? 2 : 3;
+          return { no: i + 1, map: p[0], mode: p[1], winner: x, sa: x === 'a' ? sc : sc - 1, sb: x === 'b' ? sc : sc - 1, banFirst: 'a', bans: [{ t: 'a', h: p[2], code: p[2].slice(0, 3).toUpperCase() }, { t: 'b', h: p[3], code: p[3].slice(0, 3).toUpperCase() }] };
+        }) : [];
+        m.sa = s[0]; m.sb = s[1]; m.played = true; m.live = false;
+        m.potm = (O.players.filter(function (p) { return p.team === (s[0] > s[1] ? m.a : m.b); })[0] || {}).id || null;
+      });
+      var tab = {};
+      O.standings.forEach(function (s) { tab[s.a] = { a: s.a, w: 0, l: 0, mw: 0, ml: 0, diff: 0 }; });
+      O.matches.forEach(function (m) {
+        if (m.phase !== 'rs' || !m.played || m.live || !tab[m.a] || !tab[m.b]) return;
+        var A = tab[m.a], B = tab[m.b];
+        A.mw += m.sa; A.ml += m.sb; B.mw += m.sb; B.ml += m.sa;
+        if (m.sa > m.sb) { A.w++; B.l++; } else { B.w++; A.l++; }
+      });
+      O.standings = Object.keys(tab).map(function (x) { var t = tab[x]; t.diff = t.mw - t.ml; return t; })
+        .sort(function (x, y) { return y.w - x.w || y.diff - x.diff; });
+    },
     // LCQ: seeding deciders done (ZETA CR T1 CB), LCQ 5v6 and 7v8 played, losers final + 8강 waiting. Use with &date=2026-11-01
     lcq: function () {
       var set = function (id, a, b, sa, sb) {
