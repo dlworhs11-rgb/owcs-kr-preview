@@ -28,6 +28,32 @@
   var stEnd = new Date((D.stageEnd || D.stageRange[1]) + 'T23:59:59+09:00').getTime();
   var po = q.get('phase') === 'po' || (now > rsEnd && now <= stEnd);
   var html = document.documentElement;
+  homePart();
+
+  // Home shows only the part of the postseason that comes next (user rule, 10-23: no playoff bracket while the LCQ
+  // is still to play): the seeding deciders + LCQ until their last match is over, then the playoffs. Before this
+  // stage starts (the finished stage's bracket) and after it ends, the whole bracket as before.
+  function homePart() {
+    var road = (D.matches || []).filter(function (m) { return m.phase === 'seed' || m.phase === 'lcq'; });
+    if (!road.length || now < new Date(D.stageRange[0] + 'T00:00:00+09:00').getTime() || now > stEnd) return;
+    var last = road.map(function (m) { return m.day; }).sort().pop();
+    var over = road.every(function (m) { return m.played && !m.live; }) || now > new Date(last + 'T23:59:59+09:00').getTime();
+    var part = over ? 'po' : 'road';
+    function set() {
+      Array.prototype.forEach.call(document.querySelectorAll('#tournament'), function (t) {
+        var b = t.querySelector('owcs-bracket');
+        if (b && b.getAttribute('part') !== part) b.setAttribute('part', part);
+        if (part !== 'road') return;
+        var k = t.firstElementChild, h = t.querySelector('h3');
+        // only the original words: the translated label (owcs-i18n) must not be put back to Korean
+        if (k && k.textContent === '토너먼트') k.textContent = '플레이오프 가는 길';
+        if (h && h.textContent === 'PLAYOFFS') h.textContent = 'SEEDING · LCQ';
+      });
+    }
+    var busy = false;
+    function go() { set(); new MutationObserver(function () { if (busy) return; busy = true; setTimeout(function () { busy = false; set(); }, 30); }).observe(document.body, { childList: true, subtree: true }); }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+  }
   if (!po) {
     // home during the regular season: the bracket shows from a week before the seeding deciders / LCQ start; the
     // finished stage's bracket stays until the next regular season starts (the data may switch stage weeks earlier)
