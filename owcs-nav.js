@@ -528,6 +528,8 @@
   var I_ADD = ic('<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/>');
   var I_KEBAB = ic('<circle cx="12" cy="5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="19" r="1.2" fill="currentColor"/>');
   var I_PHONE = ic('<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 7v7M9 11l3 3 3-3"/>', 18);
+  // a lime arrow beside the 공유창 열기 button (inside our own card, so it is the same on every phone)
+  var PTR = '<svg class="pt" viewBox="0 0 24 24" fill="currentColor" stroke="#0B0B0F" stroke-width="1" stroke-linejoin="round" aria-hidden="true"><path d="M2 12l9-8v5.5h11v5H11V20z"/></svg>';
   var MARK = '<span class="am"><i></i></span>';
   var acss = [
     // the top bar's 앱 설치 button: lime, next to the language picker
@@ -582,6 +584,9 @@
     '[data-owcs-app] .ar.bc{left:calc(50% - 44px);bottom:calc(8px + env(safe-area-inset-bottom));animation:owapd 1s ease-in-out infinite}',
     '[data-owcs-app] .ar.br{right:13px;bottom:calc(8px + env(safe-area-inset-bottom));animation:owapd 1s ease-in-out infinite}',
     '[data-owcs-app] .ar.tr{right:6px;top:4px;transform:rotate(180deg);animation:owapu 1s ease-in-out infinite}',
+    '[data-owcs-app] .st .sx{position:relative}',
+    '[data-owcs-app] .pt{position:absolute;left:190px;top:0;width:40px;height:36px;color:#C6FF33;filter:drop-shadow(0 0 6px rgba(198,255,51,.7));animation:owapl 1s ease-in-out infinite;pointer-events:none}',
+    '@keyframes owapl{50%{transform:translateX(10px)}}',
     '@keyframes owapd{50%{transform:translateY(14px)}}',
     '@keyframes owapu{0%,100%{transform:rotate(180deg)}50%{transform:rotate(180deg) translateY(14px)}}',
     // dark mode: the guide stays a white card on a deeper dim, so it stands apart from the dark page (a dark card on the dark page read as one mass, 10-21)
@@ -608,7 +613,7 @@
       else { at = 'tr'; chips = [[I_KEBAB, AT.menu, AT.hMenu], [I_ADD, AT.home, AT.hHomeA]]; }
       title = AT.tip;
       body = '<ol class="st">' + chips.map(function (c, i) {
-        return '<li><em>' + (i + 1) + '</em><span class="sx"><' + (c[3] ? 'button type="button"' : 'span') + ' class="ch' + (i ? '' : ' f') + (c[3] ? ' sh' : '') + '">' + c[0] + c[1] + '</' + (c[3] ? 'button' : 'span') + '><small>' + c[2] + '</small></span></li>';
+        return '<li><em>' + (i + 1) + '</em><span class="sx"><' + (c[3] ? 'button type="button"' : 'span') + ' class="ch' + (i ? '' : ' f') + (c[3] ? ' sh' : '') + '">' + c[0] + c[1] + '</' + (c[3] ? 'button' : 'span') + '>' + (c[3] ? PTR : '') + '<small>' + c[2] + '</small></span></li>';
       }).join('') + '</ol><p class="kp">' + AT.keep + '</p>';
     }
     s.className = 'sheet ' + (at === 'c' ? 'c' : at.charAt(0));
