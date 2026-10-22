@@ -474,25 +474,25 @@
   var AT = {
     ko: { add: '앱 설치', addS: '앱', ok: '알겠어요',
       tip: '홈 화면에 추가하는 법', more: '더보기', share: '공유', home: '홈 화면에 추가', menu: '메뉴', fin: '추가',
-      hMore: '화면 오른쪽 아래, 화살표가 가리키는 버튼', hShareM: '열린 메뉴의 맨 위', hShareB: '화면 아래 가운데, 화살표가 가리키는 버튼', hShareT: '주소창 오른쪽 버튼',
+      hMore: '화면 아래쪽, 주소창 근처 버튼', hShareM: '열린 메뉴의 맨 위', hShareB: '화면 아래쪽 버튼', hShareT: '주소창 근처 버튼', shareOpen: '공유창 열기', hShareOpen: '누르면 공유 목록이 바로 열려요',
       hHome: '목록을 아래로 조금 내리면 있어요', hFin: '오른쪽 위. 누르면 끝!', hMenu: '화면 오른쪽 위 ⋮ 버튼', hHomeA: '<b>앱 설치</b>라고 되어 있을 수도 있어요',
       keep: '이 안내는 위에 그대로 있어요. 보면서 하나씩 따라 하세요',
       inT: '브라우저에서 열어 주세요', inapp: '이 앱 안의 화면에서는 설치가 안 돼요. 메뉴에서 <b>다른 브라우저로 열기</b>를 누른 뒤 다시 해 주세요.', ext: '브라우저로 열기' },
     en: { add: 'Get app', addS: 'App', ok: 'Got it',
       tip: 'How to add it to your home screen', more: 'More', share: 'Share', home: 'Add to Home Screen', menu: 'Menu', fin: 'Add',
-      hMore: 'Bottom right, where the arrow points', hShareM: 'Top of the menu that opens', hShareB: 'Bottom middle, where the arrow points', hShareT: 'Next to the address bar',
+      hMore: 'Near the address bar, at the bottom', hShareM: 'Top of the menu that opens', hShareB: 'A button at the bottom', hShareT: 'Near the address bar', shareOpen: 'Open share sheet', hShareOpen: 'Opens the share list right away',
       hHome: 'Scroll the list down a little', hFin: 'Top right, and you\'re done!', hMenu: 'The ⋮ button at the top right', hHomeA: 'It may say <b>Install app</b>',
       keep: 'This guide stays up here. Follow it step by step',
       inT: 'Open in your browser', inapp: 'Apps can\'t be installed from this in-app browser. Choose <b>Open in browser</b> from its menu, then try again.', ext: 'Open in browser' },
     ja: { add: 'アプリ', addS: 'アプリ', ok: 'OK',
       tip: 'ホーム画面への追加方法', more: 'その他', share: '共有', home: 'ホーム画面に追加', menu: 'メニュー', fin: '追加',
-      hMore: '右下、矢印のボタン', hShareM: '開いたメニューの一番上', hShareB: '下の中央、矢印のボタン', hShareT: 'アドレスバーの右',
+      hMore: '下のアドレスバー付近のボタン', hShareM: '開いたメニューの一番上', hShareB: '下のボタン', hShareT: 'アドレスバー付近のボタン', shareOpen: '共有を開く', hShareOpen: '押すと共有リストがすぐ開きます',
       hHome: 'リストを少し下にスクロール', hFin: '右上。これで完了！', hMenu: '右上の ⋮ ボタン', hHomeA: '<b>アプリをインストール</b>の場合も',
       keep: 'この案内は上に表示されたままです',
       inT: 'ブラウザで開いてください', inapp: 'このアプリ内ブラウザではインストールできません。メニューから<b>ブラウザで開く</b>を選んでください。', ext: 'ブラウザで開く' },
     zh: { add: '安装', addS: '安装', ok: '知道了',
       tip: '如何添加到主屏幕', more: '更多', share: '分享', home: '添加到主屏幕', menu: '菜单', fin: '添加',
-      hMore: '右下角，箭头所指的按钮', hShareM: '打开的菜单最上方', hShareB: '底部中间，箭头所指的按钮', hShareT: '地址栏右侧',
+      hMore: '屏幕下方地址栏附近的按钮', hShareM: '打开的菜单最上方', hShareB: '屏幕下方的按钮', hShareT: '地址栏附近的按钮', shareOpen: '打开分享', hShareOpen: '点击后直接打开分享列表',
       hHome: '将列表向下滑一点', hFin: '右上角，完成！', hMenu: '右上角的 ⋮ 按钮', hHomeA: '也可能显示为<b>安装应用</b>',
       keep: '此说明会一直显示在上方',
       inT: '请在浏览器中打开', inapp: '此应用内浏览器无法安装。请在菜单中选择<b>在浏览器中打开</b>后重试。', ext: '在浏览器中打开' }
@@ -555,6 +555,7 @@
     '[data-owcs-app] .ch svg{color:#0A84FF}',
     '[data-owcs-app] .ch.f{background:#C6FF33;box-shadow:0 0 0 2px #0B0B0F}',
     '[data-owcs-app] .ch.f svg{color:#0B0B0F}',
+    '[data-owcs-app] button.ch{border:0;font-family:inherit;color:#0B0B0F;cursor:pointer}',
     '[data-owcs-app] .to{color:#8A8A92;font-size:18px;font-weight:800}',
     // the pages style ol / li themselves (borders, padding): reset here
     '[data-owcs-app] .st{list-style:none !important;margin:14px 0 0 !important;padding:0 !important;border:0 !important;background:none !important;box-shadow:none !important;display:flex;flex-direction:column;align-items:stretch !important;gap:8px}',
@@ -600,18 +601,22 @@
       // where the first button is: Safari 26's compact bar ⋯ bottom right, older iPhone Safari's share bottom middle,
       // iPad / Chrome / other iPhone browsers / Android browsers top right
       var FIN = ['', AT.fin, AT.hFin], HOME = [I_ADD, AT.home, AT.hHome];
-      if (SAFARI26 && !IPAD) { at = 'br'; chips = [[I_MORE, AT.more, AT.hMore], [I_SHARE, AT.share, AT.hShareM], HOME, FIN]; }
+      // iOS can open its own share list from a tap on the page (it holds 홈 화면에 추가): that skips ⋯ and 공유
+      if (IOS && navigator.share) { at = 'c'; chips = [[I_SHARE, AT.shareOpen, AT.hShareOpen, 1], HOME, FIN]; }
+      else if (SAFARI26 && !IPAD) { at = 'br'; chips = [[I_MORE, AT.more, AT.hMore], [I_SHARE, AT.share, AT.hShareM], HOME, FIN]; }
       else if (IOS) { at = SAFARI && !IPAD ? 'bc' : 'tr'; chips = [[I_SHARE, AT.share, at === 'bc' ? AT.hShareB : AT.hShareT], HOME, FIN]; }
       else { at = 'tr'; chips = [[I_KEBAB, AT.menu, AT.hMenu], [I_ADD, AT.home, AT.hHomeA]]; }
       title = AT.tip;
       body = '<ol class="st">' + chips.map(function (c, i) {
-        return '<li><em>' + (i + 1) + '</em><span class="sx"><span class="ch' + (i ? '' : ' f') + '">' + c[0] + c[1] + '</span><small>' + c[2] + '</small></span></li>';
+        return '<li><em>' + (i + 1) + '</em><span class="sx"><' + (c[3] ? 'button type="button"' : 'span') + ' class="ch' + (i ? '' : ' f') + (c[3] ? ' sh' : '') + '">' + c[0] + c[1] + '</' + (c[3] ? 'button' : 'span') + '><small>' + c[2] + '</small></span></li>';
       }).join('') + '</ol><p class="kp">' + AT.keep + '</p>';
     }
     s.className = 'sheet ' + (at === 'c' ? 'c' : at.charAt(0));
-    s.innerHTML = '<div class="pn"><div class="hd2">' + MARK + title + '</div>' + body + '<div class="bs2">' + ext + '<button class="ok">' + AT.ok + '</button></div></div>' +
-      (at === 'c' ? '' : '<svg class="ar ' + at + '" viewBox="0 0 24 24" fill="currentColor" stroke="#0B0B0F" stroke-width="1" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2h5v11h5.5l-8 9-8-9h5.5z"/></svg>');
-    s.onclick = function (e) { if (e.target === s || e.target.closest('.ok')) closeApp(); };
+    s.innerHTML = '<div class="pn"><div class="hd2">' + MARK + title + '</div>' + body + '<div class="bs2">' + ext + '<button class="ok">' + AT.ok + '</button></div></div>';
+    s.onclick = function (e) {
+      if (e.target.closest('.sh')) { try { navigator.share({ title: 'OWticker', url: location.origin + '/' }).catch(function () {}); } catch (x) {} return; }
+      if (e.target === s || e.target.closest('.ok')) closeApp();
+    };
     document.body.appendChild(s);
   }
   function install() {
