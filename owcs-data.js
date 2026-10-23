@@ -72,6 +72,20 @@
       O.standings = Object.keys(tab).map(function (x) { var t = tab[x]; t.diff = t.mw - t.ml; return t; })
         .sort(function (x, y) { return y.w - x.w || y.diff - x.diff; });
     },
+    // 방송 12명: 12 players with a channel live at once, spread over the teams in turn, live check just now
+    live12: function () {
+      var by = {}, order = [], pick = [];
+      O.players.forEach(function (p) {
+        if (!(p.chzzk || p.soop)) return;
+        if (!by[p.team]) { by[p.team] = []; order.push(p.team); }
+        by[p.team].push(p);
+      });
+      for (var i = 0; pick.length < 12 && order.some(function (t) { return by[t][i]; }); i++)
+        order.forEach(function (t) { if (pick.length < 12 && by[t][i]) pick.push(by[t][i]); });
+      O.live = {};
+      pick.forEach(function (p) { O.live[p.id] = p.chzzk || p.soop; });
+      O.liveChecked = new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 19) + '+09:00';
+    },
     // LCQ: seeding deciders done (ZETA CR T1 CB), LCQ 5v6 and 7v8 played, losers final + 8강 waiting. Use with &date=2026-11-01
     lcq: function () {
       var set = function (id, a, b, sa, sb) {
