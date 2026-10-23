@@ -16,18 +16,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1023205409"></script>
-<script src="./owcs-phase.js?v=1023205409"></script>
-<script src="./owcs-i18n.js?v=1023205409"></script>
-<script src="./owcs-stats.js?v=1023205409"></script>
-<script src="./owcs-nav.js?v=1023205409"></script>
-<script src="./owcs-dark.js?v=1023205409"></script>
-<script src="./owcs-test.js?v=1023205409"></script>
-<script src="./owcs-maps.js?v=1023205409"></script>
-<script src="./owcs-bracket.js?v=1023205409"></script>
-<script src="./support.js?v=1023205409"></script>
-<script src="./owcs-theme.js?v=1023205409"></script>
-<script src="./owcs-theme-wise.js?v=1023205409"></script>
+<script src="./owcs-data.js?v=1023212323"></script>
+<script src="./owcs-phase.js?v=1023212323"></script>
+<script src="./owcs-i18n.js?v=1023212323"></script>
+<script src="./owcs-stats.js?v=1023212323"></script>
+<script src="./owcs-nav.js?v=1023212323"></script>
+<script src="./owcs-dark.js?v=1023212323"></script>
+<script src="./owcs-test.js?v=1023212323"></script>
+<script src="./owcs-maps.js?v=1023212323"></script>
+<script src="./owcs-bracket.js?v=1023212323"></script>
+<script src="./support.js?v=1023212323"></script>
+<script src="./owcs-theme.js?v=1023212323"></script>
+<script src="./owcs-theme-wise.js?v=1023212323"></script>
 </head>
 <body>
 <x-dc>
@@ -418,7 +418,7 @@ class Component extends DCLogic {
           const top = Math.max(rows[0][1] || 0, rows[1][1] || 0), shown = (played || live) && !SP;
           const bo = (m && m.bo) || x.bo;
           const nx = !live && nextIds.includes(x.id);
-          return { when: x.when + (bo ? ' · BO' + bo : ''), tag: live ? 'LIVE' : nx ? '다음 경기' : x.round && x.round !== c.title ? x.round : '', tagC: live ? '#D92D20' : nx ? '#0B0B0F' : '#6B6B72',
+          return { when: x.when + (bo ? ' · FT' + (Math.floor(bo / 2) + 1) : ''), tag: live ? 'LIVE' : nx ? '다음 경기' : x.round && x.round !== c.title ? x.round : '', tagC: live ? '#D92D20' : nx ? '#0B0B0F' : '#6B6B72',
             tagB: nx ? '#C6FF33' : 'transparent', tagP: nx ? '0 8px' : '0',
             bd: live ? '2px solid #D92D20' : nx ? '2px solid #0B0B0F' : '1px solid #E1E1DB',
             rows: rows.map(([a, sc]) => { const st = !played || SP ? winStyle(true) : winStyle(sc === top);

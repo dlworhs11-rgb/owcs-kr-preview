@@ -180,7 +180,7 @@
         const shown = !SP && (played || live) && rows[0].a !== 'TBD';
         const top = Math.max(+rows[0].s || 0, +rows[1].s || 0);
         const day = String(x.when || '').split(' ').slice(0, opt && opt.short ? 1 : 2).join(' ');
-        const bo = (m && m.bo) || x.bo, boTxt = bo ? 'BO' + bo : '';   // seeding deciders / LCQ BO5, playoffs BO7 (from Liquipedia)
+        const bo = (m && m.bo) || x.bo, boTxt = bo ? 'FT' + (Math.floor(bo / 2) + 1) : '';   // Overwatch counts first-to (draw maps don't count): BO5 = FT3, BO7 = FT4
         const head = (opt && opt.round ? '<span>' + esc(opt.title || x.round) + '</span>' : '')
           + (live ? '<em>LIVE</em>' + (boTxt ? '<span>' + boTxt + '</span>' : '') : '<span>' + esc(day) + (boTxt ? ' · ' + boTxt : '') + '</span>' + (nx ? '<em class="nx">다음 경기</em>' : ''));
         return '<div class="m' + (live ? ' live' : nx ? ' next' : '') + '"><div class="mh">' + head + '</div>' + rows.map((r) => {
