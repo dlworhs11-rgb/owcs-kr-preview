@@ -17,18 +17,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1023225304"></script>
-<script src="./owcs-datapoll.js?v=1023225304"></script>
-<script src="./owcs-phase.js?v=1023225304"></script>
-<script src="./owcs-i18n.js?v=1023225304"></script>
-<script src="./owcs-stats.js?v=1023225304"></script>
-<script src="./owcs-nav.js?v=1023225304"></script>
-<script src="./owcs-test.js?v=1023225304"></script>
-<script src="./owcs-maps.js?v=1023225304"></script>
-<script src="./owcs-bracket.js?v=1023225304"></script>
-<script src="./support.js?v=1023225304"></script>
-<script src="./owcs-theme.js?v=1023225304"></script>
-<script src="./owcs-theme-wise.js?v=1023225304"></script>
+<script src="./owcs-data.js?v=1023225948"></script>
+<script src="./owcs-datapoll.js?v=1023225948"></script>
+<script src="./owcs-phase.js?v=1023225948"></script>
+<script src="./owcs-i18n.js?v=1023225948"></script>
+<script src="./owcs-stats.js?v=1023225948"></script>
+<script src="./owcs-nav.js?v=1023225948"></script>
+<script src="./owcs-test.js?v=1023225948"></script>
+<script src="./owcs-maps.js?v=1023225948"></script>
+<script src="./owcs-bracket.js?v=1023225948"></script>
+<script src="./support.js?v=1023225948"></script>
+<script src="./owcs-theme.js?v=1023225948"></script>
+<script src="./owcs-theme-wise.js?v=1023225948"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1124,7 +1124,7 @@ a{color:#7D39EB}a:hover{color:#0B0B0F}
 // player search placeholder: one of these players, picked at random on each page load (user's friends, 2026-10-21)
 const PS_PICK = ['Proper', 'LIP', 'HeeSang', 'vigilante', 'Checkmate', 'Fate', 'Kilo', 'Dumbbell', 'Knife', 'DONGHAK', 'ZEST', 'Mealgaru'][Math.floor(Math.random() * 12)];
 // team search: names people type that are not the team's English / Korean name
-const TEAM_ALIAS = { T1: ['티원'], O2: ['오투'], CR: ['크라', 'cr'], FLC: ['팔콘', 'falcons'], ZETA: ['제타'], ZAN: ['잔사'] };
+const TEAM_ALIAS = { T1: ['티원'], O2: ['오투'], CR: ['크라', 'cr'], FLC: ['팔콘', 'falcons'], ZETA: ['제타'], ROZE: ['로제', '잔사'], SEJ: ['세이지'] };
 const IGR = ((window.OWCS || {}).igReels || []).slice(0, 6);   // official Instagram reels for the match-day box
 const D = window.OWCS || { teams: [], players: [], matches: [], standings: [], live: {}, stage: 'OWCS KR', stageRange: ['', ''], stageEnd: '', bracket: null, playoffs: 4, lcq: 8, format: '', sources: '' };
 const TEAM = Object.fromEntries(D.teams.map((t) => [t.a, t]));
@@ -1404,7 +1404,8 @@ const icsOf = (list) => {
 // its add-by-link page, which only works on a computer (the phone app drops the cid). Android has no link, only copy-address.
 const IOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
 const ANDROID = /Android/.test(navigator.userAgent);
-const calFile = (a) => { const list = [].concat(a || []).map((x) => x.toLowerCase()).sort(); return 'owcs-kr-upcoming' + (list.length && list.length < D.teams.length ? '-' + list.join('-') : '') + '.ics'; };
+const ICS_SLUG = { SEJ: 'seiji', ROZE: 'zan' }; // calendar files keep the names published before the abbreviation changed
+const calFile = (a) => { const list = [].concat(a || []).map((x) => ICS_SLUG[x] || x.toLowerCase()).sort(); return 'owcs-kr-upcoming' + (list.length && list.length < D.teams.length ? '-' + list.join('-') : '') + '.ics'; };
 const calFeed = (a) => location.host + location.pathname.replace(/[^/]*$/, '') + calFile(a);
 const calUrl = (a, to) => !/^https:$/.test(location.protocol) ? calFile(a)
   : to === 'apple' ? 'webcal://' + calFeed(a) : 'https://calendar.google.com/calendar/r?cid=' + encodeURIComponent('webcal://' + calFeed(a));
