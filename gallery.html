@@ -22,7 +22,7 @@ textarea{width:100%;height:340px;resize:vertical;background:var(--panel);color:v
 ol{margin:22px 0 0;padding-left:20px;color:var(--mute);font-size:14px;line-height:1.7}
 .empty{color:var(--mute);padding:24px 0}
 </style>
-<script src="./owcs-data.js?v=1024013101"></script>
+<script src="./owcs-data.js?v=1024013347"></script>
 </head>
 <body>
 <main>
@@ -43,7 +43,6 @@ ol{margin:22px 0 0;padding-left:20px;color:var(--mute);font-size:14px;line-heigh
   var O = window.OWCS || { matches: [], teams: [] };
   var DOW = ['일', '월', '화', '수', '목', '금', '토'];
   var teamName = {};
-  (O.teams || []).concat(O.otherTeams || []).forEach(function (t) { if (t && t.a) teamName[t.a] = t.n; });
 
   function name(a) { return a === 'TBD' || !a ? '대진 미정' : (teamName[a] || a); }
   function clock(m) {
@@ -71,36 +70,51 @@ ol{margin:22px 0 0;padding-left:20px;color:var(--mute);font-size:14px;line-heigh
     return out.join('\n');
   }
 
-  var days = [];
-  O.matches.forEach(function (m) {
-    if (!m.played && days.indexOf(m.day) < 0) days.push(m.day);
-  });
-  days.sort();
+  var box = document.getElementById('days'), txt = document.getElementById('txt'), btn = document.getElementById('copy'), empty = document.getElementById('empty');
+  var cur = null;
 
-  var box = document.getElementById('days'), txt = document.getElementById('txt'), btn = document.getElementById('copy');
-  if (!days.length) {
-    document.getElementById('empty').hidden = false;
-    txt.hidden = btn.hidden = true;
-    return;
-  }
   function pick(day) {
+    cur = day;
     txt.value = build(day);
     Array.prototype.forEach.call(box.children, function (b) { b.classList.toggle('on', b.dataset.day === day); });
     btn.textContent = '문구 복사';
     btn.classList.remove('done');
+    delete btn.dataset.copied;
   }
-  days.forEach(function (day) {
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.dataset.day = day;
-    b.textContent = dayText(day).replace('요일', '');
-    b.onclick = function () { pick(day); };
-    box.appendChild(b);
-  });
-  pick(days[0]);
+  function render() {
+    O = window.OWCS || O;
+    teamName = {};
+    (O.teams || []).concat(O.otherTeams || []).forEach(function (t) { if (t && t.a) teamName[t.a] = t.n; });
+    var days = [];
+    O.matches.forEach(function (m) {
+      if (!m.played && days.indexOf(m.day) < 0) days.push(m.day);
+    });
+    days.sort();
+    box.innerHTML = '';
+    empty.hidden = days.length > 0;
+    txt.hidden = btn.hidden = !days.length;
+    if (!days.length) return;
+    days.forEach(function (day) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.dataset.day = day;
+      b.textContent = dayText(day).replace('요일', '');
+      b.onclick = function () { pick(day); };
+      box.appendChild(b);
+    });
+    var keep = cur && days.indexOf(cur) >= 0 ? cur : days[0];
+    var was = txt.value;
+    pick(keep);
+    if (was && txt.value === was && btn.dataset.copied) { btn.textContent = '복사됨 ✓'; btn.classList.add('done'); }
+  }
+  render();
+  // a page left open follows the site's data (a new owcs-data.js only when a build changed it)
+  setInterval(function () {
+    if (window.owcsDataPoll) window.owcsDataPoll(function (changed) { if (changed) render(); });
+  }, 60000);
 
   btn.onclick = function () {
-    function ok() { btn.textContent = '복사됨 ✓'; btn.classList.add('done'); }
+    function ok() { btn.textContent = '복사됨 ✓'; btn.classList.add('done'); btn.dataset.copied = '1'; }
     function fallback() {
       txt.select();
       try { document.execCommand('copy'); ok(); } catch (e) { btn.textContent = '길게 눌러 직접 복사하세요'; }
@@ -110,5 +124,6 @@ ol{margin:22px 0 0;padding-left:20px;color:var(--mute);font-size:14px;line-heigh
   };
 })();
 </script>
+<script src="./owcs-datapoll.js?v=1024013347"></script>
 </body>
 </html>
