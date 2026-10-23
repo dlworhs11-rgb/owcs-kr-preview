@@ -269,7 +269,7 @@ html[data-owcs-dark] .ct.out{background:#24242C}
 }
 html[data-owcs-dark] .calsec{--p3:#24242C}
 </style>
-<script src="./owcs-nav.js?v=1023214255"></script>
+<script src="./owcs-nav.js?v=1023215202"></script>
 </head>
 <body class="streams-page sched-page">
 <header><div class="wrap">
@@ -296,13 +296,13 @@ html[data-owcs-dark] .calsec{--p3:#24242C}
 </main>
 <footer class="owft"><div class="wrap ft-g"><div><div class="ft-logo"><span class="owt"><b>OW</b>TICKER</span></div><div class="ft-desc">OWCS 한국 경기의 일정, 결과, 선수 정보를 한국 팬을 위해 한곳에 모았어요.</div><div class="ft-ch"><span class="ft-k">OWCS 공식 채널</span><a href="https://x.com/OW_Esports_Asia" target="_blank" rel="noopener"><img src="assets/icons/x.png" alt="">X</a><a href="https://www.instagram.com/ow_esports_kr/" target="_blank" rel="noopener"><img src="assets/icons/instagram.png" alt="">Instagram</a><a href="https://www.sooplive.co.kr/station/owesports" target="_blank" rel="noopener"><img src="assets/icons/soop.png" alt="">SOOP 방송국</a></div></div><div><div class="ft-k">문의</div><a class="ft-mail" href="mailto:dlworhs26@gmail.com" style="display:flex;align-items:center;gap:8px;text-decoration:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>dlworhs26@gmail.com</a><a class="ft-mail" href="https://discord.gg/EEWwKmxKA5" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;margin-left:0;padding:0;text-decoration:none"><img src="assets/icons/discord.png" alt="" style="width:22px;height:22px;border-radius:6px;margin:0;flex:none">OWticker 팬 디스코드 · 피드백</a></div><div class="ft-note">일정은 Liquipedia에서 10분마다 가져와요. 비공식 팬 사이트입니다. Blizzard Entertainment, WDG, 각 팀과 제휴하거나 승인받지 않았습니다. Overwatch®와 영웅 이미지는 Blizzard Entertainment, Inc.의 상표·저작물이고, 팀 로고와 선수 사진의 권리는 각 소유자에게 있으며 요청하면 바로 내립니다.</div></div></footer>
 
-<script src="./owcs-data.js?v=1023214255"></script>
-<script src="./owcs-phase.js?v=1023214255"></script>
-<script src="./owcs-i18n.js?v=1023214255"></script>
-<script src="./owcs-stats.js?v=1023214255"></script>
-<script src="./owcs-dark.js?v=1023214255"></script>
-<script src="./owcs-bracket.js?v=1023214255"></script>
-<script src="./owcs-cases.js?v=1023214255"></script>
+<script src="./owcs-data.js?v=1023215202"></script>
+<script src="./owcs-phase.js?v=1023215202"></script>
+<script src="./owcs-i18n.js?v=1023215202"></script>
+<script src="./owcs-stats.js?v=1023215202"></script>
+<script src="./owcs-dark.js?v=1023215202"></script>
+<script src="./owcs-bracket.js?v=1023215202"></script>
+<script src="./owcs-cases.js?v=1023215202"></script>
 <script>
 (function () {
   var D = window.OWCS || { teams: [], matches: [] };
@@ -329,8 +329,8 @@ html[data-owcs-dark] .calsec{--p3:#24242C}
   var today = kstDay(nowMs);
 
   // team logo; TM is the team table to look in (a world tournament has its own, foreign teams included)
-  function logo(a, cls, TM) {
-    var t = (TM || TEAM)[a], u = t && (DARK ? (t.logoDark || t.logo) : t.logo);
+  function logo(a, cls, TM, light) {
+    var t = (TM || TEAM)[a], u = t && (DARK && !light ? (t.logoDark || t.logo) : t.logo);
     return u ? '<i class="lg ' + (cls || '') + '" style="background-image:url(\'' + esc(u) + '\')" title="' + esc(t.n) + '"></i>' : '<i class="lg tbd ' + (cls || '') + '"></i>';
   }
   function state(m) { return m.live ? 'live' : m.played ? 'done' : 'up'; }
@@ -599,9 +599,13 @@ html[data-owcs-dark] .calsec{--p3:#24242C}
 
   function chipOf(m, day) {
     var h = hideSc(m), lo = !h && m.st === 'done';
-    var fa = lo && m.sa < m.sb ? ' style="opacity:.4"' : '', fb = lo && m.sb < m.sa ? ' style="opacity:.4"' : '';
-    var la = logo(m.a).replace('<i ', '<i' + fa + ' '), lb = logo(m.b).replace('<i ', '<i' + fb + ' ');
-    return '<div class="gm' + (day === today ? ' now' : '') + '">' + la + '<b>' + esc(m.a) + '</b><span style="padding-left:2px">' + (h ? '' : m.sa) + '</span><span class="v">vs</span><span style="padding-right:2px">' + (h ? '' : m.sb) + '</span><b>' + esc(m.b) + '</b>' + lb + '</div>' +
+    // the loser's logo faded; added inside the logo's own style attribute (a second style attribute is dropped, and the logo with it)
+    var fade = function (html, on) { return on ? html.replace('style="', 'style="opacity:.4;') : html; };
+    var fa = lo && m.sa < m.sb, fb = lo && m.sb < m.sa;
+    var la = fade(logo(m.a), fa), lb = fade(logo(m.b), fb);
+    // today's chip is lime in both themes, so it takes the logos drawn for light backgrounds (the dark-mode white ones vanish on it)
+    var now = day === today, ca = now ? fade(logo(m.a, '', null, true), fa) : la, cb = now ? fade(logo(m.b, '', null, true), fb) : lb;
+    return '<div class="gm' + (now ? ' now' : '') + '">' + ca + '<b>' + esc(m.a) + '</b><span style="padding-left:2px">' + (h ? '' : m.sa) + '</span><span class="v">vs</span><span style="padding-right:2px">' + (h ? '' : m.sb) + '</span><b>' + esc(m.b) + '</b>' + cb + '</div>' +
       '<div class="gmm"' + (day < today ? ' style="opacity:.75"' : '') + '>' + la + '<span>' + (h ? 'vs' : m.sa + ':' + m.sb) + '</span>' + lb + '</div>';
   }
 
@@ -669,6 +673,6 @@ html[data-owcs-dark] .calsec{--p3:#24242C}
   }
 })();
 </script>
-<script src="./owcs-theme-wise.js?v=1023214255"></script>
+<script src="./owcs-theme-wise.js?v=1023215202"></script>
 </body>
 </html>
