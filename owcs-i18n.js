@@ -154,6 +154,7 @@
     ['플레이오프 직행은 어렵지만 라스트 찬스 예선은 확정이에요.', 'プレーオフ直行は難しいですが、ラストチャンス予選は確定です。', 'Direct playoffs are out of reach, but the LCQ is secured.', '直接晋级季后赛已无望，但已锁定最后机会预选赛。'],
     ['최소 라스트 찬스 예선은 확정이에요.', '少なくともラストチャンス予選は確定です。', 'At least the LCQ is secured.', '至少已锁定最后机会预选赛。'],
     ['경기 기준', '試合基準', 'matches', '场比赛为准'],
+    ['이번 스테이지 결과는 숨겼어요', '今ステージの結果は非表示', 'this stage hidden', '已隐藏本赛段结果'],
     // playoffs (seeding deciders / LCQ / bracket)
     ['플레이오프 대진표', 'プレーオフ トーナメント表', 'Playoff bracket', '季后赛对阵图'], ['플레이오프 가는 길', 'プレーオフへの道', 'Road to the playoffs', '季后赛之路'],['대진표 · 지난 시즌 보기', 'トーナメント表 · 過去シーズン', 'Bracket · past seasons', '对阵图 · 往届赛季'], ['시드 결정전', 'シード決定戦', 'Seeding deciders', '种子决定战'],
     ['시드 결정전 순위', 'シード決定戦 順位', 'Seeding standings', '种子决定战排名'], ['승자조 결승', '勝者側決勝', 'Upper final', '胜者组决赛'], ['패자조 준결승', '敗者側準決勝', 'Lower semifinal', '败者组半决赛'], ['패자조 결승', '敗者側決勝', 'Lower final', '败者组决赛'],
