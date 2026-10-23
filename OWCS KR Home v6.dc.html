@@ -17,18 +17,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1023180535"></script>
-<script src="./owcs-datapoll.js?v=1023180535"></script>
-<script src="./owcs-phase.js?v=1023180535"></script>
-<script src="./owcs-i18n.js?v=1023180535"></script>
-<script src="./owcs-stats.js?v=1023180535"></script>
-<script src="./owcs-nav.js?v=1023180535"></script>
-<script src="./owcs-test.js?v=1023180535"></script>
-<script src="./owcs-maps.js?v=1023180535"></script>
-<script src="./owcs-bracket.js?v=1023180535"></script>
-<script src="./support.js?v=1023180535"></script>
-<script src="./owcs-theme.js?v=1023180535"></script>
-<script src="./owcs-theme-wise.js?v=1023180535"></script>
+<script src="./owcs-data.js?v=1023180806"></script>
+<script src="./owcs-datapoll.js?v=1023180806"></script>
+<script src="./owcs-phase.js?v=1023180806"></script>
+<script src="./owcs-i18n.js?v=1023180806"></script>
+<script src="./owcs-stats.js?v=1023180806"></script>
+<script src="./owcs-nav.js?v=1023180806"></script>
+<script src="./owcs-test.js?v=1023180806"></script>
+<script src="./owcs-maps.js?v=1023180806"></script>
+<script src="./owcs-bracket.js?v=1023180806"></script>
+<script src="./support.js?v=1023180806"></script>
+<script src="./owcs-theme.js?v=1023180806"></script>
+<script src="./owcs-theme-wise.js?v=1023180806"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1788,18 +1788,19 @@ class Component extends DCLogic {
       mapsD: heroMaps, mapsM: heroMaps, mapsS: heroMaps.slice(0, 2),
       showRes: matchDay, resHint: SP ? '스포일러 방지 중 · 점수는 숨겨요' : '결과를 누르면 ' + (sh && sh.st === 'done' ? '아래에서' : '위에서') + ' 세트별 맵 · 밴 · 첫 조합을 볼 수 있어요',
       // all of today's matches, in order (not started yet: 0 : 0 and its start time); the POTM's face sits behind the card
-      todayRes: todays.map((m) => { const o = orient(m.a, m.sa, m.b, m.sb), on = m === (sh && sh.st === 'done' ? picked : hero), sel = on && todays.length > 1 && m.st !== 'up', done = m.st === 'done' && !SP && !m.nr;
+      todayRes: todays.map((m) => { const wait = held && !picked && m.st === 'live', ms = wait ? 'up' : m.st;   // the next match shows as not started yet while the last result is held
+        const o = orient(m.a, m.sa, m.b, m.sb), on = m === (sh && sh.st === 'done' ? picked : hero), sel = on && todays.length > 1 && ms !== 'up', done = ms === 'done' && !SP && !m.nr;
         const pm = done && m.potm ? D.players.find((x) => x.id.toLowerCase() === m.potm.toLowerCase() && x.photo) : null, f = pm && pm.face;
         const face = !pm ? '' : "url('" + pm.photo + "') " + (f ? Math.round(f[0] * 100) + '% ' + Math.round(f[1] * 100) + '%/auto ' + Math.round(110 / f[2]) + '%' : 'center 18%/auto 260%') + ' no-repeat, #2A2A32';   // round avatar on the POTM line
-        return { a: o[0], b: o[2], la: logoBg(o[0], m.st !== 'up' || DM), lb: logoBg(o[2], m.st !== 'up' || DM), mid: SP || m.nr ? 'vs' : m.st === 'up' ? '0 : 0' : o[1] + ' : ' + o[3],
+        return { a: o[0], b: o[2], la: logoBg(o[0], ms !== 'up' || DM), lb: logoBg(o[2], ms !== 'up' || DM), mid: SP || m.nr ? 'vs' : ms === 'up' ? '0 : 0' : o[1] + ' : ' + o[3],
           oa: done && o[1] < o[3] ? .4 : 1, ob: done && o[3] < o[1] ? .4 : 1,
-          bg: m.st === 'live' ? 'linear-gradient(135deg, rgba(217,45,32,.82), rgba(140,22,16,.78))' : m.st === 'up' ? 'transparent' : sel ? '#0B0B0F' : 'rgba(24,24,30,.82)',
+          bg: ms === 'live' ? 'linear-gradient(135deg, rgba(217,45,32,.82), rgba(140,22,16,.78))' : ms === 'up' ? 'transparent' : sel ? '#0B0B0F' : 'rgba(24,24,30,.82)',
           lift: sel ? 'translateY(-4px)' : 'none', sh: sel ? '0 10px 20px rgba(0,0,0,.3)' : 'none',
-          fg: m.st === 'up' ? 'var(--ink,#0B0B0F)' : '#fff', op: 1, face, ...potmLook(pm, o[1] > o[3] ? 'left' : 'right', done && logoBg(o[1] > o[3] ? o[2] : o[0], true)),
-          sub: m.st === 'live' ? '● LIVE' : m.st === 'up' ? (m.tbd ? '시간 미정' : hmOf(m) + ' 시작') : m.potm && !SP ? 'POTM ' + potmName(m.potm) : '', subC: m.st === 'up' ? 'var(--mute,#6B6B72)' : '#fff',
+          fg: ms === 'up' ? 'var(--ink,#0B0B0F)' : '#fff', op: 1, face, ...potmLook(pm, o[1] > o[3] ? 'left' : 'right', done && logoBg(o[1] > o[3] ? o[2] : o[0], true)),
+          sub: ms === 'live' ? '● LIVE' : wait ? '곧 시작' : ms === 'up' ? (m.tbd ? '시간 미정' : hmOf(m) + ' 시작') : m.potm && !SP ? 'POTM ' + potmName(m.potm) : '', subC: ms === 'up' ? 'var(--mute,#6B6B72)' : '#fff',
           // every card the same dark grey (not faded); the one being looked at turns black and lifts off the page
-          bd: sel && m.st !== 'live' ? '2px solid #0B0B0F' : m.st === 'live' ? '2px solid #FF5A4F' : m.st === 'up' ? '2px dashed var(--mute,#9A9AA0)' : '2px solid rgba(255,255,255,.1)',
-          go: () => { if (m.st === 'up') return; this.setState({ pick: m.id, mapsShown: true }); const t = document.getElementById('today'); t && t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }; }),
+          bd: sel && ms !== 'live' ? '2px solid #0B0B0F' : ms === 'live' ? '2px solid #FF5A4F' : ms === 'up' ? '2px dashed var(--mute,#9A9AA0)' : '2px solid rgba(255,255,255,.1)',
+          go: () => { if (ms === 'up') return; this.setState({ pick: m.id, mapsShown: true }); const t = document.getElementById('today'); t && t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }; }),
       next3: upcoming.filter((m) => m !== hero && m.day !== today).slice(0, 3).map((m) => ({ when: whenOf(m), a: m.a === 'TBD' ? '미정' : m.a, b: m.b === 'TBD' ? '미정' : m.b, gcal: gcalOf(m), la: logoBg(m.a, this.state.dark), lb: logoBg(m.b, this.state.dark) })),
       standNote: STAGE_SHORT + ' 정규 리그 · ' + (rsOver ? '최종 순위' : md(new Date(now).toISOString()) + ' 기준') + ' · ' + D.format.split(' · ').pop(),
       showBracket, bk, spoilAttr: SP ? '1' : '0',
