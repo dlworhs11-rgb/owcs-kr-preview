@@ -17,18 +17,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1023151033"></script>
-<script src="./owcs-datapoll.js?v=1023151033"></script>
-<script src="./owcs-phase.js?v=1023151033"></script>
-<script src="./owcs-i18n.js?v=1023151033"></script>
-<script src="./owcs-stats.js?v=1023151033"></script>
-<script src="./owcs-nav.js?v=1023151033"></script>
-<script src="./owcs-test.js?v=1023151033"></script>
-<script src="./owcs-maps.js?v=1023151033"></script>
-<script src="./owcs-bracket.js?v=1023151033"></script>
-<script src="./support.js?v=1023151033"></script>
-<script src="./owcs-theme.js?v=1023151033"></script>
-<script src="./owcs-theme-wise.js?v=1023151033"></script>
+<script src="./owcs-data.js?v=1023180535"></script>
+<script src="./owcs-datapoll.js?v=1023180535"></script>
+<script src="./owcs-phase.js?v=1023180535"></script>
+<script src="./owcs-i18n.js?v=1023180535"></script>
+<script src="./owcs-stats.js?v=1023180535"></script>
+<script src="./owcs-nav.js?v=1023180535"></script>
+<script src="./owcs-test.js?v=1023180535"></script>
+<script src="./owcs-maps.js?v=1023180535"></script>
+<script src="./owcs-bracket.js?v=1023180535"></script>
+<script src="./support.js?v=1023180535"></script>
+<script src="./owcs-theme.js?v=1023180535"></script>
+<script src="./owcs-theme-wise.js?v=1023180535"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1178,15 +1178,38 @@ const applyLive = (today) => {
     // POTM read off the broadcast card (score_watch.py), as soon as it is pushed
     if (sc && sc.potm && m.potm !== sc.potm) { m.potm = sc.potm; changed = true; }
     // a newer reading, or a corrected one (same number of maps, a misread map given back to the other team)
-    if (!sc || sc.sa + sc.sb < (m.sa || 0) + (m.sb || 0) || (sc.sa === m.sa && sc.sb === m.sb)) return;
-    m.sa = sc.sa; m.sb = sc.sb; changed = true;
+    // the relay comes in time order, so its newest reading stands even when lower (10-23: a 0-3 misread, then the real 1-0),
+    // but only over a score the relay itself put there: never below Liquipedia's in owcs-data.js (a map the PC missed)
+    const fromRelay = m._relay && m._relay[0] === m.sa && m._relay[1] === m.sb;
+    if (!sc || (!(LIVE.relay.scores && fromRelay) && sc.sa + sc.sb < (m.sa || 0) + (m.sb || 0))) return;
+    const same = sc.sa === m.sa && sc.sb === m.sb;
+    if (!same) {
+      if (LIVE.relay.scores) m._relay = [sc.sa, sc.sb];
+      if (sc.sa + sc.sb < (m.sa || 0) + (m.sb || 0)) {
+        m.maps = m.maps.filter((x) => x.src || x.map);
+        m.maps.forEach((x) => { x.winner = null; });   // the history below gives them back (Liquipedia's maps carry a map score while still on)
+        if (m.played) { m.played = false; m.live = true; }
+      }
+      m.sa = sc.sa; m.sb = sc.sb; changed = true;
+    }
+    // each reading is the whole history: a map winner an earlier reading gave and this one does not is taken back,
+    // also when the series score did not move (10-23: the 0-3 misread's "map 2 = O2" outlived the real 1-0
+    // and showed as O2 3:2 while CB led 2:1). With the same series score, a winner from elsewhere (Liquipedia) stays.
+    const was = JSON.stringify(m.maps.map((x) => [x.no, x.winner]));
+    m.maps = m.maps.filter((x) => !x._sw || x.src || x.map);
+    m.maps.forEach((x) => { if (x._sw) { x.winner = null; x._sw = false; } });
     (sc.history || []).forEach((h) => {
       const x = m.maps.find((y) => y.no === h.map);
-      if (x) x.winner = h.winner;
-      else m.maps.push({ no: h.map, map: '', mode: '', winner: h.winner, bans: [] });
+      if (x) { if (!same || !x.winner) { x.winner = h.winner; x._sw = true; } }
+      else m.maps.push({ no: h.map, map: '', mode: '', winner: h.winner, bans: [], _sw: true });
     });
     m.maps.sort((p, q) => p.no - q.no);
+    if (JSON.stringify(m.maps.map((x) => [x.no, x.winner])) !== was) changed = true;
     if (Math.max(sc.sa, sc.sb) >= Math.floor((m.bo || 5) / 2) + 1) { m.played = true; m.live = false; }
+    // when the last map was won (the "WIN" bar): the TODAY card holds this result for a few minutes before the next match
+    const last = (sc.history || [])[(sc.history || []).length - 1];
+    const endAt = m.played && last && last.at ? new Date(last.at).getTime() : 0;
+    if ((m.endAt || 0) !== endAt) { m.endAt = endAt; changed = true; }
   });
   // broadcast crew read off the waiting screen before the first set (caster_watch.py)
   const c = LIVE.cast;
@@ -1199,11 +1222,14 @@ const applyLive = (today) => {
   Object.values(LIVE.sets).forEach((st) => {
     if (st._day !== today) return;
     const tm = (st.teams || []).map(ab);
-    const m = D.matches.find((x) => x.day === today && tm.includes(x.a) && tm.includes(x.b));
+    // one team name misread (10-23: CHEESEBURGER as "OEE SEBUARG BIR 4021"): the other one still finds today's match
+    const known = tm.filter(Boolean);
+    const m = D.matches.find((x) => x.day === today && tm.includes(x.a) && tm.includes(x.b))
+      || (known.length === 1 ? D.matches.find((x) => x.day === today && !x.played && (x.a === known[0] || x.b === known[0])) : null);
     if (!m || !st.game) return;
     // its map / ban screen was read: the match is on even before its listed start (10-02: on air 17:10, listed 17:15)
     if (!m.played && !m.live) { m.live = true; changed = true; }
-    const side = (nm) => ab(nm) === m.a ? 'a' : ab(nm) === m.b ? 'b' : null;
+    const side = (nm) => ab(nm) === m.a ? 'a' : ab(nm) === m.b ? 'b' : !ab(nm) && known.length === 1 ? (known[0] === m.a ? 'b' : 'a') : null;
     let x = m.maps.find((y) => y.no === st.game);
     if (!x) { x = { no: st.game, map: st.map || st.game + '세트', mode: '', winner: null, bans: [], banFirst: null, src: 'live' }; m.maps.push(x); m.maps.sort((p, q) => p.no - q.no); changed = true; }
     if (st.map && /세트$/.test(x.map || '세트')) { x.map = st.map; changed = true; }
@@ -1235,6 +1261,13 @@ const applyLive = (today) => {
       if (o.potm && m.potm !== o.potm) { m.potm = o.potm; changed = true; }
       if ((o.sa != null || o.sb != null) && Math.max(m.sa || 0, m.sb || 0) >= Math.floor((m.bo || 5) / 2) + 1 && !m.played) { m.played = true; m.live = false; changed = true; }
       if (o.force && Math.max(m.sa || 0, m.sb || 0) < Math.floor((m.bo || 5) / 2) + 1 && m.played) { m.played = false; m.live = true; changed = true; }
+      // 'force' also takes back the map winners of that misread (10-23: a 0-3 read off the wrong page left three O2 wins):
+      // maps only the live score added go, and a map keeps a winner only if the admin page gives one
+      if (o.force) {
+        const keep = m.maps.filter((x) => x.src || x.map);
+        if (keep.length !== m.maps.length) { m.maps = keep; changed = true; }
+        m.maps.forEach((x) => { const w = ((o.maps || {})[x.no] || {}).winner || null; if (x.winner !== w) { x.winner = w; changed = true; } });
+      }
       Object.entries(o.maps || {}).forEach(([no, y]) => {
         no = +no;
         let x = m.maps.find((z) => z.no === no);
@@ -1297,12 +1330,15 @@ const liveRelay = (onChange) => {
   if (!window.EventSource || !(window.crypto && crypto.subtle)) return;
   const key = crypto.subtle.importKey('jwk', RELAY.jwk, { name: 'ECDSA', namedCurve: 'P-256' }, false, ['verify']);
   const es = new EventSource('https://ntfy.sh/' + RELAY.topic + '/sse?since=12h');
+  // one at a time, in arrival order: on page load the last 12 h replay at once, and checks that finish out of order
+  // would let an old reading land after a newer one
+  let queue = Promise.resolve();
   es.onmessage = (e) => {
     let body;
     try { body = JSON.parse(JSON.parse(e.data).message); } catch (x) { return; }
     if (!body || typeof body.p !== 'string' || typeof body.s !== 'string') return;
     const sig = Uint8Array.from(atob(body.s), (ch) => ch.charCodeAt(0));
-    key.then((k) => crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, k, sig, new TextEncoder().encode(body.p))).then((ok) => {
+    queue = queue.then(() => key).then((k) => crypto.subtle.verify({ name: 'ECDSA', hash: 'SHA-256' }, k, sig, new TextEncoder().encode(body.p))).then((ok) => {
       if (!ok) return;
       const pl = JSON.parse(body.p);
       if (pl.k === 'scores') { LIVE.scores = pl.d; LIVE.relay.scores = true; }
@@ -1451,7 +1487,9 @@ class Component extends DCLogic {
     // "오늘 결과" strip: a finished match picked there is what the score card and set details show (the live one stays in the strip to go back)
     const picked = todays.find((m) => m.id === this.state.pick && m.st !== 'up');
     const sh = todays.find((m) => m.st === 'live') || todays.find((m) => m.st === 'up') || todays[todays.length - 1];   // the stream panel follows the day, never a result picked below
-    const hero = picked || sh;
+    // a match that just ended stays on the score card for 5 minutes, so viewers see the result before the next one takes over
+    const held = !back && todays.find((m) => m.st === 'done' && m.endAt && now >= m.endAt && now - m.endAt < 5 * 60e3);
+    const hero = picked || held || sh;
     const upcoming = M.filter((m) => m.st === 'up');
     const nextM = upcoming[0];
     const endMs = new Date(D.stageRange[1] + 'T23:59:59+09:00').getTime();
