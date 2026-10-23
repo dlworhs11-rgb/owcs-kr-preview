@@ -17,18 +17,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>window.__resources = window.__resources || {};</script>
-<script src="./owcs-data.js?v=1023191257"></script>
-<script src="./owcs-datapoll.js?v=1023191257"></script>
-<script src="./owcs-phase.js?v=1023191257"></script>
-<script src="./owcs-i18n.js?v=1023191257"></script>
-<script src="./owcs-stats.js?v=1023191257"></script>
-<script src="./owcs-nav.js?v=1023191257"></script>
-<script src="./owcs-test.js?v=1023191257"></script>
-<script src="./owcs-maps.js?v=1023191257"></script>
-<script src="./owcs-bracket.js?v=1023191257"></script>
-<script src="./support.js?v=1023191257"></script>
-<script src="./owcs-theme.js?v=1023191257"></script>
-<script src="./owcs-theme-wise.js?v=1023191257"></script>
+<script src="./owcs-data.js?v=1023195437"></script>
+<script src="./owcs-datapoll.js?v=1023195437"></script>
+<script src="./owcs-phase.js?v=1023195437"></script>
+<script src="./owcs-i18n.js?v=1023195437"></script>
+<script src="./owcs-stats.js?v=1023195437"></script>
+<script src="./owcs-nav.js?v=1023195437"></script>
+<script src="./owcs-test.js?v=1023195437"></script>
+<script src="./owcs-maps.js?v=1023195437"></script>
+<script src="./owcs-bracket.js?v=1023195437"></script>
+<script src="./support.js?v=1023195437"></script>
+<script src="./owcs-theme.js?v=1023195437"></script>
+<script src="./owcs-theme-wise.js?v=1023195437"></script>
 <!-- Section reveal animation: fade-in + zoom-in-95 + slide-in-from-top-2 on each section's content.
      Only adds a temporary data attribute; section markup and styles are untouched. -->
 <style>
@@ -1234,7 +1234,8 @@ const applyLive = (today) => {
     if (!x) { x = { no: st.game, map: st.map || st.game + '세트', mode: '', winner: null, bans: [], banFirst: null, src: 'live' }; m.maps.push(x); m.maps.sort((p, q) => p.no - q.no); changed = true; }
     if (st.map && /세트$/.test(x.map || '세트')) { x.map = st.map; changed = true; }
     const ss = st.score || {}, ka = Object.keys(ss).find((t) => side(t) === 'a'), kb = Object.keys(ss).find((t) => side(t) === 'b');
-    if (ka && kb && x.src !== 'liquipedia' && ss[ka] + ss[kb] > (x.sa || 0) + (x.sb || 0)) { x.sa = ss[ka]; x.sb = ss[kb]; changed = true; }   // map score off the HUD; Liquipedia's wins
+    // map score off the HUD; Liquipedia's wins once it has one (10-23: Colosseo listed on Liquipedia with no distance yet hid the HUD's)
+    if (ka && kb && (x.src !== 'liquipedia' || x._hud || x.sa == null || x.sb == null) && ss[ka] + ss[kb] > (x.sa || 0) + (x.sb || 0)) { x.sa = ss[ka]; x.sb = ss[kb]; x._hud = true; changed = true; }
     const bn = st.bans || {};
     if (!x.bans.length && bn.initial && bn.initial.hero) {
       x.bans = [bn.initial, bn.followUp].filter((y) => y && y.hero).map((y) => ({ t: side(y.team), h: y.hero, code: code(y.hero) }));
