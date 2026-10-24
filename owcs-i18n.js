@@ -117,12 +117,14 @@
     // today
     ['오늘의 경기', '今日の試合', "Today's match", '今日比赛'], ['오늘은 경기가 없어요', '今日は試合がありません', 'No match today', '今天没有比赛'], ['다음 경기', '次の試合', 'Next match', '下一场比赛'], ['다음 일정', '次の日程', 'Up next', '接下来'],
     ['방송 예정', '配信予定', 'Starting soon', '即将直播'], ['첫 경기까지', '最初の試合まで', 'First match in', '距首场比赛'], ['다음 경기까지', '次の試合まで', 'Next match in', '距下一场比赛'], ['경기 종료', '試合終了', 'Finished', '比赛结束'], ['오늘 경기 종료', '本日の試合終了', "Today's matches are over", '今日比赛已结束'],
+    ['영상 끄기', '映像オフ', 'Hide video', '关闭视频'], ['영상 켜기', '映像オン', 'Show video', '打开视频'], ['영상을 껐어요', '映像をオフにしました', 'Video is off', '视频已关闭'],
+    ['다른 창에서 보던 방송이 끊기지 않아요', '別のタブで見ている配信が止まりません', "Your stream in another tab won't be cut off", '其他窗口里的直播不会被中断'],
     ['방송이 시작되면 이곳에 자동으로 표시돼요', '配信が始まるとここに自動で表示されます', 'The stream appears here automatically when it starts', '直播开始后会自动显示在这里'],
     ['오늘 경기가 모두 끝났어요', '本日の試合はすべて終了しました', "All of today's matches are over", '今日比赛已全部结束'], ['다시보기는 SOOP owesports 방송국에서 볼 수 있어요', 'アーカイブはSOOP owesportsで見られます', 'Replays are on SOOP owesports', '回放请到 SOOP owesports 观看'],
     ['정규 리그 일정이 끝났어요', 'レギュラーシーズンは終了しました', 'The regular season is over', '常规赛已结束'],
-    ['세트별 상세 접기', 'セット詳細を閉じる', 'Hide map details', '收起地图详情'], ['스코어를 눌러 세트별 맵 · 밴 · 승리 팀 보기', 'スコアを押すとマップ・BAN・勝者を表示', 'Tap the score for maps, bans and winners', '点击比分查看地图 · 禁用 · 获胜队伍'],
+    ['경기 정보 접기', '試合情報を閉じる', 'Hide match details', '收起比赛信息'], ['경기 정보 펼쳐보기', '試合情報を開く', 'Show match details', '展开比赛信息'],
     ['SOOP · 공식 중계', 'SOOP · 公式中継', 'SOOP · official stream', 'SOOP · 官方直播'], ['SOOP owesports 방송국 ↗', 'SOOP owesports ↗', 'SOOP owesports channel ↗', 'SOOP owesports 频道 ↗'],
-    ['선벤', '先BAN', '1st ban', '先禁'], ['후벤', '後BAN', '2nd ban', '后禁'], ['쟁탈', '制圧', 'Control', '占领要点'], ['플래시포인트', 'フラッシュポイント', 'Flashpoint', '闪点'], ['밀기', 'プッシュ', 'Push', '推进'], ['혼합', 'ハイブリッド', 'Hybrid', '混合'], ['호위', 'エスコート', 'Escort', '护送'], ['점령', '占領', 'Assault', '攻防'], ['격돌', 'クラッシュ', 'Clash', '交锋'],
+    ['선밴', '先BAN', '1st ban', '先禁'], ['후밴', '後BAN', '2nd ban', '后禁'], ['쟁탈', '制圧', 'Control', '占领要点'], ['플래시포인트', 'フラッシュポイント', 'Flashpoint', '闪点'], ['밀기', 'プッシュ', 'Push', '推进'], ['혼합', 'ハイブリッド', 'Hybrid', '混合'], ['호위', 'エスコート', 'Escort', '护送'], ['점령', '占領', 'Assault', '攻防'], ['격돌', 'クラッシュ', 'Clash', '交锋'],
     ['기록 중이에요. 세트가 끝나면 양 팀 조합이 올라와요.', '記録中です。セット終了後に両チームの構成が表示されます。', 'Recording. Both comps appear when the map ends.', '记录中。地图结束后会显示双方阵容。'],
     ['이 세트의 첫 조합 기록이 아직 없어요.', 'このセットの初期構成はまだ記録がありません。', 'No starting comp recorded for this map yet.', '这张地图还没有首发阵容记录。'], ['세트가 끝나면 조합이 올라와요.', 'セット終了後に構成が表示されます。', 'Comps appear when the map ends.', '地图结束后会显示阵容。'], ['첫 조합 기록 없음', '初期構成なし', 'No starting comp', '无首发阵容'],
     ['시간', '時間', 'hrs', '小时'], ['분', '分', 'min', '分'], ['초', '秒', 'sec', '秒'],
@@ -150,6 +152,8 @@
     ['팀별 승률', 'チーム別勝率', 'Win rates', '战队胜率'], ['지난 경기 검색', '過去の試合を検索', 'Search past matches', '搜索往期比赛'], ['팀 약칭·이름으로 검색 · 두 팀은 쉼표로 구분', 'チーム略称・名前で検索 · 2チームはカンマ区切り', 'Search by team · separate two teams with a comma', '按战队简称·名称搜索 · 两支战队用逗号分隔'],
     ['예: PF,CR 또는 CR', '例: PF,CR または CR', 'e.g. PF,CR or CR', '例: PF,CR 或 CR'], ['지난 경기 · PF,CR', '過去の試合 · PF,CR', 'Past matches · PF,CR', '往期比赛 · PF,CR'], ['리플코드', 'リプレイコード', 'Replay code', '回放代码'], ['다시보기 ↗', 'アーカイブ ↗', 'Replay ↗', '回放 ↗'], ['맵 상세 ▾', 'マップ詳細 ▾', 'Map details ▾', '地图详情 ▾'], ['맵 상세 ▴', 'マップ詳細 ▴', 'Map details ▴', '地图详情 ▴'],
     ['팀을 찾을 수 없어요', 'チームが見つかりません', 'Team not found', '找不到该战队'], ['플레이오프 확정', 'プレーオフ確定', 'Playoffs clinched', '锁定季后赛'], ['탈락', '敗退', 'Eliminated', '淘汰'], ['플레이오프 경쟁', 'プレーオフ争い', 'In the playoff race', '争夺季后赛'],
+    ['계산 불가', '計算不可', 'Not computed', '无法计算'], ['남은 경기가 너무 많아 경우의 수를 계산하지 않았어요.', '残り試合が多すぎるため、組み合わせは計算していません。', 'Too many matches left, so the scenarios were not worked out.', '剩余比赛太多，未计算出线形势。'],   // owcs-cases.js past its limit (10-24)
+    ['데이터를 불러오지 못했어요. 화면이 비어 있을 수 있어요.', 'データを読み込めませんでした。画面が空の場合があります。', 'Could not load the data. The page may look empty.', '无法加载数据，页面可能为空。'], ['다시 시도', '再試行', 'Try again', '重试'],   // owcs-nav.js missing-data band (10-24)
     ['LCQ 확정', 'LCQ確定', 'LCQ clinched', '锁定 LCQ'], ['LCQ 경쟁', 'LCQ争い', 'In the LCQ race', '争夺 LCQ'], ['순위 싸움', '順位争い', 'Race', '排名之争'], ['단두대 매치', '生き残り決戦', 'Elimination match', '生死战'], ['지면 탈락', '負けたら敗退', 'Loser is out', '输者出局'], ['지면 직행 실패', '負けたらプレーオフ直行消滅', 'Loser misses direct playoffs', '输者无缘直接晋级'],
     ['다른 팀 결과와 세트 득실에 따라 플레이오프가 갈려요.', '他チームの結果とセット得失でプレーオフが決まります。', 'Playoffs depend on other results and map differential.', '能否进入季后赛取决于其他战队的结果和地图净胜。'],
     ['플레이오프 직행은 어렵지만 라스트 찬스 예선은 확정이에요.', 'プレーオフ直行は難しいですが、ラストチャンス予選は確定です。', 'Direct playoffs are out of reach, but the LCQ is secured.', '直接晋级季后赛已无望，但已锁定最后机会预选赛。'],
@@ -178,7 +182,9 @@
     ['선수 개인 방송 · CHZZK / SOOP', '選手の個人配信 · CHZZK / SOOP', 'Player streams · CHZZK / SOOP', '选手个人直播 · CHZZK / SOOP'], ['지금 방송 중인 선수', '配信中の選手', 'players live now', '正在直播的选手'], ['방송 중 없음', '配信なし', 'Nobody live', '无人直播'],
     ['채널 없음', 'チャンネルなし', 'No channel', '无频道'], ['마지막 확인', '最終確認', 'Last checked', '最后检查'], ['방송 상태는 CHZZK·SOOP에서 몇 분마다 확인해요.', '配信状況はCHZZK・SOOPで数分ごとに確認しています。', 'Live status is checked on CHZZK and SOOP every few minutes.', '直播状态每隔几分钟从 CHZZK·SOOP 检查一次。'],
     ['방송 상태 확인이 꺼져 있으면 모두 꺼짐으로 보여요', '確認が止まっているとすべてオフライン表示になります', 'everyone shows offline while checking is off', '检查关闭时所有人都会显示为未开播'],
-    ['방송 확인이 30분 넘게 멈춰 있어 실제와 다를 수 있어요', '配信確認が30分以上止まっているため、実際と異なる場合があります', 'live check has stalled for 30+ minutes, so this may be out of date', '直播检查已停止超过 30 分钟，可能与实际不符'], ['방송 없음', '配信なし', 'Nobody live', '无人直播'],
+    ['방송 확인이 30분 넘게 멈춰 있어 실제와 다를 수 있어요', '配信確認が30分以上止まっているため、実際と異なる場合があります', 'live check has stalled for 30+ minutes, so this may be out of date', '直播检查已停止超过 30 分钟，可能与实际不符'], ['경기 결과·일정 갱신이 늦어지고 있어요', '試合結果・日程の更新が遅れています', 'match results and schedule updates are delayed', '比赛结果·赛程更新延迟'], ['방송 없음', '配信なし', 'Nobody live', '无人直播'],
+    ['방송 확인 30분 이상 지연, 실제와 다를 수 있음', '配信確認が30分以上遅延、実際と異なる場合あり', 'Live check delayed 30+ min, may be out of date', '直播检查延迟超过 30 分钟，可能与实际不符'],
+    ['경기 결과·일정 갱신 지연', '試合結果・日程の更新遅延', 'Results and schedule updates delayed', '比赛结果·赛程更新延迟'],
     // ticket page
     ['직관 안내 · 2026 OWCS ASIA KOREA STAGE 3', '観戦案内 · 2026 OWCS ASIA KOREA STAGE 3', 'Tickets · 2026 OWCS ASIA KOREA STAGE 3', '现场观赛 · 2026 OWCS ASIA KOREA STAGE 3'],
     ['서울 마포구 상수동 72-1, 홍익대학교 잔다리홀 B1. 정규 리그부터 플레이오프까지 모든 경기를 현장에서 볼 수 있어요.', 'ソウル市麻浦区上水洞72-1 弘益大学チャンダリホールB1。レギュラーシーズンからプレーオフまで全試合を会場で観戦できます。', '72-1 Sangsu-dong, Mapo-gu, Seoul (Hongik Univ. Jandari Hall B1). Every match from the regular season to the playoffs is played here in front of fans.', '首尔麻浦区上水洞 72-1，弘益大学 Jandari Hall B1。从常规赛到季后赛的所有比赛都可以在现场观看。'],
@@ -243,6 +249,11 @@
     ['구독 주소를 복사했어요', '購読URLをコピーしました', 'Subscription URL copied', '已复制订阅地址'],
     ['팀을 하나 이상 고르면 구독 버튼이 나와요', 'チームを1つ以上選ぶと購読ボタンが表示されます', 'Pick at least one team to show the subscribe button', '至少选择一支战队后会显示订阅按钮'],
     ['이전 달', '前の月', 'Previous month', '上个月'], ['다음 달', '次の月', 'Next month', '下个月'],
+    ['아직 공개된 일정이 없어요.', '公開されている日程はまだありません。', 'No schedule has been published yet.', '赛程尚未公布。'],   // (10-24)
+    // tab titles (the <title> of each page; the player page adds ' · ID' to the first one) (10-24)
+    ['OWticker · OWCS 코리아 비공식 팬 사이트', 'OWticker · OWCS韓国 非公式ファンサイト', 'OWticker · Unofficial OWCS Korea fan site', 'OWticker · OWCS 韩国非官方粉丝网站'],
+    ['OWticker 전체 일정', 'OWticker 全日程', 'OWticker Full Schedule', 'OWticker 全部赛程'], ['OWticker 경기 결과 · 대진표', 'OWticker 試合結果 · トーナメント表', 'OWticker Results · Brackets', 'OWticker 比赛结果 · 对阵图'],
+    ['OWticker 선수', 'OWticker 選手', 'OWticker Players', 'OWticker 选手'], ['OWticker 선수 방송', 'OWticker 選手配信', 'OWticker Player Streams', 'OWticker 选手直播'], ['OWticker 직관 안내', 'OWticker 観戦案内', 'OWticker Tickets', 'OWticker 现场观赛指南'],
   ];
   // [japanese, english, chinese]
   var DOW = { '일': ['日', 'Sun', '周日'], '월': ['月', 'Mon', '周一'], '화': ['火', 'Tue', '周二'], '수': ['水', 'Wed', '周三'], '목': ['木', 'Thu', '周四'], '금': ['金', 'Fri', '周五'], '토': ['土', 'Sat', '周六'] };
@@ -332,6 +343,7 @@
     [/^(\d+)경기 · 모든 시간 KST$/, P('$1試合 · 時間はすべて' + ZONE_LONG, '$1 matches · all times ' + ZONE, '$1场比赛 · 时间均为' + ZONE_LONG)],
     [/^판매 (오픈|마감) /, function (m, k) { return k === '오픈' ? P('販売開始 ', 'Sale opens ', '开售 ') : P('販売締切 ', 'Sale closes ', '停售 '); }],
     [/^마지막 확인 /, P('最終確認 ', 'Last checked ', '最后检查 ')],
+    [/^경기 데이터 갱신 /, P('試合データ更新 ', 'Match data updated ', '比赛数据更新 ')],
     [/^(\d+)승 (\d+)패 · /, P('$1勝 $2敗 · ', '$1W $2L · ', '$1胜 $2负 · ')],
     [/ · 대진 미정$/, P(' · 対戦未定', ' · matchup TBD', ' · 对阵待定')],
     [/^정규 리그가 끝났어요 · /, P('レギュラーシーズン終了 · ', 'Regular season over · ', '常规赛已结束 · ')],
@@ -424,8 +436,18 @@
   window.OWCSi18n = { lang: lang, set: set, t: function (s) { return lang === 'ko' ? s : tr(s); }, hm: hm, tz: TZ, zone: ZONE };
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
 
+  // the tab title: walked once, then watched, since the player page sets its own after the data is read (10-24)
+  function doTitle() {
+    var t = document.title;
+    if (!HANGUL.test(t)) return;
+    var o = tr(t);
+    if (o !== t) document.title = o;
+  }
   function start() {
     if (lang === 'ko') return;
+    doTitle();
+    var te = document.querySelector('title');
+    if (te) new MutationObserver(doTitle).observe(te, { childList: true, characterData: true, subtree: true });
     var st = document.createElement('style');   // upright Korean role letters read sideways in other scripts
     st.textContent = '[style*="text-orientation: upright"]{text-orientation:mixed !important;transform:rotate(180deg)}';
     document.head.appendChild(st);

@@ -43,7 +43,7 @@ nav a{height:40px;padding:0 14px;border-radius:999px;display:flex;align-items:ce
 nav a:hover,nav a.on{background:#F1F1ED;color:#0B0B0F}
 .hero{padding:56px 0 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
 .eyebrow{font-size:15px;font-weight:700;color:var(--mute)}
-h1{font-size:clamp(56px,8vw,96px);line-height:.86;margin:12px 0 0}
+h1{font-size:clamp(46px,6vw,72px);line-height:.86;margin:12px 0 0}
 .count{display:flex;align-items:center;gap:14px;padding:16px 22px;border-radius:20px;background:var(--panel);border:1px solid var(--line)}
 .count b{font-family:'Barlow Condensed',sans-serif;font-size:56px;line-height:1;color:#0B0B0F}
 .count .dot{width:12px;height:12px;border-radius:50%;background:var(--red);box-shadow:0 0 0 6px color-mix(in srgb,var(--red) 25%,transparent)}
@@ -73,7 +73,7 @@ h1{font-size:clamp(56px,8vw,96px);line-height:.86;margin:12px 0 0}
 .go.none{background:#ECECE8;color:var(--dim)}
 .p.off{display:none}
 footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-height:1.7}
-@media (max-width:720px){.teams{grid-template-columns:minmax(0,1fr)}header nav{display:none}
+@media (max-width:720px){header nav{display:none}
   /* phone: the live count is a small pill under the title instead of a big card */
   .hero{gap:14px;padding:32px 0 20px}
   .count{flex:none;gap:8px;padding:7px 12px;border-radius:999px}
@@ -84,7 +84,7 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
 /* phone / tablet: three teams side by side, each team a column of photo + handle (the whole row opens the stream) */
 @media (max-width:899.98px){
   .wrap{padding:0 20px}
-  h1{font-size:60px}
+  h1{font-size:46px}
   .teams{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
   .team{border-radius:14px;padding-bottom:6px}
   .team h2{flex-direction:column;gap:4px;padding:10px 6px 8px;font-size:12px;line-height:1.2;text-align:center;word-break:break-word}
@@ -100,7 +100,7 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
   .who small,.go{display:none}
 }
 </style>
-<script src="./owcs-nav.js?v=1024152856"></script>
+<script src="./owcs-nav.js?v=1024210951"></script>
 </head>
 <body class="streams-page">
 <header><div class="wrap">
@@ -113,7 +113,7 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
 
 <main class="wrap">
   <div class="hero">
-    <div><div class="eyebrow">선수 개인 방송 · CHZZK / SOOP</div><h1 class="disp">STREAMS</h1></div>
+    <div><div class="eyebrow">선수 개인 방송 (CHZZK / SOOP)</div><h1 class="disp">STREAMS</h1></div>
     <div class="count"><span class="dot"></span><div><b id="liveN">0</b><small>지금 방송 중인 선수</small></div></div>
   </div>
   <div class="bar">
@@ -121,14 +121,14 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
   </div>
   <div class="teams" id="teams"></div>
 </main>
-<footer class="owft"><div class="wrap ft-g"><div><div class="ft-logo"><span class="owt"><b>OW</b>TICKER</span></div><div class="ft-desc">OWCS 한국 경기의 일정, 결과, 선수 정보를 한국 팬을 위해 한곳에 모았어요.</div><div class="ft-ch"><span class="ft-k">OWCS 공식 채널</span><a href="https://x.com/OW_Esports_Asia" target="_blank" rel="noopener"><img src="assets/icons/x.png" alt="">X</a><a href="https://www.instagram.com/ow_esports_kr/" target="_blank" rel="noopener"><img src="assets/icons/instagram.png" alt="">Instagram</a><a href="https://www.sooplive.co.kr/station/owesports" target="_blank" rel="noopener"><img src="assets/icons/soop.png" alt="">SOOP 방송국</a></div></div><div><div class="ft-k">문의</div><a class="ft-mail" href="mailto:dlworhs26@gmail.com" style="display:flex;align-items:center;gap:8px;text-decoration:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>dlworhs26@gmail.com</a><a class="ft-mail" href="https://discord.gg/EEWwKmxKA5" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;margin-left:0;padding:0;text-decoration:none"><img src="assets/icons/discord.png" alt="" style="width:22px;height:22px;border-radius:6px;margin:0;flex:none">OWticker 팬 디스코드 · 피드백</a></div><div class="ft-note">방송 상태는 CHZZK·SOOP에서 몇 분마다 확인해요. 비공식 팬 사이트입니다. Blizzard Entertainment, WDG, 각 팀과 제휴하거나 승인받지 않았습니다. Overwatch®와 영웅 이미지는 Blizzard Entertainment, Inc.의 상표·저작물이고, 팀 로고와 선수 사진의 권리는 각 소유자에게 있으며 요청하면 바로 내립니다.</div></div></footer>
+<footer class="owft"><div class="wrap ft-g"><div><div class="ft-logo"><span class="owt"><b>OW</b>TICKER</span></div><div class="ft-desc">OWCS 한국 경기의 일정, 결과, 선수 정보를 한곳에</div><div class="ft-ch"><span class="ft-k">OWCS 공식 채널</span><a href="https://x.com/OW_Esports_Asia" target="_blank" rel="noopener"><img src="assets/icons/x.png" alt="">X</a><a href="https://www.instagram.com/ow_esports_kr/" target="_blank" rel="noopener"><img src="assets/icons/instagram.png" alt="">Instagram</a><a href="https://www.sooplive.co.kr/station/owesports" target="_blank" rel="noopener"><img src="assets/icons/soop.png" alt="">SOOP 방송국</a></div></div><div><div class="ft-k">문의</div><a class="ft-mail" href="mailto:dlworhs26@gmail.com" style="display:flex;align-items:center;gap:8px;text-decoration:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>dlworhs26@gmail.com</a><a class="ft-mail" href="https://discord.gg/EEWwKmxKA5" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;margin-left:0;padding:0;text-decoration:none"><img src="assets/icons/discord.png" alt="" style="width:22px;height:22px;border-radius:6px;margin:0;flex:none">OWticker 팬 디스코드 / 피드백</a></div><div class="ft-note">본 웹사이트는 비공식 팬 사이트로, Blizzard Entertainment, WDG, OWCS 참가팀과 제휴하거나 승인받지 않았습니다. Overwatch®와 영웅 이미지는 Blizzard Entertainment, Inc.의 상표 및 저작물이며, 팀 로고와 선수 사진의 권리는 각 소유자에게 있습니다.</div></div></footer>
 
-<script src="./owcs-data.js?v=1024152856"></script>
-<script src="./owcs-datapoll.js?v=1024152856"></script>
-<script src="./owcs-phase.js?v=1024152856"></script>
-<script src="./owcs-i18n.js?v=1024152856"></script>
-<script src="./owcs-stats.js?v=1024152856"></script>
-<script src="./owcs-dark.js?v=1024152856"></script>
+<script src="./owcs-data.js?v=1024210951"></script>
+<script src="./owcs-datapoll.js?v=1024210951"></script>
+<script src="./owcs-phase.js?v=1024210951"></script>
+<script src="./owcs-i18n.js?v=1024210951"></script>
+<script src="./owcs-stats.js?v=1024210951"></script>
+<script src="./owcs-dark.js?v=1024210951"></script>
 <script>
 (function () {
   var D = window.OWCS || { teams: [], players: [], standings: [], live: {} };
@@ -153,7 +153,7 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
     var bk = (p.birth || '').slice(5), lp = !(+td.slice(0, 4) % 4);
     return /^\d\d-\d\d$/.test(bk) && (bk === '02-29' && !lp ? '02-28' : bk) === td.slice(5);
   }
-  function esc(s) { return String(s || '').replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function esc(s) { return String(s || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function render() {
     var L = D.live || {}, n = 0, html = '', td = shownDay = today();
     var dk = document.documentElement.hasAttribute('data-owcs-dark');   // dark mode: the logo drawn for dark backgrounds, as on the home page
@@ -174,7 +174,7 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
         var tag = pf.href ? 'a' : 'div';
         html += '<' + tag + (pf.href ? ' href="' + esc(pf.href) + '" target="_blank" rel="noopener"' : '') + ' class="p' + (live ? ' live' : '') + '">' +
           '<span class="av" style="' + (p.photo ? "background-image:url('" + esc(p.thumb || p.photo) + "')" : '') + '">' + (p.photo ? '' : esc(p.id.slice(0, 2).toUpperCase())) + '</span>' +
-          '<span class="who"><b>' + esc(p.id) + (isBday(p, td) ? '<span title="오늘 생일이에요!" style="font-size:.8em;margin-left:3px">🎂</span>' : '') + '</b><small>' + esc(p.roleFull) + '</small></span>' +
+          '<span class="who"><b>' + esc(p.id) + (isBday(p, td) ? '<span title="오늘 생일" style="font-size:.8em;margin-left:3px">🎂</span>' : '') + '</b><small>' + esc(p.roleFull) + '</small></span>' +
           '<span class="go ' + pf.cls + '">' + esc(pf.label) + (pf.href ? ' ↗' : '') + '</span></' + tag + '>';
       });
       html += '</div></section>';
@@ -200,9 +200,20 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
     var iso = [window.owcsChecked, D.liveChecked].filter(Boolean).sort().pop() || '';
     var g = shownAt(iso || D.generated || '');
     // warn only when the live check has stalled (no check in 30+ minutes), not every time nobody is live
-    var t = Date.parse(iso), stale = !(t > 0) || Date.now() - t > 30 * 60000;
+    var t = Date.parse(iso), stale = !(t > 0) || Date.now() - t > 30 * 60000, old = oldData();
     document.getElementById('checked').innerHTML = '<span>마지막 확인 ' + esc(g) + '</span>' +
-      (stale ? ' · <span>방송 확인이 30분 넘게 멈춰 있어 실제와 다를 수 있어요</span>' : '');
+      (stale ? ' · <span>방송 확인 30분 이상 지연, 실제와 다를 수 있음</span>' : '') +
+      (old ? ' · <span>경기 데이터 갱신 ' + esc(shownAt(old)) + '</span> · <span>경기 결과·일정 갱신 지연</span>' : '');
+  }
+  // dataBuilt: the last site build whose data step worked (cloud_live.stamp_build; a failed build keeps the old time,
+  // while 마지막 확인 still moves). Shown when it is over 30 minutes old around today's matches (30 min before the first
+  // start to 4 h after the last, as cloud_live.match_window), over 6 hours otherwise; '' when fresh or unknown
+  function oldData() {
+    var iso = [window.owcsDataBuilt, D.dataBuilt].filter(Boolean).sort().pop() || '', t = Date.parse(iso), now = Date.now(), td = today();
+    if (!(t > 0)) return '';
+    var starts = (D.matches || []).filter(function (m) { return m.day === td; }).map(function (m) { return Date.parse(m.date); }).filter(function (x) { return x > 0; });
+    var on = starts.length && now >= Math.min.apply(null, starts) - 30 * 60000 && now <= Math.max.apply(null, starts) + 4 * 3600e3;
+    return now - t > (on ? 30 * 60000 : 6 * 3600e3) ? iso : '';
   }
   var shownDay = '';
   render();
@@ -217,6 +228,6 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
   }, 60000);
 })();
 </script>
-<script src="./owcs-theme-wise.js?v=1024152856"></script>
+<script src="./owcs-theme-wise.js?v=1024210951"></script>
 </body>
 </html>

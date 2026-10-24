@@ -112,13 +112,15 @@
     '#dc-root ' + F + '{padding:56px 56px 72px}',
     F + ' .ft-g{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1.4fr);gap:40px}',
     F + ' .ft-logo{font-family:var(--disp,"Barlow Condensed"),"Barlow Condensed",sans-serif;font-weight:800;font-size:32px;line-height:1.2}',
-    F + ' .ft-desc{font-size:15px;color:var(--fm);margin-top:10px;max-width:420px}',
+    F + ' .ft-desc{font-size:15px;color:var(--fm);margin-top:10px;max-width:420px;word-break:keep-all;overflow-wrap:break-word}',   // Korean words stay whole (10-24)
     F + ' .ft-ch{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin-top:18px}',
     F + ' .ft-k{width:100%;font-size:13px;color:var(--fm)}',
     F + ' .ft-ch a{display:inline-flex;align-items:center;gap:8px;height:40px;color:var(--fi);text-decoration:none;font-size:14px;font-weight:600}',
     F + ' .ft-ch img{width:28px;height:28px;border-radius:8px}',
     F + ' .ft-mail{display:block;font-size:15px;color:var(--fi);margin-top:8px;text-decoration:underline}',
-    F + ' .ft-note{font-size:13px;color:var(--fm)}',
+    // the mail / chat links were 22px high on phones (the 22px icon): at least a 24px target, the home page's own footer too (10-24)
+    'footer a[href^="mailto:"],footer a[href*="discord."]{min-height:24px}',
+    F + ' .ft-note{font-size:13px;color:var(--fm);word-break:keep-all;overflow-wrap:break-word}',
     '@media (max-width:1180px){' + F + ' .ft-g{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}}',
     '@media (min-width:900px) and (max-width:1180px){' + F + ' .ft-g>div:nth-child(2){border-left:1px solid color-mix(in srgb, var(--fi) 16%, transparent);padding-left:28px}' + F + ' .ft-note{grid-column:1/-1;border-top:1px solid color-mix(in srgb, var(--fi) 16%, transparent);padding-top:18px}}',
     '@media (max-width:899.98px){' + F + ',#dc-root ' + F + '{padding:32px 20px 40px}' + F + ' .wrap{padding:0}' +
@@ -150,7 +152,22 @@
     document.addEventListener('DOMContentLoaded', test);
     window.addEventListener('load', test);
   })();
-  hst.textContent = centre + '\n' + hw + '\n' + owt + '\n' + ft;
+  // one keyboard focus ring for every control (10-24): a 2px ring in the text colour, 2px off the edge. Everything sits in
+  // :where() (specificity 0), so a control with its own :focus-visible / outline keeps it and only the bare ones get this.
+  // The colour is fixed per mode instead of the page's --ink (not set on every page, flipped on some): ink on paper, light
+  // in dark mode. On focus, ringSurface() below looks at what the ring is drawn on and marks a control on a dark card
+  // (data-owcs-ring="d": lime) or on a light one (="l": ink, e.g. the white 앱 설치 card in dark mode)
+  var FC = ':where(a[href],button,input,select,textarea,summary,[role="button"],[role="tab"],[role="switch"],[role="link"]):focus-visible';
+  var fr = [
+    FC + '{outline:2px solid ' + (isDark() ? '#F2F2F5' : '#0B0B0F') + ';outline-offset:2px}',
+    ':where([data-owcs-ring="d"])' + FC + '{outline-color:#C6FF33}',
+    ':where([data-owcs-ring="l"])' + FC + '{outline-color:#0B0B0F}',
+    // the phone menu chips sit in a scroller that clips an outside ring: draw it inside
+    '@media (max-width:899.98px){:where([data-owcs-mtop] nav a,header nav a[data-owcs-nv])' + FC + '{outline-offset:-3px}}'
+  ].join('\n');
+  // line breaks (10-24): headings balanced, paragraphs without a one-word last line. Specificity 0: an own text-wrap wins
+  var tw = ':where(h1,h2,h3,h4){text-wrap:balance}\n:where(p,li,blockquote,figcaption,footer .ft-desc,footer .ft-note){text-wrap:pretty}';
+  hst.textContent = centre + '\n' + hw + '\n' + owt + '\n' + ft + '\n' + fr + '\n' + tw;
   (document.head || document.documentElement).appendChild(hst);
   var css = HOME ? '' : [
     '@media (min-width:900px){',
@@ -177,6 +194,8 @@
     '[data-owcs-tk] a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:20px;padding:12px 18px 12px 12px;border-radius:18px;background:#0B0B0F;color:#fff;text-decoration:none;font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif}',
     // results / player pages turn every hovered link ink (a:hover), which hid the white text on the black banner
     '[data-owcs-tk] a:hover{color:#fff}',
+    '[data-owcs-tk] a:hover .b{background:#DAFF7A}',   // the banner had no visible hover (10-24)
+    '[data-owcs-tk] a:hover .v{text-decoration:underline;text-underline-offset:4px}',
     '[data-owcs-tk] img{display:block;width:80px;height:80px;border-radius:10px;background:#fff;padding:4px;box-sizing:border-box}',
     '[data-owcs-tk] .k{display:block;font-size:13px;font-weight:700;color:#C6FF33}',
     '[data-owcs-tk] .v{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:30px;line-height:1;margin-top:6px}',
@@ -283,13 +302,15 @@
 
   function isDark() { try { return sessionStorage.getItem('owcs-dark') === '1'; } catch (e) { return document.documentElement.hasAttribute('data-owcs-dark'); } }
 
+  // the tickets page is the 직관 안내 itself: no banner there, desktop or phone (10-24)
+  function onTickets() { return !!document.body && document.body.classList.contains('ticket-page'); }
   function ticket() {
     var s = document.createElement('section');
     s.setAttribute('data-owcs-tk', '');
     var no = (window.OWCS && window.OWCS.stageNo) || 3;
     s.innerHTML = '<a href="https://www.ticketlink.co.kr/sports/1262/631" target="_blank" rel="noopener">' +
-      '<img src="assets/qr-ticket-black.png" alt="직관 예매 QR"><span><span class="k">직관 안내 · <span class="kd">OWCS ASIA : </span>KOREA STAGE ' + no + '</span>' +
-      '<span class="v">WDG STUDIO HONGDAE에서 직관!</span><span class="s">눌러서 티켓링크에서 예매 ↗</span></span><span class="b">예매하기 ↗</span></a>';
+      '<img src="assets/qr-ticket-black.png" alt="직관 예매 QR"><span><span class="k"><span class="kd">OWCS ASIA : </span>KOREA STAGE ' + no + '</span>' +
+      '<span class="v">WDG STUDIO HONGDAE에서 직관!</span><span class="s">티켓링크에서 예매 ↗</span></span><span class="b">예매하기 ↗</span></a>';
     return s;
   }
 
@@ -457,7 +478,7 @@
     var ic = m.querySelector('.ic'), w = headerWidget();
     if (w.parentNode !== ic) ic.insertBefore(w, ic.firstChild);
     var tk = m.nextElementSibling && m.nextElementSibling.matches('[data-owcs-tk]') ? m.nextElementSibling : null;
-    if (!tk) { tk = ticket(); tk.classList.add('m'); host.insertBefore(tk, m.nextSibling); }
+    if (!tk && !onTickets()) { tk = ticket(); tk.classList.add('m'); host.insertBefore(tk, m.nextSibling); }
   }
 
   // the home page on a phone / tablet keeps its own header: the picker goes just left of its ☰ button
@@ -472,6 +493,7 @@
 
   // desktop: the 직관 안내 banner right under the header, where the home page has it
   function placeTicket(h) {
+    if (onTickets()) return;
     var n = h.nextElementSibling;
     if (n && n.matches('[data-owcs-tk]')) return;
     Array.prototype.forEach.call(document.querySelectorAll('[data-owcs-tk]:not(.m)'), function (x) { x.remove(); });
@@ -508,30 +530,30 @@
   // top right in Chrome / iPad. In-app browsers (KakaoTalk, Instagram ...) can't install at all: the guide sends the
   // page to the real browser. Icons: assets/app (the logo).
   var AT = {
-    ko: { add: '앱 설치', addS: '앱', ok: '알겠어요',
+    ko: { add: '앱 설치', addS: '앱', ok: '확인',
       tip: '홈 화면에 추가하는 법', more: '더보기', share: '공유', home: '홈 화면에 추가', menu: '메뉴', fin: '추가',
-      hMore: '<b>⋯</b> 버튼. 안 보이면 주소창의 <b>☰</b> 아이콘', hShareM: '열린 메뉴의 맨 위', hShareB: '네모에 위쪽 화살표 모양. 화면 위나 아래에 있어요', hShareT: '네모에 위쪽 화살표 모양. 화면 위나 아래에 있어요',
-      hHome: '목록을 아래로 조금 내리면 있어요', hFin: '오른쪽 위. 누르면 끝!', hMenu: '화면 오른쪽 위 ⋮ 버튼', hHomeA: '<b>앱 설치</b>라고 되어 있을 수도 있어요',
-      keep: '이 안내는 위에 그대로 있어요. 보면서 하나씩 따라 하세요', nohome: '공유 목록에 <b>홈 화면에 추가</b>가 없으면: 목록 속 <b>Safari에서 열기</b>를 누른 뒤 처음부터 다시 해 주세요',
-      inT: '브라우저에서 열어 주세요', inapp: '이 앱 안의 화면에서는 설치가 안 돼요. <b>⋯</b> 메뉴나 공유 버튼에서 <b>Safari에서 열기</b>(또는 <b>브라우저로 열기</b>)를 누른 뒤, 다시 <b>앱</b> 버튼을 눌러 주세요.', ext: '브라우저로 열기' },
-    en: { add: 'Get app', addS: 'App', ok: 'Got it',
+      hMore: '<b>⋯</b> 버튼. 안 보이면 주소창의 <b>☰</b> 아이콘', hShareM: '열린 메뉴의 맨 위', hShareB: '네모에 위쪽 화살표 모양 (화면 위 또는 아래)', hShareT: '네모에 위쪽 화살표 모양 (화면 위 또는 아래)',
+      hHome: '목록을 아래로 조금 내리면 있음', hFin: '오른쪽 위. 누르면 끝!', hMenu: '화면 오른쪽 위 ⋮ 버튼', hHomeA: '<b>앱 설치</b>로 표시될 수도 있음',
+      keep: '안내를 따라 등록하세요', nohome: '공유 목록에 <b>홈 화면에 추가</b>가 없으면 <b>Safari에서 열기</b> 후 처음부터 다시 진행',
+      inT: '브라우저에서 열기', inapp: '앱 안 화면에서는 설치할 수 없습니다. <b>⋯</b> 메뉴나 공유 버튼에서 <b>Safari에서 열기</b>(또는 <b>브라우저로 열기</b>)를 누른 뒤 다시 <b>앱</b> 버튼을 눌러 주세요.', ext: '브라우저로 열기' },
+    en: { add: 'Get app', addS: 'App', ok: 'OK',
       tip: 'How to add it to your home screen', more: 'More', share: 'Share', home: 'Add to Home Screen', menu: 'Menu', fin: 'Add',
-      hMore: 'The <b>⋯</b> button. If there is none, the <b>☰</b> icon in the address bar', hShareM: 'Top of the menu that opens', hShareB: 'A square with an up arrow, at the top or bottom of the screen', hShareT: 'A square with an up arrow, at the top or bottom of the screen',
-      hHome: 'Scroll the list down a little', hFin: 'Top right, and you\'re done!', hMenu: 'The ⋮ button at the top right', hHomeA: 'It may say <b>Install app</b>',
-      keep: 'This guide stays up here. Follow it step by step', nohome: 'No <b>Add to Home Screen</b> in the share list? Tap <b>Open in Safari</b> there, then start again',
-      inT: 'Open in your browser', inapp: 'Apps can\'t be installed from this in-app browser. In the <b>⋯</b> menu or the share button, choose <b>Open in Safari</b> (or <b>Open in browser</b>), then tap <b>App</b> again.', ext: 'Open in browser' },
+      hMore: 'The <b>⋯</b> button. If there is none, the <b>☰</b> icon in the address bar', hShareM: 'Top of the menu that opens', hShareB: 'A square with an up arrow (top or bottom of the screen)', hShareT: 'A square with an up arrow (top or bottom of the screen)',
+      hHome: 'Scroll the list down a little', hFin: 'Top right, and you\'re done!', hMenu: 'The ⋮ button at the top right', hHomeA: 'May show as <b>Install app</b>',
+      keep: 'Follow the guide to add it', nohome: 'No <b>Add to Home Screen</b> in the share list? <b>Open in Safari</b>, then start over',
+      inT: 'Open in browser', inapp: 'Can\'t install from this in-app screen. In the <b>⋯</b> menu or the share button, choose <b>Open in Safari</b> (or <b>Open in browser</b>), then tap <b>App</b> again.', ext: 'Open in browser' },
     ja: { add: 'アプリ', addS: 'アプリ', ok: 'OK',
       tip: 'ホーム画面への追加方法', more: 'その他', share: '共有', home: 'ホーム画面に追加', menu: 'メニュー', fin: '追加',
-      hMore: '<b>⋯</b>ボタン。なければアドレスバーの<b>☰</b>アイコン', hShareM: '開いたメニューの一番上', hShareB: '四角に上向き矢印のアイコン。画面の上か下にあります', hShareT: '四角に上向き矢印のアイコン。画面の上か下にあります',
-      hHome: 'リストを少し下にスクロール', hFin: '右上。これで完了！', hMenu: '右上の ⋮ ボタン', hHomeA: '<b>アプリをインストール</b>の場合も',
-      keep: 'この案内は上に表示されたままです', nohome: '共有リストに<b>ホーム画面に追加</b>がない場合：<b>Safariで開く</b>を押して最初からやり直してください',
-      inT: 'ブラウザで開いてください', inapp: 'このアプリ内ブラウザではインストールできません。<b>⋯</b>メニューか共有ボタンから<b>Safariで開く</b>（または<b>ブラウザで開く</b>）を選び、もう一度<b>アプリ</b>を押してください。', ext: 'ブラウザで開く' },
-    zh: { add: '安装', addS: '安装', ok: '知道了',
+      hMore: '<b>⋯</b>ボタン。なければアドレスバーの<b>☰</b>アイコン', hShareM: '開いたメニューの一番上', hShareB: '四角に上向き矢印のアイコン（画面の上または下）', hShareT: '四角に上向き矢印のアイコン（画面の上または下）',
+      hHome: 'リストを少し下にスクロール', hFin: '右上。これで完了！', hMenu: '右上の ⋮ ボタン', hHomeA: '<b>アプリをインストール</b>と表示される場合も',
+      keep: '案内に従って登録してください', nohome: '共有リストに<b>ホーム画面に追加</b>がなければ<b>Safariで開く</b>から最初からやり直し',
+      inT: 'ブラウザで開く', inapp: 'アプリ内の画面ではインストールできません。<b>⋯</b>メニューか共有ボタンから<b>Safariで開く</b>（または<b>ブラウザで開く</b>）を選び、もう一度<b>アプリ</b>を押してください。', ext: 'ブラウザで開く' },
+    zh: { add: '安装', addS: '安装', ok: '确定',
       tip: '如何添加到主屏幕', more: '更多', share: '分享', home: '添加到主屏幕', menu: '菜单', fin: '添加',
-      hMore: '<b>⋯</b>按钮。没有的话点地址栏里的<b>☰</b>图标', hShareM: '打开的菜单最上方', hShareB: '方框加向上箭头的图标，在屏幕顶部或底部', hShareT: '方框加向上箭头的图标，在屏幕顶部或底部',
+      hMore: '<b>⋯</b>按钮。没有的话点地址栏里的<b>☰</b>图标', hShareM: '打开的菜单最上方', hShareB: '方框加向上箭头的图标（屏幕顶部或底部）', hShareT: '方框加向上箭头的图标（屏幕顶部或底部）',
       hHome: '将列表向下滑一点', hFin: '右上角，完成！', hMenu: '右上角的 ⋮ 按钮', hHomeA: '也可能显示为<b>安装应用</b>',
-      keep: '此说明会一直显示在上方', nohome: '分享列表里没有<b>添加到主屏幕</b>？请点<b>在 Safari 中打开</b>，然后重新开始',
-      inT: '请在浏览器中打开', inapp: '此应用内浏览器无法安装。请在<b>⋯</b>菜单或分享按钮中选择<b>在 Safari 中打开</b>（或<b>在浏览器中打开</b>），然后再点一次<b>安装</b>。', ext: '在浏览器中打开' }
+      keep: '请按说明添加', nohome: '分享列表里没有<b>添加到主屏幕</b>时，<b>在 Safari 中打开</b>后重新开始',
+      inT: '在浏览器中打开', inapp: '应用内页面无法安装。请在<b>⋯</b>菜单或分享按钮中选择<b>在 Safari 中打开</b>（或<b>在浏览器中打开</b>），然后再点一次<b>安装</b>。', ext: '在浏览器中打开' }
   }[LANG];
   var UA = navigator.userAgent || '';
   var IPAD = /iPad/.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
@@ -769,6 +791,65 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', skipLink); else skipLink();
 
+  // --- owcs-data.js missing (blocked, not deployed, a failed download): every page then draws empty. A band at the top
+  // says so, with a retry. Checked once the page has loaded, when the data script has had its chance to run (10-24)
+  function dataNotice() {
+    if (window.OWCS || !document.body || !document.querySelector('script[src*="owcs-data.js"]') || document.querySelector('[data-owcs-nodata]')) return;
+    var t = function (s) { return window.OWCSi18n ? window.OWCSi18n.t(s) : s; };
+    var st = document.createElement('style');
+    st.textContent = '[data-owcs-nodata]{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 16px;padding:12px 20px;background:var(--ink,#0B0B0F);color:var(--paper,#F1EDE5);' +
+      'font:600 15px/1.45 Pretendard,system-ui,sans-serif;text-align:center}' +
+      '[data-owcs-nodata] button{height:36px;padding:0 16px;border:0;border-radius:999px;background:#C6FF33;color:#0B0B0F;font:inherit;font-weight:800;cursor:pointer}';
+    document.head.appendChild(st);
+    var n = document.createElement('div');
+    n.setAttribute('role', 'alert');
+    n.setAttribute('data-owcs-nodata', '');
+    var msg = document.createElement('span');
+    msg.textContent = t('데이터 불러오기 실패. 화면이 비어 있을 수 있음');
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = t('다시 시도');
+    btn.onclick = function () { location.reload(); };
+    n.appendChild(msg);
+    n.appendChild(btn);
+    var skip = document.querySelector('a[data-owcs-skip]');
+    document.body.insertBefore(n, skip ? skip.nextSibling : document.body.firstChild);
+  }
+  if (document.readyState === 'complete') dataNotice(); else window.addEventListener('load', dataNotice);
+
+  // --- hover (10-24): links and buttons with no hover change at all (footer links, logo, player cards, match rows, tabs ...)
+  // dim a little. Run once the page's styles are in: every selector that already has a :hover rule (in any style sheet
+  // of the page, this script's own included) is left out, so a control with its own hover gets nothing on top. Also left
+  // out: calendar cells with no match (.cc without .has, not clickable), disabled controls, the menu / picker / phone bar / app guide, touch screens.
+  function hoverRule() {
+    if (document.querySelector('style[data-owcs-hv]')) return;
+    var own = [];
+    Array.prototype.forEach.call(document.styleSheets, function (sh) {
+      var rs;
+      try { rs = sh.cssRules; } catch (e) { return; }
+      (function walk(list) {
+        Array.prototype.forEach.call(list, function (r) {
+          if (r.cssRules && !r.selectorText) { walk(r.cssRules); return; }
+          if (!r.selectorText || r.selectorText.indexOf(':hover') < 0) return;
+          r.selectorText.split(',').forEach(function (s) {
+            var i = s.indexOf(':hover'), base = i < 0 ? '' : s.slice(0, i).trim();
+            // a bare tag (a:hover{color} on the dc pages) is not a control's own hover: inline colours beat it there (10-24 review)
+            if (!base || /^[a-z]+$/i.test(base) || /[>+~(]$/.test(base) || base.indexOf('::') >= 0) return;
+            try { document.querySelector(base); } catch (e) { return; }
+            if (own.indexOf(base) < 0) own.push(base);
+          });
+        });
+      })(rs);
+    });
+    var skip = ['.cc:not(.has)', '[data-owcs-nv]', '[data-owcs-skip]', '[aria-disabled="true"]', '[data-owcs-hw] *', '[data-owcs-mtop] *', '[data-owcs-tk] *', '[data-owcs-app] *'].concat(own);
+    var st = document.createElement('style');
+    st.setAttribute('data-owcs-hv', '');
+    // all inside :where(): no specificity, so a page's own opacity (a faded card, a knocked-out team) always wins
+    st.textContent = '@media (hover:hover){:where(:where(a[href],button:not([disabled]),[role="button"],summary):not(' + skip.join(',') + '):hover){opacity:.78}}';
+    document.head.appendChild(st);
+  }
+  if (document.readyState === 'complete') hoverRule(); else window.addEventListener('load', hoverRule);
+
   // --- sheets and popovers as dialogs (10-24): the 앱 설치 guide here, the home page's share sheet and calendar
   // popover, the schedule page's calendar popover. Each marks its box [data-owcs-modal] (with role="dialog"
   // aria-modal="true") and its close control [data-owcs-close]. While one is open: focus goes into it, Tab stays in it,
@@ -799,6 +880,24 @@
       dlgFrom = null;
     }
   }
+  // the surface under a focus ring: the nearest ancestor with a solid background, dark (< 0.3 luminance) or light
+  function ringSurface(e) {
+    var t = e.target;
+    if (!t || t.nodeType !== 1) return;
+    // no solid surface found: the page's own mode
+    var v = document.documentElement.hasAttribute('data-owcs-dark') ? 'd' : 'l', n;
+    for (n = t.parentElement; n; n = n.parentElement) {
+      var bg = getComputedStyle(n).backgroundColor, m = bg.match(/[\d.]+/g);
+      if (!m || (m.length > 3 && +m[3] < 0.9)) continue;
+      // color-mix() backgrounds come back as color(srgb r g b) with 0-1 channels, not rgb() 0-255 (10-24 review)
+      var k = /^color\(/.test(bg) ? 1 : 255;
+      var lin = function (c) { c /= k; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+      v = 0.2126 * lin(+m[0]) + 0.7152 * lin(+m[1]) + 0.0722 * lin(+m[2]) < 0.3 ? 'd' : 'l';
+      break;
+    }
+    if (t.getAttribute('data-owcs-ring') !== v) t.setAttribute('data-owcs-ring', v);
+  }
+  document.addEventListener('focusin', ringSurface);
   document.addEventListener('focusin', function (e) { if (DLG && DLG.contains(e.target)) dlgLast = e.target; else focusOut = e.target; });
   document.addEventListener('keydown', function (e) {
     if (!DLG || !DLG.isConnected) return;
@@ -819,7 +918,7 @@
   var busy = false;
   new MutationObserver(function () {
     // until the 직관 안내 banner is in, place at once (before the first paint): put in 50 ms later it pushed the page down
-    if (!HOME && !document.querySelector('[data-owcs-tk]')) { place(); return; }
+    if (!HOME && !onTickets() && !document.querySelector('[data-owcs-tk]')) { place(); return; }
     if (busy) return;
     busy = true;
     setTimeout(function () { busy = false; place(); }, 50);   // not requestAnimationFrame: it never fires in a background tab

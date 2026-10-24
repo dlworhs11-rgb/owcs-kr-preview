@@ -100,7 +100,7 @@
   (document.head || html).appendChild(st);
 
   // menu label: 순위 → 대진표 (every page, every language)
-  var MAP = { '순위': '대진표', '順位': 'トーナメント', 'Standings': 'Bracket', '排名': '对阵图' };   // zh too: the dc pages kept 排名 (10-24)
+  var MAP = { '순위': '대진표', '順位': 'トーナメント表', 'Standings': 'Bracket', '排名': '对阵图' };   // zh too: the dc pages kept 排名 (10-24)
   function relabel() {
     Array.prototype.forEach.call(document.querySelectorAll('a[href*="view=standings"], a[href="standings"]'), function (a) {
       var w = document.createTreeWalker(a, NodeFilter.SHOW_TEXT), n;
@@ -117,7 +117,7 @@
     var html = document.documentElement, name = e.ko.replace(/^\d{4}\s*/, '');
     html.setAttribute('data-owcs-intl', e.key);
     if (window.customElements && !customElements.get('owcs-intl') && !document.querySelector('script[src*="owcs-intl.js"]')) {
-      var sc = document.createElement('script'); sc.src = 'owcs-intl.js?v=' + encodeURIComponent(D.generated || ''); (document.head || html).appendChild(sc);   // only pages in this mode load it
+      var sc = document.createElement('script'); sc.src = 'owcs-intl.js?v=' + encodeURIComponent(window.__owcsIntlV || D.generated || ''); (document.head || html).appendChild(sc);   // only pages in this mode load it
     }
     var css = document.createElement('style');
     css.textContent = 'html[data-owcs-intl] #dc-root [data-today]{display:none !important}' +
