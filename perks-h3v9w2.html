@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>OWticker 프로 특전</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--bg:#0B0B0F;--panel:#15151B;--line:#26262E;--ink:#F2F2F5;--mute:#A9A9B3;--ac:#7D39EB;--ac2:#C6FF33}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Pretendard Variable',Pretendard,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:760px;margin:0 auto;padding:28px 16px 48px}
+h1{font-size:22px;margin:0 0 6px}
+p.sub{margin:0 0 18px;color:var(--mute);font-size:14px;line-height:1.5}
+.dev{display:inline-block;font-size:12px;font-weight:700;color:#0B0B0F;background:var(--ac2);border-radius:6px;padding:2px 7px;margin-left:6px;vertical-align:3px}
+.heroes{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;margin:0 0 20px}
+.heroes button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 4px 7px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:44px}
+.heroes button.on{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac) inset}
+.heroes i{width:40px;height:40px;border-radius:50%;display:block}
+.heroes span{font-size:11px;line-height:1.2;text-align:center;word-break:keep-all}
+.heroes b{font-size:11px;color:var(--mute);font-weight:500}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}
+.head{display:flex;align-items:center;gap:12px;margin:0 0 4px}
+.head i{width:52px;height:52px;border-radius:50%;flex:none}
+.head h2{font-size:20px;margin:0}
+.head p{margin:2px 0 0;color:var(--mute);font-size:13px}
+.warn{margin:10px 0 0;font-size:13px;color:#FFC861}
+h3{font-size:14px;color:var(--mute);margin:20px 0 10px;font-weight:600}
+.perk{display:grid;grid-template-columns:44px 1fr auto;gap:4px 12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.perk:first-of-type{border-top:0}
+.perk img{width:44px;height:44px;border-radius:50%;background:#2A2A33;padding:6px;grid-row:span 2}
+.perk .nm{font-weight:700;font-size:15px}
+.perk .pc{font-weight:800;font-size:18px;text-align:right}
+.perk.top .pc{color:var(--ac2)}
+.perk .ds{grid-column:2 / 4;color:var(--mute);font-size:13px;line-height:1.45}
+.bar{grid-column:2 / 4;height:6px;border-radius:3px;background:#24242B;overflow:hidden}
+.bar u{display:block;height:100%;background:var(--ac)}
+.perk.top .bar u{background:var(--ac2)}
+.none{color:var(--mute);font-size:13px;margin:8px 0 0}
+.empty{color:var(--mute);padding:24px 0}
+footer{margin:22px 0 0;color:var(--mute);font-size:12px;line-height:1.6}
+</style>
+<script src="./owcs-maps.js?v=1025014327"></script>
+<script src="./owcs-perks.js?v=1025014327"></script>
+</head>
+<body>
+<main>
+  <h1>프로 특전 <span class="dev">개발 중</span></h1>
+  <p class="sub" id="sub">OWCS 코리아 경기에서 프로가 고른 특전입니다. 영웅을 고르세요.</p>
+  <div class="heroes" id="heroes"></div>
+  <div id="detail"></div>
+  <footer>경기 끝 GAME DATA 화면의 특전 아이콘을 자동으로 읽어 모은 값입니다. 아이콘을 못 읽은 경우는 빠집니다. 특전 이름·설명·아이콘: 오버워치 공식 영웅 페이지.</footer>
+</main>
+<script>
+(function () {
+  const D = window.OWCS_PERKS, M = window.OWCSMaps;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  if (!D || !D.heroes) { $('detail').innerHTML = '<p class="empty">아직 모은 기록이 없습니다.</p>'; return; }
+  const name = (k, h) => String(M && M.heroName ? M.heroName(h.name || k) : h.name || k).split(' · ')[0];   // heroName gives '한글 · English'
+  const bg = (k) => (M && M.heroBg ? M.heroBg(k) : '#1B1B21');
+  const keys = Object.keys(D.heroes).filter((k) => D.heroes[k].perks.length);
+  const d = new Date(D.built);
+  $('sub').textContent = 'OWCS 코리아 ' + D.maps + '세트에서 프로가 고른 특전 · ' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일 기준';
+  $('heroes').innerHTML = keys.map((k) => '<button data-k="' + esc(k) + '"><i style="background:' + bg(k) + '"></i><span>' + esc(name(k, D.heroes[k])) + '</span><b>' + D.heroes[k].plays + '세트</b></button>').join('');
+  function tier(h, t) {
+    const cnt = h[t] || {}, list = h.perks.map((p, i) => [p, i]).filter(([p]) => p.tier === t);
+    const total = list.reduce((s, [, i]) => s + (cnt[i] || 0), 0), top = Math.max(0, ...list.map(([, i]) => cnt[i] || 0));
+    const rows = list.map(([p, i]) => {
+      const n = cnt[i] || 0, pct = total ? Math.round(n / total * 100) : 0;
+      return '<div class="perk' + (n && n === top ? ' top' : '') + '"><img src="assets/perks/' + esc(p.icon) + '" alt="" loading="lazy">' +
+        '<span class="nm">' + esc(p.name) + '</span><span class="pc">' + (total ? pct + '%' : '-') + '</span>' +
+        '<div class="bar"><u style="width:' + pct + '%"></u></div><span class="ds">' + esc(p.desc) + ' · ' + n + '번</span></div>';
+    }).join('');
+    const none = cnt.none ? '<p class="none">이 단계 특전을 안 찍고 끝난 세트 ' + cnt.none + '번</p>' : '';
+    return '<h3>' + (t === 'minor' ? '보조 특전 (2레벨)' : '주요 특전 (3레벨)') + '</h3>' + rows + none;
+  }
+  function show(k) {
+    const h = D.heroes[k];
+    document.querySelectorAll('.heroes button').forEach((b) => b.classList.toggle('on', b.dataset.k === k));
+    $('detail').innerHTML = '<div class="card"><div class="head"><i style="background:' + bg(k) + '"></i><div><h2>' + esc(name(k, h)) + '</h2><p>' + h.plays + '세트에서 사용</p></div></div>' +
+      (h.plays < 5 ? '<p class="warn">기록이 ' + h.plays + '세트뿐이라 참고만 하세요.</p>' : '') + tier(h, 'minor') + tier(h, 'major') + '</div>';
+    try { history.replaceState(null, '', '#' + k); } catch (e) {}
+  }
+  $('heroes').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) show(b.dataset.k); });
+  const want = decodeURIComponent(location.hash.slice(1));
+  if (keys.length) show(keys.includes(want) ? want : keys[0]);
+})();
+</script>
+</body>
+</html>
