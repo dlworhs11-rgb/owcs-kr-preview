@@ -14,6 +14,12 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- connections for the fonts opened while the page itself loads (10-24). jsdelivr twice:
+     the Pretendard stylesheet is fetched without CORS, its font files with it, and each needs its own connection -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>OWticker 선수 방송</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&display=swap">
@@ -94,7 +100,7 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
   .who small,.go{display:none}
 }
 </style>
-<script src="./owcs-nav.js?v=1024113441"></script>
+<script src="./owcs-nav.js?v=1024152522"></script>
 </head>
 <body class="streams-page">
 <header><div class="wrap">
@@ -117,12 +123,12 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
 </main>
 <footer class="owft"><div class="wrap ft-g"><div><div class="ft-logo"><span class="owt"><b>OW</b>TICKER</span></div><div class="ft-desc">OWCS 한국 경기의 일정, 결과, 선수 정보를 한국 팬을 위해 한곳에 모았어요.</div><div class="ft-ch"><span class="ft-k">OWCS 공식 채널</span><a href="https://x.com/OW_Esports_Asia" target="_blank" rel="noopener"><img src="assets/icons/x.png" alt="">X</a><a href="https://www.instagram.com/ow_esports_kr/" target="_blank" rel="noopener"><img src="assets/icons/instagram.png" alt="">Instagram</a><a href="https://www.sooplive.co.kr/station/owesports" target="_blank" rel="noopener"><img src="assets/icons/soop.png" alt="">SOOP 방송국</a></div></div><div><div class="ft-k">문의</div><a class="ft-mail" href="mailto:dlworhs26@gmail.com" style="display:flex;align-items:center;gap:8px;text-decoration:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>dlworhs26@gmail.com</a><a class="ft-mail" href="https://discord.gg/EEWwKmxKA5" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;margin-left:0;padding:0;text-decoration:none"><img src="assets/icons/discord.png" alt="" style="width:22px;height:22px;border-radius:6px;margin:0;flex:none">OWticker 팬 디스코드 · 피드백</a></div><div class="ft-note">방송 상태는 CHZZK·SOOP에서 몇 분마다 확인해요. 비공식 팬 사이트입니다. Blizzard Entertainment, WDG, 각 팀과 제휴하거나 승인받지 않았습니다. Overwatch®와 영웅 이미지는 Blizzard Entertainment, Inc.의 상표·저작물이고, 팀 로고와 선수 사진의 권리는 각 소유자에게 있으며 요청하면 바로 내립니다.</div></div></footer>
 
-<script src="./owcs-data.js?v=1024113441"></script>
-<script src="./owcs-datapoll.js?v=1024113441"></script>
-<script src="./owcs-phase.js?v=1024113441"></script>
-<script src="./owcs-i18n.js?v=1024113441"></script>
-<script src="./owcs-stats.js?v=1024113441"></script>
-<script src="./owcs-dark.js?v=1024113441"></script>
+<script src="./owcs-data.js?v=1024152522"></script>
+<script src="./owcs-datapoll.js?v=1024152522"></script>
+<script src="./owcs-phase.js?v=1024152522"></script>
+<script src="./owcs-i18n.js?v=1024152522"></script>
+<script src="./owcs-stats.js?v=1024152522"></script>
+<script src="./owcs-dark.js?v=1024152522"></script>
 <script>
 (function () {
   var D = window.OWCS || { teams: [], players: [], standings: [], live: {} };
@@ -175,9 +181,26 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
     });
     document.getElementById('teams').innerHTML = html;
     document.getElementById('liveN').textContent = n;
-    var g = (D.liveChecked || D.generated || '').replace('T', ' ').slice(0, 16);
+    drawChecked();
+  }
+  // the data's KST time as 'YYYY-MM-DD HH:MM'; ja / en / zh in the reader's zone with its name, like the match times
+  // (OWCSi18n.hm). Date and time both move, so a US evening is not shown under the KST date (10-24)
+  function shownAt(iso) {
+    var kst = iso.replace('T', ' ').slice(0, 16), I = window.OWCSi18n, ms = Date.parse(iso);
+    if (!I || I.lang === 'ko' || !(ms > 0)) return kst;
+    try {
+      var day = new Intl.DateTimeFormat('en-CA', { timeZone: I.tz, year: 'numeric', month: '2-digit', day: '2-digit' }).format(ms);
+      var hm = new Intl.DateTimeFormat('en-GB', { timeZone: I.tz, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(ms);
+      return day + ' ' + hm + ' ' + I.zone;
+    } catch (e) { return kst; }
+  }
+  // 마지막 확인: a build that only re-checked the streams keeps the same owcs-data.js, so the newer check time is the one
+  // owcs-ver.json brought (window.owcsChecked, owcs-datapoll.js); both are KST ISO strings, so the later sorts last (10-24)
+  function drawChecked() {
+    var iso = [window.owcsChecked, D.liveChecked].filter(Boolean).sort().pop() || '';
+    var g = shownAt(iso || D.generated || '');
     // warn only when the live check has stalled (no check in 30+ minutes), not every time nobody is live
-    var t = Date.parse(D.liveChecked || ''), stale = !(t > 0) || Date.now() - t > 30 * 60000;
+    var t = Date.parse(iso), stale = !(t > 0) || Date.now() - t > 30 * 60000;
     document.getElementById('checked').innerHTML = '<span>마지막 확인 ' + esc(g) + '</span>' +
       (stale ? ' · <span>방송 확인이 30분 넘게 멈춰 있어 실제와 다를 수 있어요</span>' : '');
   }
@@ -187,10 +210,13 @@ footer{padding:32px 0 56px;background:#0B0B0F;color:#8A8A93;font-size:13px;line-
   setInterval(function () {
     if (document.hidden) return;   // tab not shown: no download (GitHub Pages traffic)
     if (today() !== shownDay) render();   // midnight KST: birthday cake moves to the new day
-    owcsDataPoll(function (got) { if (got && window.OWCS && (window.OWCS.generated !== D.generated || window.OWCS.liveChecked !== D.liveChecked)) { D = window.OWCS; render(); } });
+    owcsDataPoll(function (got) {
+      if (got && window.OWCS && (window.OWCS.generated !== D.generated || window.OWCS.liveChecked !== D.liveChecked)) { D = window.OWCS; render(); }
+      else drawChecked();   // same data: only the check time (and the 30-minute warning) can move
+    });
   }, 60000);
 })();
 </script>
-<script src="./owcs-theme-wise.js?v=1024113441"></script>
+<script src="./owcs-theme-wise.js?v=1024152522"></script>
 </body>
 </html>

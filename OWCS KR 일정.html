@@ -14,6 +14,12 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- connections for the fonts opened while the page itself loads (10-24). jsdelivr twice:
+     the Pretendard stylesheet is fetched without CORS, its font files with it, and each needs its own connection -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>OWticker 전체 일정</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,800&display=swap">
@@ -270,7 +276,7 @@ html[data-owcs-dark] .ct.out{background:#24242C}
 }
 html[data-owcs-dark] .calsec{--p3:#24242C}
 </style>
-<script src="./owcs-nav.js?v=1024113441"></script>
+<script src="./owcs-nav.js?v=1024152522"></script>
 </head>
 <body class="streams-page sched-page">
 <header><div class="wrap">
@@ -297,13 +303,13 @@ html[data-owcs-dark] .calsec{--p3:#24242C}
 </main>
 <footer class="owft"><div class="wrap ft-g"><div><div class="ft-logo"><span class="owt"><b>OW</b>TICKER</span></div><div class="ft-desc">OWCS 한국 경기의 일정, 결과, 선수 정보를 한국 팬을 위해 한곳에 모았어요.</div><div class="ft-ch"><span class="ft-k">OWCS 공식 채널</span><a href="https://x.com/OW_Esports_Asia" target="_blank" rel="noopener"><img src="assets/icons/x.png" alt="">X</a><a href="https://www.instagram.com/ow_esports_kr/" target="_blank" rel="noopener"><img src="assets/icons/instagram.png" alt="">Instagram</a><a href="https://www.sooplive.co.kr/station/owesports" target="_blank" rel="noopener"><img src="assets/icons/soop.png" alt="">SOOP 방송국</a></div></div><div><div class="ft-k">문의</div><a class="ft-mail" href="mailto:dlworhs26@gmail.com" style="display:flex;align-items:center;gap:8px;text-decoration:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>dlworhs26@gmail.com</a><a class="ft-mail" href="https://discord.gg/EEWwKmxKA5" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;margin-left:0;padding:0;text-decoration:none"><img src="assets/icons/discord.png" alt="" style="width:22px;height:22px;border-radius:6px;margin:0;flex:none">OWticker 팬 디스코드 · 피드백</a></div><div class="ft-note">일정은 Liquipedia에서 10분마다 가져와요. 비공식 팬 사이트입니다. Blizzard Entertainment, WDG, 각 팀과 제휴하거나 승인받지 않았습니다. Overwatch®와 영웅 이미지는 Blizzard Entertainment, Inc.의 상표·저작물이고, 팀 로고와 선수 사진의 권리는 각 소유자에게 있으며 요청하면 바로 내립니다.</div></div></footer>
 
-<script src="./owcs-data.js?v=1024113441"></script>
-<script src="./owcs-phase.js?v=1024113441"></script>
-<script src="./owcs-i18n.js?v=1024113441"></script>
-<script src="./owcs-stats.js?v=1024113441"></script>
-<script src="./owcs-dark.js?v=1024113441"></script>
-<script src="./owcs-bracket.js?v=1024113441"></script>
-<script src="./owcs-cases.js?v=1024113441"></script>
+<script src="./owcs-data.js?v=1024152522"></script>
+<script src="./owcs-phase.js?v=1024152522"></script>
+<script src="./owcs-i18n.js?v=1024152522"></script>
+<script src="./owcs-stats.js?v=1024152522"></script>
+<script src="./owcs-dark.js?v=1024152522"></script>
+<script src="./owcs-bracket.js?v=1024152522"></script>
+<script src="./owcs-cases.js?v=1024152522"></script>
 <script>
 (function () {
   var D = window.OWCS || { teams: [], matches: [] };
@@ -529,6 +535,9 @@ html[data-owcs-dark] .calsec{--p3:#24242C}
     var b = e.target.closest('button'); if (!b) return;
     var t = b.getAttribute('data-t');
     setTeam(F.team === t ? '' : t);
+    // the filter left nothing in the open tab: say so (screen readers), as the page shows it (10-24)
+    var em = Array.prototype.find.call(list.querySelectorAll('.empty'), function (x) { return x.offsetWidth > 0; });
+    if (em && window.owcsSay) owcsSay('조건에 맞는 경기가 없어요.');
   };
   show(cur);
   setTeam(F.team);
@@ -586,7 +595,7 @@ html[data-owcs-dark] .calsec{--p3:#24242C}
       : apple ? '아이폰·아이패드·맥 캘린더에 바로 구독돼요. '
       : IOS ? '폰 구글 캘린더 앱은 링크로 구독을 추가할 수 없어요. 주소를 복사해서 PC 구글 캘린더 → 다른 캘린더 + → URL로 추가에 붙여 넣으세요. ' : '') +
       '여러 팀을 골라도 캘린더 하나로 한 번에 구독돼요. 새 일정(플레이오프 포함)이 생기면 자동으로 들어와요. 알림은 따로 울리지 않아요.';
-    return '<div class="subov" data-act="close"></div><div class="subpop"><b>' + (apple ? '애플 캘린더에 남은 경기 구독' : '구글 캘린더에 남은 경기 구독') + '</b>' +
+    return '<div class="subov" data-act="close" data-owcs-close=""></div><div class="subpop" role="dialog" aria-modal="true" aria-label="' + (apple ? '애플 캘린더에 남은 경기 구독' : '구글 캘린더에 남은 경기 구독') + '" data-owcs-modal=""><b>' + (apple ? '애플 캘린더에 남은 경기 구독' : '구글 캘린더에 남은 경기 구독') + '</b>' +
       '<div class="seg"><button data-act="all" class="' + (teamsMode ? '' : 'on') + '">전체 경기</button><button data-act="teams" class="' + (teamsMode ? 'on' : '') + '">팀 고르기</button></div>' +
       (teamsMode ? '<div class="hint">구독할 팀을 고르세요 · 여러 팀 가능</div><div class="tg5">' + D.teams.map(function (t) {
         var on = S.subTeams.indexOf(t.a) >= 0, c = t.color || '#0B0B0F';
@@ -665,7 +674,7 @@ html[data-owcs-dark] .calsec{--p3:#24242C}
       else if (act === 'tm') { var k = a.getAttribute('data-t'), j = S.subTeams.indexOf(k); if (j >= 0) S.subTeams.splice(j, 1); else S.subTeams.push(k); }
       else if (act === 'copy') {
         var u = 'https://' + calFeed(S.subMode === 'all' ? '' : S.subTeams);
-        var done = function () { S.copied = true; drawCal(); setTimeout(function () { S.copied = false; drawCal(); }, 2500); };
+        var done = function () { S.copied = true; drawCal(); if (window.owcsSay) owcsSay('구독 주소를 복사했어요'); setTimeout(function () { S.copied = false; drawCal(); }, 2500); };
         try { navigator.clipboard.writeText(u).then(done, function () { window.prompt('구독 주소', u); }); } catch (e3) { window.prompt('구독 주소', u); }
         return;
       }
@@ -675,6 +684,6 @@ html[data-owcs-dark] .calsec{--p3:#24242C}
   }
 })();
 </script>
-<script src="./owcs-theme-wise.js?v=1024113441"></script>
+<script src="./owcs-theme-wise.js?v=1024152522"></script>
 </body>
 </html>
